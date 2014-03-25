@@ -24,6 +24,9 @@ In order to start your own branch for development.
 ```git checkout -b <feature to work on>```
 
 Or fork through Githubs interface.
+
+##Workflow
+
 ### Code Reviews
 Either ask to become a contributer, or send of a Pull Request. This is best done through the Github interface via your own branch/fork.
 Code reviews should be applied as Pull Requests through Github. This means that all features should be it's own branch which then will be merged into Master.  
