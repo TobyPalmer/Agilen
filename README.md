@@ -4,7 +4,7 @@ TNM082 - Grupp A - Time Management!
 Agilen is a project developed by a group of students at Linköpings University, coached by Combitech.
 
 
-##Instuctions
+##Get started
 
 
 ###How to contribute
