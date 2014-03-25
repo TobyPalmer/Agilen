@@ -47,18 +47,4 @@ When the request has been granted, either you or the reviewer should be able to 
     <-- Fix the merge conflict -->
     git commit -m "fixed merge conflict"
     git push origin master
-##Special considerations
-Even if something breakes, take a deep breath and contact one of the maintainers, or try to Google for the error and try to fix it on your own if it's manageable.
-#Tests
-On the backend, tests are currently managed through Junit and Maven.  
-However, the frontend is currently undecided. This will be updated when it is relevant.  
-##Add your own test
-### Frontend
-#### No testing framework available
-### Backend
-Currently Junit.   
-Add tests in the src/test/java/com/ folder, either as it's own TestSuite (more specifically there should be a testsuite corresponding to one class), or simply as a method in a testsuite following the pattern of test* where start is the name of the test.  
-There will be examples below on how to add tests. in the future. 
 
-#Code Style
-###To be written
