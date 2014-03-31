@@ -16,7 +16,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="91dp"
         android:layout_marginTop="69dp"
-        android:text="Start" />
+        android:text="Start" 
+        android:onClick="startTime" />
 
     <Button
         android:id="@+id/button2"
@@ -35,5 +36,15 @@
         android:layout_marginLeft="84dp"
         android:layout_toRightOf="@+id/button2"
         android:text="Stop" />
+
+    <TextView
+        android:id="@+id/timestampText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/button1"
+        android:layout_below="@+id/button1"
+        android:layout_marginTop="132dp"
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>

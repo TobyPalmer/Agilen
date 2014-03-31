@@ -1,10 +1,16 @@
 package com.example.timemanagement;
 
+import java.util.Calendar;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.support.v4.app.NavUtils;
+import android.text.format.DateUtils;
 import android.annotation.TargetApi;
 import android.os.Build;
 
@@ -50,6 +56,17 @@ public class TimestampActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	public void startTime(View view){
+		String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTimeInMillis());
+		String Time = mydate.substring(mydate.length()-8, mydate.length()-3);
+		TextView current = (TextView)findViewById(R.id.timestampText);
+		//current.setText(System.currentTimeMillis());
+		
+		current.append(Time + "\n");
+		
+		
 	}
 
 }
