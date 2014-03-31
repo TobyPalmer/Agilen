@@ -30,6 +30,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.timemanagement.MainActivity" />
         </activity>
+        <activity
+            android:name="com.example.timemanagement.NewOrderActivity"
+            android:label="@string/title_activity_new_order"
+            android:parentActivityName="com.example.timemanagement.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.timemanagement.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
