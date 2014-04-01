@@ -2,9 +2,11 @@ package com.example.timemanagement.model;
 
 public class Block {
 
+	private int ID; // primary key
+	private int orderID; // foreign key
+	
 	private int start;
 	private int stop;
-	private String orderNumber; // foreign key
 	
 	public Block() {
 		// Empty constructor
@@ -14,7 +16,7 @@ public class Block {
 		// Start constructor
 		this.start = s;
 		this.stop = 0;
-		this.orderNumber = null;
+		this.orderID = 0;
 	}
 	
 	public void setStop(int s) {
@@ -22,7 +24,7 @@ public class Block {
 	}
 	
 	public String toString() {
-		return "Block, start = " + this.start + ", stop =  " + this.stop + ", orderNumber = " + this.orderNumber;
+		return "Block, start = " + this.start + ", stop =  " + this.stop + ", orderID = " + this.orderID;
 	}
 	
 }
