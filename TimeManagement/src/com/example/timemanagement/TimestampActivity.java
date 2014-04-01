@@ -1,6 +1,10 @@
 package com.example.timemanagement;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+
+import com.example.timemanagement.model.Block;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -62,12 +66,19 @@ public class TimestampActivity extends Activity {
 	}
 	
 	public void startTime(View view){
-		String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTimeInMillis());
-		String startTime = mydate.substring(mydate.length()-8, mydate.length()-3);
-		TextView current = (TextView)findViewById(R.id.timestampText);
-		//current.setText(System.currentTimeMillis());
+		//String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTimeInMillis());
+		//String startTime = mydate.substring(mydate.length()-8, mydate.length()-3);
 		
-		current.append(startTime + " \t \t \t \t ");
+		long unixTime = System.currentTimeMillis();
+		TextView current = (TextView)findViewById(R.id.timestampText);
+		
+		Date df = new java.util.Date(unixTime);
+		String vv = new SimpleDateFormat("hh:mm").format(df);
+		//Block b = new Block();
+		
+		current.append(vv + " \t \t \t \t ");
+		
+		
 		
 		
 	}
