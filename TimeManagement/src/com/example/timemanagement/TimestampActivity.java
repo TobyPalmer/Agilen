@@ -1,8 +1,10 @@
 package com.example.timemanagement;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import com.example.timemanagement.model.Block;
 
@@ -20,6 +22,9 @@ import android.os.Build;
 
 public class TimestampActivity extends Activity {
 
+	private List<Block> l = new ArrayList<Block>();
+	private int listIndex = 0;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -28,7 +33,13 @@ public class TimestampActivity extends Activity {
 		setupActionBar();
 		
 		TextView current = (TextView)findViewById(R.id.timestampText);
+		current.setText("");
 		current.append("Start \t \t \t \t Stop \n");
+		for(int i=0; i<l.size();i++){
+			current.append(l.get(i).toString());
+		}
+		
+		
 	}
 
 	/**
@@ -69,36 +80,55 @@ public class TimestampActivity extends Activity {
 		//String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTimeInMillis());
 		//String startTime = mydate.substring(mydate.length()-8, mydate.length()-3);
 		
-		long unixTime = System.currentTimeMillis();
+		long startTime = System.currentTimeMillis();
 		TextView current = (TextView)findViewById(R.id.timestampText);
 		
-		Date df = new java.util.Date(unixTime);
+		Date df = new java.util.Date(startTime);
 		String vv = new SimpleDateFormat("hh:mm").format(df);
-		//Block b = new Block();
+		Block b = new Block(startTime);
+		l.add(b);
 		
-		current.append(vv + " \t \t \t \t ");
-		
-		
-		
+		current.setText("");
+		for(int i=0; i<l.size();i++){
+			current.append(l.get(i).toString());
+		}
 		
 	}
 	
 	public void changeOrder(View view){
-		String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTimeInMillis());
-		String changeTime = mydate.substring(mydate.length()-8, mydate.length()-3);
+		//String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTimeInMillis());
+		//String changeTime = mydate.substring(mydate.length()-8, mydate.length()-3);
+		
+		long changeTime = System.currentTimeMillis();
+
 		TextView current = (TextView)findViewById(R.id.timestampText);
 		
-		current.append(changeTime + "\n" + changeTime + " \t \t \t \t ");
+		l.get(listIndex).setStop(changeTime);
+		listIndex++;
+		Block b = new Block(changeTime);
+		l.add(b);
+		
+		current.setText("");
+		for(int i=0; i<l.size();i++){
+			current.append(l.get(i).toString());
+		}
 		
 	}
 	
 	public void stopTime(View view){
-		String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTimeInMillis());
-		String stopTime = mydate.substring(mydate.length()-8, mydate.length()-3);
+		//String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTimeInMillis());
+		//String stopTime = mydate.substring(mydate.length()-8, mydate.length()-3);
+		
+		long stopTime = System.currentTimeMillis();
+		
 		TextView current = (TextView)findViewById(R.id.timestampText);
 		
-		current.append(stopTime + "\n");
+		l.get(listIndex).setStop(stopTime);
 		
+		current.setText("");
+		for(int i=0; i<l.size();i++){
+			current.append(l.get(i).toString());
+		}
 	}
 
 }
