@@ -129,6 +129,8 @@ public class TimestampActivity extends Activity {
 		for(int i=0; i<l.size();i++){
 			current.append(l.get(i).toString());
 		}
+		
+		listIndex++;
 	}
 
 }
