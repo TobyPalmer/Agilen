@@ -32,10 +32,10 @@ public class Block {
 	
 	public String toString() {
 		Date start = new java.util.Date(this.start);
-		String startString = new SimpleDateFormat("hh:mm").format(start);
+		String startString = new SimpleDateFormat("HH:mm").format(start);
 		
 		Date stop = new java.util.Date(this.stop);
-		String stopString = new SimpleDateFormat("hh:mm").format(stop);
+		String stopString = new SimpleDateFormat("HH:mm").format(stop);
 		
 		return "Block, start = " + startString + ", stop =  " + stopString + ", orderID = " + this.orderID + "\n";
 	}

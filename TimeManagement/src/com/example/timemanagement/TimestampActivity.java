@@ -24,6 +24,8 @@ public class TimestampActivity extends Activity {
 
 	private List<Block> l = new ArrayList<Block>();
 	private int listIndex = 0;
+	boolean started = false;
+	boolean stopped = true;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,57 +82,72 @@ public class TimestampActivity extends Activity {
 		//String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTimeInMillis());
 		//String startTime = mydate.substring(mydate.length()-8, mydate.length()-3);
 		
-		long startTime = System.currentTimeMillis();
-		TextView current = (TextView)findViewById(R.id.timestampText);
+		if(stopped){
 		
-		Date df = new java.util.Date(startTime);
-		String vv = new SimpleDateFormat("hh:mm").format(df);
-		Block b = new Block(startTime);
-		l.add(b);
-		
-		current.setText("");
-		for(int i=0; i<l.size();i++){
-			current.append(l.get(i).toString());
+			long startTime = System.currentTimeMillis();
+			TextView current = (TextView)findViewById(R.id.timestampText);
+			
+			Date df = new java.util.Date(startTime);
+			String vv = new SimpleDateFormat("hh:mm").format(df);
+			Block b = new Block(startTime);
+			l.add(b);
+			
+			current.setText("");
+			for(int i=0; i<l.size();i++){
+				current.append(l.get(i).toString());
+			}
+			stopped = false;
+			started = true;
 		}
-		
 	}
 	
 	public void changeOrder(View view){
 		//String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTimeInMillis());
 		//String changeTime = mydate.substring(mydate.length()-8, mydate.length()-3);
 		
-		long changeTime = System.currentTimeMillis();
-
-		TextView current = (TextView)findViewById(R.id.timestampText);
+		if(started){
 		
-		l.get(listIndex).setStop(changeTime);
-		listIndex++;
-		Block b = new Block(changeTime);
-		l.add(b);
-		
-		current.setText("");
-		for(int i=0; i<l.size();i++){
-			current.append(l.get(i).toString());
-		}
-		
+			long changeTime = System.currentTimeMillis();
+	
+			TextView current = (TextView)findViewById(R.id.timestampText);
+			
+			l.get(listIndex).setStop(changeTime);
+			listIndex++;
+			Block b = new Block(changeTime);
+			l.add(b);
+			
+			current.setText("");
+			for(int i=0; i<l.size();i++){
+				current.append(l.get(i).toString());
+			}
+			
+			started = true;
+			stopped = false;
+		}		
 	}
 	
 	public void stopTime(View view){
 		//String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTimeInMillis());
 		//String stopTime = mydate.substring(mydate.length()-8, mydate.length()-3);
 		
-		long stopTime = System.currentTimeMillis();
+		if(started){
 		
-		TextView current = (TextView)findViewById(R.id.timestampText);
-		
-		l.get(listIndex).setStop(stopTime);
-		
-		current.setText("");
-		for(int i=0; i<l.size();i++){
-			current.append(l.get(i).toString());
+			long stopTime = System.currentTimeMillis();
+			
+			TextView current = (TextView)findViewById(R.id.timestampText);
+			
+			l.get(listIndex).setStop(stopTime);
+			
+			current.setText("");
+			for(int i=0; i<l.size();i++){
+				current.append(l.get(i).toString());
+			}
+			
+			listIndex++;
+			
+			started = false;
+			stopped = true;
 		}
-		
-		listIndex++;
 	}
 
 }
