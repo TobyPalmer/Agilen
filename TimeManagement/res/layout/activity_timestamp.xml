@@ -9,31 +9,44 @@
     tools:context=".TimestampActivity" >
 
     <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="91dp"
-        android:layout_marginTop="69dp"
-        android:text="Start" />
-
-    <Button
-        android:id="@+id/button2"
+        android:id="@+id/changeOrderButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/button1"
         android:layout_alignBottom="@+id/button1"
         android:layout_centerHorizontal="true"
-        android:text="Change Task" />
+        android:text="Change Task" 
+        android:onClick="changeOrder" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/startButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/button2"
-        android:layout_marginLeft="84dp"
-        android:layout_toRightOf="@+id/button2"
+        android:layout_alignBaseline="@+id/changeOrderButton"
+        android:layout_alignBottom="@+id/changeOrderButton"
+        android:layout_marginRight="73dp"
+        android:layout_toLeftOf="@+id/changeOrderButton"
+        android:onClick="startTime"
+        android:text="Start" />
+
+    <Button
+        android:id="@+id/stopButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/timestampText"
+        android:layout_marginLeft="69dp"
+        android:layout_toRightOf="@+id/changeOrderButton"
+        android:onClick="stopTime"
         android:text="Stop" />
+
+    <TextView
+        android:id="@+id/timestampText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/changeOrderButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="128dp"
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>

@@ -79,12 +79,6 @@ public class NewOrderActivity extends Activity {
     	int stopH = timePickerStop.getCurrentHour();
     	int stopM = timePickerStop.getCurrentMinute();
     	
-    	Date startDate = new Date(year,month,day,startH,startM);
-    	Date stopDate = new Date(year,month,day,stopH,stopM);
-    
-    	Block b = new Block(startDate.getTime());
-    	b.setStop(stopDate.getTime());
-    	
     	String _comments = orderNumber.getText().toString();
     	String _orderNumber = comments.getText().toString();
     	
