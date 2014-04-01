@@ -8,7 +8,7 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.48" >
+        android:layout_weight="0.48">
 
         <TableRow
             android:id="@+id/tableRow1"
@@ -108,7 +108,8 @@
                 android:id="@+id/TextViewAddedOrder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/addedOrder" />
+                android:text="@string/addedOrder"
+                android:layout_span="2" />
             
         </TableRow>
     </TableLayout>
