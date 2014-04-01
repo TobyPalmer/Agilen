@@ -22,6 +22,9 @@ public class TimestampActivity extends Activity {
 		setContentView(R.layout.activity_timestamp);
 		// Show the Up button in the action bar.
 		setupActionBar();
+		
+		TextView current = (TextView)findViewById(R.id.timestampText);
+		current.append("Start \t \t \t \t Stop \n");
 	}
 
 	/**
@@ -60,12 +63,30 @@ public class TimestampActivity extends Activity {
 	
 	public void startTime(View view){
 		String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTimeInMillis());
-		String Time = mydate.substring(mydate.length()-8, mydate.length()-3);
+		String startTime = mydate.substring(mydate.length()-8, mydate.length()-3);
 		TextView current = (TextView)findViewById(R.id.timestampText);
 		//current.setText(System.currentTimeMillis());
 		
-		current.append(Time + "\n");
+		current.append(startTime + " \t \t \t \t ");
 		
+		
+	}
+	
+	public void changeOrder(View view){
+		String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTimeInMillis());
+		String changeTime = mydate.substring(mydate.length()-8, mydate.length()-3);
+		TextView current = (TextView)findViewById(R.id.timestampText);
+		
+		current.append(changeTime + "\n" + changeTime + " \t \t \t \t ");
+		
+	}
+	
+	public void stopTime(View view){
+		String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTimeInMillis());
+		String stopTime = mydate.substring(mydate.length()-8, mydate.length()-3);
+		TextView current = (TextView)findViewById(R.id.timestampText);
+		
+		current.append(stopTime + "\n");
 		
 	}
 
