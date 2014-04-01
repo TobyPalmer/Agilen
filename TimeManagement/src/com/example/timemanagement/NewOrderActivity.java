@@ -1,12 +1,17 @@
 package com.example.timemanagement;
 
-import android.os.Bundle;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.support.v4.app.NavUtils;
-import android.annotation.TargetApi;
-import android.os.Build;
+import android.view.View;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.TimePicker;
 
 public class NewOrderActivity extends Activity {
 
@@ -51,5 +56,33 @@ public class NewOrderActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+    public void addNewOrder(View view){
+    	
+    	TextView current = (TextView)findViewById(R.id.TextViewAddedOrder);
+    	DatePicker datePicker = (DatePicker)findViewById(R.id.datePicker1);
+    	TimePicker timePickerStart = (TimePicker)findViewById(R.id.timePicker1);
+    	TimePicker timePickerStop = (TimePicker)findViewById(R.id.timePicker2);
+    	EditText orderNumber = (EditText)findViewById(R.id.editTextOrder);
+    	EditText comments = (EditText)findViewById(R.id.editTextComments);
+    	
+    	int day = datePicker.getDayOfMonth();
+    	int month = datePicker.getMonth();
+    	int year =  datePicker.getYear();
+
+    	int startH = timePickerStart.getCurrentHour();
+    	int startM = timePickerStart.getCurrentMinute();
+    	int stopH = timePickerStop.getCurrentHour();
+    	int stopM = timePickerStop.getCurrentMinute();
+    	
+    	String _comments = orderNumber.getText().toString();
+    	String _orderNumber = comments.getText().toString();
+    	
+    	current.setText("");
+    	current.append(year + "-" + month + "-" + day + "\n" + startH + ":" + startM + " - " + stopH + ":" + stopM + "\n");
+    	current.append("Order Number: " + _orderNumber + "\n" + "Comments: " + _comments + "\n \n");
+    	
+
+    }
 
 }
