@@ -9,11 +9,16 @@ import java.util.List;
 import com.example.timemanagement.model.Block;
 
 import android.os.Bundle;
+import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 import android.text.format.DateUtils;
@@ -27,6 +32,7 @@ public class TimestampActivity extends Activity {
 	boolean started = false;
 	boolean stopped = true;
 	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,7 +42,6 @@ public class TimestampActivity extends Activity {
 		
 		TextView current = (TextView)findViewById(R.id.timestampText);
 		current.setText("");
-		current.append("Start \t \t \t \t Stop \n");
 		for(int i=0; i<l.size();i++){
 			current.append(l.get(i).toString());
 		}
@@ -83,7 +88,7 @@ public class TimestampActivity extends Activity {
 		//String startTime = mydate.substring(mydate.length()-8, mydate.length()-3);
 		
 		if(stopped){
-		
+			
 			long startTime = System.currentTimeMillis();
 			TextView current = (TextView)findViewById(R.id.timestampText);
 			
@@ -147,6 +152,8 @@ public class TimestampActivity extends Activity {
 			
 			started = false;
 			stopped = true;
+
+			
 		}
 	}
 
