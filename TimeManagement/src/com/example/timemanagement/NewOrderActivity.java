@@ -1,5 +1,9 @@
 package com.example.timemanagement;
 
+import java.util.Date;
+
+import com.example.timemanagement.model.Block;
+
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.os.Build;
@@ -75,13 +79,17 @@ public class NewOrderActivity extends Activity {
     	int stopH = timePickerStop.getCurrentHour();
     	int stopM = timePickerStop.getCurrentMinute();
     	
+    	Date startDate = new Date(year,month,day,startH,startM);
+    	Date stopDate = new Date(year,month,day,stopH,stopM);
+    
+    	Block b = new Block(startDate.getTime());
+    	b.setStop(stopDate.getTime());
+    	
     	String _comments = orderNumber.getText().toString();
     	String _orderNumber = comments.getText().toString();
     	
     	current.setText("");
-    	current.append(year + "-" + month + "-" + day + "\n" + startH + ":" + startM + " - " + stopH + ":" + stopM + "\n");
-    	current.append("Order Number: " + _orderNumber + "\n" + "Comments: " + _comments + "\n \n");
-    	
+    	current.append(b.toString());
 
     }
 
