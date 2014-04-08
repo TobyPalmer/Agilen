@@ -39,8 +39,8 @@ public final class R {
         public static final int datePicker1=0x7f090004;
         public static final int editTextComments=0x7f09000d;
         public static final int editTextOrder=0x7f09000b;
-        public static final int startButton=0x7f090014;
-        public static final int stopButton=0x7f090013;
+        public static final int startButton=0x7f090013;
+        public static final int stopButton=0x7f090014;
         public static final int tableRow1=0x7f090002;
         public static final int tableRow2=0x7f090005;
         public static final int tableRow4=0x7f09000c;
