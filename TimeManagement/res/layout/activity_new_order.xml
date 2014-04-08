@@ -71,16 +71,19 @@
             <Spinner
                 android:id="@+id/spinner1"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="80sp"
                 android:layout_span="3" />
 
             <Button
                 android:id="@+id/button2"
+                android:background="@color/orange"
+                android:textColor="#ffffff"
+                android:layout_height="80sp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_span="1"
                 android:onClick="addNewOrderNumber"
-                android:text="@string/addNewOrderNumber" />
+                android:text="@string/addNewOrderNumber"
+                android:textSize="30sp" />
         </TableRow>
         
        <TableRow
@@ -91,7 +94,7 @@
             <EditText
                 android:id="@+id/editTextComments"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="80sp"
                 android:ems="10"
                 android:hint="@string/comments" 
                 android:layout_span="4"/>
@@ -107,10 +110,13 @@
             
             <Button
                 android:id="@+id/button1"
+                android:background="@color/orange"
+                android:textColor="#ffffff"
+                android:layout_height="80sp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:onClick="addNewOrder"
                 android:text="@string/addOrderButton" 
+                android:textSize="30sp"
                 android:layout_span="4"/>
         </TableRow>
         

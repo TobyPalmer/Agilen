@@ -153,6 +153,7 @@ public class NewOrderActivity extends Activity {
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User clicked OK button
 	        	   Dialog d = (Dialog) dialog;
+	        	   
 	           	EditText orderName = (EditText)d.findViewById(R.id.orderNamePop);
 	        	EditText orderNumber = (EditText)d.findViewById(R.id.orderNumberPop);
 	        	String stringOrderName = orderName.getText().toString();
@@ -161,6 +162,7 @@ public class NewOrderActivity extends Activity {
 	        	list.add(stringOrderNumber + " - " + stringOrderName);
 	           }
 	       });
+		 
 		 builder.setNegativeButton("Return", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User cancelled the dialog
