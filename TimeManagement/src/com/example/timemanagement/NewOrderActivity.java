@@ -71,7 +71,7 @@ public class NewOrderActivity extends Activity {
        });
     	
         list.add("02042304809 - Utveckling");
-        Spinner s = (Spinner) findViewById(R.id.spinner);
+        Spinner s = (Spinner) findViewById(R.id.spinner1);
         ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, list);
         s.setAdapter(adapter);
         
