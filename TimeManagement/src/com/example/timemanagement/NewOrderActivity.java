@@ -107,8 +107,8 @@ public class NewOrderActivity extends Activity {
     	DatePicker datePicker = (DatePicker)findViewById(R.id.datePicker1);
     	TimePicker timePickerStart = (TimePicker)findViewById(R.id.timePicker1);
     	TimePicker timePickerStop = (TimePicker)findViewById(R.id.timePicker2);
-    	EditText orderNumber = (EditText)findViewById(R.id.editTextOrder);
-    	EditText comments = (EditText)findViewById(R.id.editTextComments);
+    	//EditText orderNumber = (EditText)findViewById(R.id.editTextOrder);
+    	//EditText comments = (EditText)findViewById(R.id.editTextComments);
     	
     	Date startDate = new Date(b.getStart());
     	Date stopDate = new Date(b.getStop());
@@ -127,7 +127,7 @@ public class NewOrderActivity extends Activity {
     	DatePicker datePicker = (DatePicker)findViewById(R.id.datePicker1);
     	TimePicker timePickerStart = (TimePicker)findViewById(R.id.timePicker1);
     	TimePicker timePickerStop = (TimePicker)findViewById(R.id.timePicker2);
-    	EditText orderNumber = (EditText)findViewById(R.id.editTextOrder);
+    	//EditText orderNumber = (EditText)findViewById(R.id.editTextOrder);
     	EditText comments = (EditText)findViewById(R.id.editTextComments);
     	
     	int day = datePicker.getDayOfMonth();
@@ -139,8 +139,8 @@ public class NewOrderActivity extends Activity {
     	int stopH = timePickerStop.getCurrentHour();
     	int stopM = timePickerStop.getCurrentMinute();
     	
-    	String _comments = orderNumber.getText().toString();
-    	String _orderNumber = comments.getText().toString();
+    	//String _comments = orderNumber.getText().toString();
+    	//String _orderNumber = comments.getText().toString();
     	
     	Date startDate = new Date(year,month,day,startH,startM);
     	Date stopDate = new Date(year,month,day,stopH,stopM);
