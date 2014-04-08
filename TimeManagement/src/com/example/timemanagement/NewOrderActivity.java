@@ -67,11 +67,18 @@ public class NewOrderActivity extends Activity {
 	        
 	         
        });
+    	//String[] a = list.toArray(new String[list.size()]); 
     	
         list.add("02042304809 - Utveckling");
+        list.add("02041514809 - Möte");
+        list.add("02041519209 - Design");
+        list.add("01341514809 - Lek");
         Spinner s = (Spinner) findViewById(R.id.spinner1);
-        ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, list);
+		ArrayAdapter adapter = new ArrayAdapter(this, R.layout.spinner_item, list);
+ 
         s.setAdapter(adapter);
+        
+        
         
     	/*
     	Block b = new Block();
@@ -152,6 +159,7 @@ public class NewOrderActivity extends Activity {
 	               // User clicked OK button
 	        	
 	        	Dialog d = (Dialog) dialog;
+
 	           	EditText orderName = (EditText)d.findViewById(R.id.orderNamePop);
 	        	EditText orderNumber = (EditText)d.findViewById(R.id.orderNumberPop);
 	        	String stringOrderName = orderName.getText().toString();
@@ -175,6 +183,7 @@ public class NewOrderActivity extends Activity {
 	        	}
 	           }
 	       });
+		 
 		 builder.setNegativeButton("Return", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User cancelled the dialog
