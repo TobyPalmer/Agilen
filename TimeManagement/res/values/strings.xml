@@ -17,5 +17,7 @@
     <string name="addedOrder"></string>
     <string name="addNewOrderNumber">New Order</string>
     <string name="orderName">Order Name</string>
+    <string name="userName">User Name</string>
+  	<string name="passWord">Password</string>
 
 </resources>
