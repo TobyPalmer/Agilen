@@ -1,0 +1,46 @@
+[1mdiff --cc TimeManagement/gen/com/example/timemanagement/R.java[m
+[1mindex d014871,0d33ff7..0000000[m
+[1m--- a/TimeManagement/gen/com/example/timemanagement/R.java[m
+[1m+++ b/TimeManagement/gen/com/example/timemanagement/R.java[m
+[36m@@@ -26,26 -26,27 +26,32 @@@[m [mpublic final class R [m
+      public static final class id {[m
+          public static final int TextViewAddedOrder=0x7f080010;[m
+          public static final int TextViewDate=0x7f080003;[m
+[32m++<<<<<<< HEAD[m
+[32m +        public static final int TextViewStop=0x7f080008;[m
+[32m +        public static final int action_settings=0x7f080015;[m
+[32m++=======[m
+[32m+         public static final int TextViewStop=0x7f080009;[m
+[32m+         public static final int action_settings=0x7f080016;[m
+[32m++>>>>>>> master[m
+          public static final int button1=0x7f080001;[m
+[31m-         public static final int changeOrderButton=0x7f080011;[m
+[32m+         public static final int changeOrderButton=0x7f080013;[m
+          public static final int datePicker1=0x7f080004;[m
+          public static final int editTextComments=0x7f08000d;[m
+[31m -        public static final int editTextOrder=0x7f08000c;[m
+[32m +        public static final int editTextOrder=0x7f08000b;[m
+          public static final int startButton=0x7f080012;[m
+[31m-         public static final int stopButton=0x7f080013;[m
+[32m+         public static final int stopButton=0x7f080014;[m
+[32m+         public static final int tableLayout1=0x7f080011;[m
+          public static final int tableRow1=0x7f080002;[m
+          public static final int tableRow2=0x7f080005;[m
+[31m -        public static final int tableRow3=0x7f080008;[m
+[31m -        public static final int tableRow4=0x7f08000b;[m
+[31m -        public static final int tableRow5=0x7f08000e;[m
+[31m -        public static final int tableRow6=0x7f08000f;[m
+[32m +        public static final int tableRow4=0x7f08000c;[m
+[32m +        public static final int tableRow5=0x7f08000a;[m
+[32m +        public static final int tableRow6=0x7f08000e;[m
+[32m +        public static final int tableRow7=0x7f08000f;[m
+          public static final int textViewStart=0x7f080006;[m
+          public static final int timePicker1=0x7f080007;[m
+[31m -        public static final int timePicker2=0x7f08000a;[m
+[32m +        public static final int timePicker2=0x7f080009;[m
+          public static final int timestampButton=0x7f080000;[m
+[31m-         public static final int timestampText=0x7f080014;[m
+[32m+         public static final int timestampText=0x7f080015;[m
+      }[m
+      public static final class layout {[m
+          public static final int activity_main=0x7f030000;[m

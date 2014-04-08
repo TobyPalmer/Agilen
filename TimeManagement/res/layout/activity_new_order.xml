@@ -1,16 +1,128 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".NewOrderActivity" >
+    android:orientation="vertical" >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.48" 
+        android:stretchColumns="1">
 
-</RelativeLayout>
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/TextViewDate"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="@string/date" 
+                android:textSize="25sp"
+                android:gravity="center"/>
+
+            <DatePicker
+                android:id="@+id/datePicker1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:calendarViewShown="false"
+                android:spinnersShown="true" 
+                android:layout_span="3"/>
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/textViewStart"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="@string/start" 
+                android:gravity="center"/>
+
+            <TimePicker
+                android:id="@+id/timePicker1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/TextViewStop"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text="@string/stop" 
+                android:gravity="center"/>
+
+            <TimePicker
+                android:id="@+id/timePicker2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+        
+        <TableRow
+            android:id="@+id/tableRow5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/editTextOrder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/orderNumber" 
+                android:layout_span="4"/>
+        </TableRow>
+        
+       <TableRow
+            android:id="@+id/tableRow4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" >
+            
+            <EditText
+                android:id="@+id/editTextComments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/comments" 
+                android:layout_span="4"/>
+
+        </TableRow>
+        
+
+     
+        <TableRow
+            android:id="@+id/tableRow6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" >
+            
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="addNewOrder"
+                android:text="@string/addOrderButton" 
+                android:layout_span="4"/>
+        </TableRow>
+        
+        
+        <TableRow
+            android:id="@+id/tableRow7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" >
+            
+            
+        <TextView
+                android:id="@+id/TextViewAddedOrder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/addedOrder" 
+                android:layout_span="4"/>
+            
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>
