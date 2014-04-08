@@ -15,5 +15,7 @@
     <string name="orderNumber">Order Number</string>
     <string name="addOrderButton">Submit</string>
     <string name="addedOrder"></string>
+    <string name="addNewOrderNumber">New Order</string>
+    <string name="orderName">Order Name</string>
 
 </resources>
