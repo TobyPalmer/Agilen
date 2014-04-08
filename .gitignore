@@ -11,6 +11,9 @@ local.properties
 .settings/
 .loadpath
 
+#ignore R.java
+gen/com/example/timemanagement/R.java
+
 # External tool builders
 .externalToolBuilders/
 
