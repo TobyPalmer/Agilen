@@ -27,8 +27,6 @@ import com.example.timemanagement.model.Block;
 
 public class NewOrderActivity extends Activity {
 	
-	String[] array_spinner = new String[5];
-	
 	private List<String> list = new ArrayList<String>();
 	
 	@Override
@@ -131,7 +129,7 @@ public class NewOrderActivity extends Activity {
     	Date startDate = new Date(b.getStart());
     	Date stopDate = new Date(b.getStop());
     	
-    	datePicker.updateDate(1900+startDate.getYear(), startDate.getMonth(), startDate.getDay());
+    	datePicker.updateDate(startDate.getYear(), startDate.getMonth(), startDate.getDay());
     	
     	timePickerStart.setCurrentHour(startDate.getHours());
     	timePickerStop.setCurrentHour(stopDate.getHours());
@@ -152,13 +150,29 @@ public class NewOrderActivity extends Activity {
 		 builder.setPositiveButton("Add Task", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User clicked OK button
-	        	   Dialog d = (Dialog) dialog;
+	        	
+	        	Dialog d = (Dialog) dialog;
 	           	EditText orderName = (EditText)d.findViewById(R.id.orderNamePop);
 	        	EditText orderNumber = (EditText)d.findViewById(R.id.orderNumberPop);
 	        	String stringOrderName = orderName.getText().toString();
 	        	String stringOrderNumber = orderNumber.getText().toString();
-	        	   
-	        	list.add(stringOrderNumber + " - " + stringOrderName);
+	        	
+	        	if(isInteger(stringOrderNumber)){
+	        		String order = stringOrderNumber + " - " + stringOrderName;
+	        		if(!list.contains(order)){
+			        	list.add(order);
+			        	
+			        	String message = "Your have succesfullt added a new task!";
+			        	newPopUp("Task Created",message);	        			
+	        		}
+	        		else{
+	        			newPopUp("Error!","'" + order + "' already exists!");
+	        		}
+
+	        	}
+	        	else{
+	        		newPopUp("Error!","'" + stringOrderNumber + "' is not a valid order number!");
+	        	}
 	           }
 	       });
 		 builder.setNegativeButton("Return", new DialogInterface.OnClickListener() {
@@ -178,11 +192,11 @@ public class NewOrderActivity extends Activity {
 	 
     public void addNewOrder(View view){
     	
-    	TextView current = (TextView)findViewById(R.id.TextViewAddedOrder);
     	DatePicker datePicker = (DatePicker)findViewById(R.id.datePicker1);
     	TimePicker timePickerStart = (TimePicker)findViewById(R.id.timePicker1);
     	TimePicker timePickerStop = (TimePicker)findViewById(R.id.timePicker2);
-    	EditText comments = (EditText)findViewById(R.id.editTextComments);
+    	EditText editTextComments = (EditText)findViewById(R.id.editTextComments);
+    	Spinner spinner = (Spinner)findViewById(R.id.spinner1);
     	
     	int day = datePicker.getDayOfMonth();
     	int month = datePicker.getMonth();
@@ -193,7 +207,8 @@ public class NewOrderActivity extends Activity {
     	int stopH = timePickerStop.getCurrentHour();
     	int stopM = timePickerStop.getCurrentMinute();
     	
-    	String _orderNumber = comments.getText().toString();
+    	String spinnerString = spinner.getSelectedItem().toString();
+    	String comments = editTextComments.getText().toString();
     	
     	Date startDate = new Date(year,month,day,startH,startM);
     	Date stopDate = new Date(year,month,day,stopH,stopM);
@@ -201,8 +216,37 @@ public class NewOrderActivity extends Activity {
     	Block b = new Block(startDate.getTime());
     	b.setStop(stopDate.getTime());
     	
-    	current.setText("");
-    	current.append(b.toString());
+    	String message = "Your have succesfullt edited your task! \n\n" + spinnerString + "\n" + b.toStringPublic() + "\n " + comments;
+    	newPopUp("Task Edited",message);
     }
+    
+    public void newPopUp(String title, String message){
+    	 AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		 builder.setTitle(title);
+		 builder.setMessage(message);
+		 
+		 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	               // User clicked OK button
+
+	           }
+	     });
+		
+		 AlertDialog dialog = builder.create();
+		 
+		 dialog.show();
+    	
+    }
+    
+    public static boolean isInteger(String s) {
+        try { 
+            Integer.parseInt(s); 
+        } catch(NumberFormatException e) { 
+            return false; 
+        }
+        // only got here if we didn't return false
+        return true;
+    }
+    
 
 }
