@@ -2,28 +2,24 @@ package com.example.timemanagement;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import com.example.timemanagement.model.Block;
-
-import android.os.Bundle;
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
-import android.support.v4.app.NavUtils;
-import android.text.format.DateUtils;
-import android.annotation.TargetApi;
-import android.os.Build;
+
+import com.example.timemanagement.model.Block;
 
 public class TimestampActivity extends Activity {
 
@@ -45,8 +41,6 @@ public class TimestampActivity extends Activity {
 		for(int i=0; i<l.size();i++){
 			current.append(l.get(i).toString());
 		}
-		
-		
 	}
 
 	/**
@@ -101,12 +95,13 @@ public class TimestampActivity extends Activity {
 			for(int i=0; i<l.size();i++){
 				current.append(l.get(i).toString());
 			}
+			
 			stopped = false;
 			started = true;
 		}
 	}
 	
-	public void changeOrder(View view){
+	@SuppressLint("NewApi") public void changeOrder(View view){
 		//String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTimeInMillis());
 		//String changeTime = mydate.substring(mydate.length()-8, mydate.length()-3);
 		
@@ -156,5 +151,19 @@ public class TimestampActivity extends Activity {
 			
 		}
 	}
+	
+	@SuppressLint("NewApi") public void createButton(){
+		
+		ViewGroup linearLayout = (ViewGroup) findViewById(R.id.linearLayoutOutput);
+		
+		Button bt = new Button(this);
+		bt.setText("A Button");
+		bt.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, 
+		                                    LayoutParams.WRAP_CONTENT));
+		linearLayout.addView(bt);
+		
+	}
+	
+	
 
 }
