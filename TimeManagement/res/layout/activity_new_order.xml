@@ -62,20 +62,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </TableRow>
-        
+
         <TableRow
-            android:id="@+id/tableRow5"
+            android:id="@+id/tableRow8"
             android:layout_width="0dp"
             android:layout_height="wrap_content" >
 		
            
            <EditText
                 android:id="@+id/editTextOrder"
+                
+            <Spinner
+                android:id="@+id/spinner1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3" />
+
+            <Button
+                android:id="@+id/button2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/orderNumber" 
-                android:layout_span="4"/>
+                android:layout_span="1"
+                android:onClick="addNewOrderNumber"
+                android:text="@string/addNewOrderNumber" />
         </TableRow>
         
        <TableRow
@@ -124,6 +133,10 @@
                 android:layout_span="4"/>
             
         </TableRow>
+
    </TableLayout>
 
+
+    </TableLayout>
+    
 </LinearLayout>

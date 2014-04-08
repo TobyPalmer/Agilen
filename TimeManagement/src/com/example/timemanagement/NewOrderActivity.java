@@ -1,23 +1,35 @@
 package com.example.timemanagement;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.timemanagement.model.Block;
 
 public class NewOrderActivity extends Activity {
+	
+	String[] array_spinner = new String[5];
+	
+	private List<String> list = new ArrayList<String>();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +66,15 @@ public class NewOrderActivity extends Activity {
 		        		 timePickerStop.setCurrentMinute(timePickerStop.getCurrentMinute());
 		         }
 	         }
+	        
+	         
        });
     	
+        list.add("02042304809 - Utveckling");
+        Spinner s = (Spinner) findViewById(R.id.spinner1);
+        ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, list);
+        s.setAdapter(adapter);
+        
     	/*
     	Block b = new Block();
     	//sek - min - tim - dag - år
@@ -107,8 +126,11 @@ public class NewOrderActivity extends Activity {
     	DatePicker datePicker = (DatePicker)findViewById(R.id.datePicker1);
     	TimePicker timePickerStart = (TimePicker)findViewById(R.id.timePicker1);
     	TimePicker timePickerStop = (TimePicker)findViewById(R.id.timePicker2);
-    	//EditText orderNumber = (EditText)findViewById(R.id.editTextOrder);
-    	//EditText comments = (EditText)findViewById(R.id.editTextComments);
+
+    	EditText orderNumber = (EditText)findViewById(R.id.editTextOrder);
+    	EditText comments = (EditText)findViewById(R.id.editTextComments);
+
+    	EditText comments = (EditText)findViewById(R.id.editTextComments);
     	
     	Date startDate = new Date(b.getStart());
     	Date stopDate = new Date(b.getStop());
@@ -121,13 +143,52 @@ public class NewOrderActivity extends Activity {
     	timePickerStop.setCurrentMinute(stopDate.getMinutes());
 	}
 	
+	 public void addNewOrderNumber(View view){
+		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		 builder.setTitle("New Task");
+		 
+		 LayoutInflater inflater = getLayoutInflater();
+
+		    // Inflate and set the layout for the dialog
+		    // Pass null as the parent view because its going in the dialog layout
+		    builder.setView(inflater.inflate(R.layout.activity_neworderpopup, null));
+		 
+		 builder.setPositiveButton("Add Task", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	               // User clicked OK button
+	        	   Dialog d = (Dialog) dialog;
+	           	EditText orderName = (EditText)d.findViewById(R.id.orderNamePop);
+	        	EditText orderNumber = (EditText)d.findViewById(R.id.orderNumberPop);
+	        	String stringOrderName = orderName.getText().toString();
+	        	String stringOrderNumber = orderNumber.getText().toString();
+	        	   
+	        	list.add(stringOrderNumber + " - " + stringOrderName);
+	           }
+	       });
+		 builder.setNegativeButton("Return", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	               // User cancelled the dialog
+	           }
+	       });
+
+		 
+		 
+		 AlertDialog dialog = builder.create();
+		 
+		 dialog.show();
+
+		 
+	 }
+	 
     public void addNewOrder(View view){
     	
     	TextView current = (TextView)findViewById(R.id.TextViewAddedOrder);
     	DatePicker datePicker = (DatePicker)findViewById(R.id.datePicker1);
     	TimePicker timePickerStart = (TimePicker)findViewById(R.id.timePicker1);
     	TimePicker timePickerStop = (TimePicker)findViewById(R.id.timePicker2);
-    	//EditText orderNumber = (EditText)findViewById(R.id.editTextOrder);
+
+    	EditText orderNumber = (EditText)findViewById(R.id.editTextOrder);
+
     	EditText comments = (EditText)findViewById(R.id.editTextComments);
     	
     	int day = datePicker.getDayOfMonth();
@@ -139,8 +200,11 @@ public class NewOrderActivity extends Activity {
     	int stopH = timePickerStop.getCurrentHour();
     	int stopM = timePickerStop.getCurrentMinute();
     	
-    	//String _comments = orderNumber.getText().toString();
-    	//String _orderNumber = comments.getText().toString();
+
+    	String _comments = orderNumber.getText().toString();
+    	String _orderNumber = comments.getText().toString();
+
+    	String _orderNumber = comments.getText().toString();
     	
     	Date startDate = new Date(year,month,day,startH,startM);
     	Date stopDate = new Date(year,month,day,stopH,stopM);
