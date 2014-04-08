@@ -1,23 +1,33 @@
 package com.example.timemanagement;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.timemanagement.model.Block;
 
 public class NewOrderActivity extends Activity {
+	
+	private List<String> list = new ArrayList<String>();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +64,22 @@ public class NewOrderActivity extends Activity {
 		        		 timePickerStop.setCurrentMinute(timePickerStop.getCurrentMinute());
 		         }
 	         }
+	        
+	         
        });
+    	//String[] a = list.toArray(new String[list.size()]); 
     	
+        list.add("02042304809 - Utveckling");
+        list.add("02041514809 - Möte");
+        list.add("02041519209 - Design");
+        list.add("01341514809 - Lek");
+        Spinner s = (Spinner) findViewById(R.id.spinner1);
+		ArrayAdapter adapter = new ArrayAdapter(this, R.layout.spinner_item, list);
+ 
+        s.setAdapter(adapter);
+        
+        
+        
     	/*
     	Block b = new Block();
     	//sek - min - tim - dag - år
@@ -107,13 +131,12 @@ public class NewOrderActivity extends Activity {
     	DatePicker datePicker = (DatePicker)findViewById(R.id.datePicker1);
     	TimePicker timePickerStart = (TimePicker)findViewById(R.id.timePicker1);
     	TimePicker timePickerStop = (TimePicker)findViewById(R.id.timePicker2);
-    	EditText orderNumber = (EditText)findViewById(R.id.editTextOrder);
     	EditText comments = (EditText)findViewById(R.id.editTextComments);
     	
     	Date startDate = new Date(b.getStart());
     	Date stopDate = new Date(b.getStop());
     	
-    	datePicker.updateDate(1900+startDate.getYear(), startDate.getMonth(), startDate.getDay());
+    	datePicker.updateDate(startDate.getYear(), startDate.getMonth(), startDate.getDay());
     	
     	timePickerStart.setCurrentHour(startDate.getHours());
     	timePickerStop.setCurrentHour(stopDate.getHours());
@@ -121,14 +144,68 @@ public class NewOrderActivity extends Activity {
     	timePickerStop.setCurrentMinute(stopDate.getMinutes());
 	}
 	
+	 public void addNewOrderNumber(View view){
+		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		 builder.setTitle("New Task");
+		 
+		 LayoutInflater inflater = getLayoutInflater();
+
+		    // Inflate and set the layout for the dialog
+		    // Pass null as the parent view because its going in the dialog layout
+		    builder.setView(inflater.inflate(R.layout.activity_neworderpopup, null));
+		 
+		 builder.setPositiveButton("Add Task", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	               // User clicked OK button
+	        	
+	        	Dialog d = (Dialog) dialog;
+
+	           	EditText orderName = (EditText)d.findViewById(R.id.orderNamePop);
+	        	EditText orderNumber = (EditText)d.findViewById(R.id.orderNumberPop);
+	        	String stringOrderName = orderName.getText().toString();
+	        	String stringOrderNumber = orderNumber.getText().toString();
+	        	
+	        	if(isInteger(stringOrderNumber)){
+	        		String order = stringOrderNumber + " - " + stringOrderName;
+	        		if(!list.contains(order)){
+			        	list.add(order);
+			        	
+			        	String message = "Your have succesfullt added a new task!";
+			        	newPopUp("Task Created",message);	        			
+	        		}
+	        		else{
+	        			newPopUp("Error!","'" + order + "' already exists!");
+	        		}
+
+	        	}
+	        	else{
+	        		newPopUp("Error!","'" + stringOrderNumber + "' is not a valid order number!");
+	        	}
+	           }
+	       });
+		 
+		 builder.setNegativeButton("Return", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	               // User cancelled the dialog
+	           }
+	       });
+
+		 
+		 
+		 AlertDialog dialog = builder.create();
+		 
+		 dialog.show();
+
+		 
+	 }
+	 
     public void addNewOrder(View view){
     	
-    	TextView current = (TextView)findViewById(R.id.TextViewAddedOrder);
     	DatePicker datePicker = (DatePicker)findViewById(R.id.datePicker1);
     	TimePicker timePickerStart = (TimePicker)findViewById(R.id.timePicker1);
     	TimePicker timePickerStop = (TimePicker)findViewById(R.id.timePicker2);
-    	EditText orderNumber = (EditText)findViewById(R.id.editTextOrder);
-    	EditText comments = (EditText)findViewById(R.id.editTextComments);
+    	EditText editTextComments = (EditText)findViewById(R.id.editTextComments);
+    	Spinner spinner = (Spinner)findViewById(R.id.spinner1);
     	
     	int day = datePicker.getDayOfMonth();
     	int month = datePicker.getMonth();
@@ -139,8 +216,8 @@ public class NewOrderActivity extends Activity {
     	int stopH = timePickerStop.getCurrentHour();
     	int stopM = timePickerStop.getCurrentMinute();
     	
-    	String _comments = orderNumber.getText().toString();
-    	String _orderNumber = comments.getText().toString();
+    	String spinnerString = spinner.getSelectedItem().toString();
+    	String comments = editTextComments.getText().toString();
     	
     	Date startDate = new Date(year,month,day,startH,startM);
     	Date stopDate = new Date(year,month,day,stopH,stopM);
@@ -148,8 +225,37 @@ public class NewOrderActivity extends Activity {
     	Block b = new Block(startDate.getTime());
     	b.setStop(stopDate.getTime());
     	
-    	current.setText("");
-    	current.append(b.toString());
+    	String message = "Your have succesfullt edited your task! \n\n" + spinnerString + "\n" + b.toStringPublic() + "\n " + comments;
+    	newPopUp("Task Edited",message);
     }
+    
+    public void newPopUp(String title, String message){
+    	 AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		 builder.setTitle(title);
+		 builder.setMessage(message);
+		 
+		 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	               // User clicked OK button
+
+	           }
+	     });
+		
+		 AlertDialog dialog = builder.create();
+		 
+		 dialog.show();
+    	
+    }
+    
+    public static boolean isInteger(String s) {
+        try { 
+            Integer.parseInt(s); 
+        } catch(NumberFormatException e) { 
+            return false; 
+        }
+        // only got here if we didn't return false
+        return true;
+    }
+    
 
 }
