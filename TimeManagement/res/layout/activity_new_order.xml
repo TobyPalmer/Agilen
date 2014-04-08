@@ -67,11 +67,7 @@
             android:id="@+id/tableRow8"
             android:layout_width="0dp"
             android:layout_height="wrap_content" >
-		
-           
-           <EditText
-                android:id="@+id/editTextOrder"
-                
+
             <Spinner
                 android:id="@+id/spinner1"
                 android:layout_width="fill_parent"
@@ -137,6 +133,5 @@
    </TableLayout>
 
 
-    </TableLayout>
     
 </LinearLayout>

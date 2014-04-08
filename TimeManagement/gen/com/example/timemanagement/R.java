@@ -27,11 +27,8 @@ public final class R {
         public static final int TextViewAddedOrder=0x7f080011;
         public static final int TextViewDate=0x7f080003;
         public static final int TextViewStop=0x7f080008;
-<<<<<<< HEAD
-        public static final int action_settings=0x7f080016;
-=======
+        //public static final int action_settings=0x7f080016;
         public static final int action_settings=0x7f08001a;
->>>>>>> 5686b07d7c84edfde035891a1a5177ac9d91ef06
         public static final int button1=0x7f080001;
         public static final int button2=0x7f08000c;
         public static final int changeOrderButton=0x7f080016;
