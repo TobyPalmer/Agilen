@@ -15,5 +15,8 @@
     <string name="orderNumber">Order Number</string>
     <string name="addOrderButton">Submit</string>
     <string name="addedOrder"></string>
-
+    
+    <color name="orange">#F88621</color>
+    <color name="darkGrey">#323232</color>
+    <color name="lightGrey">#999</color>
 </resources>
