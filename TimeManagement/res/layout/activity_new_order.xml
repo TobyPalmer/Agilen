@@ -62,7 +62,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </TableRow>
-     
+
+        <TableRow
+            android:id="@+id/tableRow8"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" >
+
+            <Spinner
+                android:id="@+id/spinner1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="1"
+                android:onClick="addNewOrderNumber"
+                android:text="@string/addNewOrderNumber" />
+        </TableRow>
         
        <TableRow
             android:id="@+id/tableRow4"
@@ -93,27 +112,6 @@
                 android:onClick="addNewOrder"
                 android:text="@string/addOrderButton" 
                 android:layout_span="4"/>
-        </TableRow>
-        
-        <TableRow
-            android:id="@+id/tableRow8"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" >
-            
-            <Spinner
-			    android:layout_span="3"
-			    android:id="@+id/spinner"
-			    android:layout_width="fill_parent"
-			    android:layout_height="wrap_content" />
-            
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="addNewOrderNumber"
-                android:text="@string/addNewOrderNumber" 
-                android:layout_span="1"/>
-            
         </TableRow>
         
         
