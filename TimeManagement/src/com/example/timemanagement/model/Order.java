@@ -47,5 +47,39 @@ public class Order {
 		return orderNumber + " - " + orderName;
 		//return "Order [ID=" + ID + ", orderNumber=" + orderNumber + ", orderName=" + orderName + "]";
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((orderName == null) ? 0 : orderName.hashCode());
+		result = prime * result
+				+ ((orderNumber == null) ? 0 : orderNumber.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Order other = (Order) obj;
+		if (orderName == null) {
+			if (other.orderName != null)
+				return false;
+		} else if (!orderName.equals(other.orderName))
+			return false;
+		if (orderNumber == null) {
+			if (other.orderNumber != null)
+				return false;
+		} else if (!orderNumber.equals(other.orderNumber))
+			return false;
+		return true;
+	}
+
 	
 }

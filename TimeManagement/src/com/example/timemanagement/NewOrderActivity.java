@@ -28,7 +28,9 @@ import com.example.timemanagement.model.Order;
 public class NewOrderActivity extends MainActivity {
 	
 	private List<Order> list = new ArrayList<Order>();
-	
+	private Spinner s;
+	private ArrayAdapter adapter;
+		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -77,8 +79,8 @@ public class NewOrderActivity extends MainActivity {
     	    Order order = list.get(i);
     	}
     	
-        Spinner s = (Spinner) findViewById(R.id.spinner1);
-		ArrayAdapter adapter = new ArrayAdapter(this, R.layout.spinner_item, list);
+        s = (Spinner) findViewById(R.id.spinner1);
+		adapter = new ArrayAdapter(this, R.layout.spinner_item, list);
  
         s.setAdapter(adapter);
         
@@ -165,7 +167,10 @@ public class NewOrderActivity extends MainActivity {
 			        	list.add(order);
 			        	
 			        	String message = "Your have succesfullt added a new task!";
-			        	newPopUp("Task Created",message);	        	
+			        	newPopUp("Task Created",message);
+			        	
+			            s.setSelection(list.size()-1);
+			            adapter.notifyDataSetChanged();
 			        	
 			        	//Save to dB
 			        	MainActivity.db.addOrder(order);
@@ -221,7 +226,7 @@ public class NewOrderActivity extends MainActivity {
     
     	Block b = new Block(startDate.getTime());
     	b.setStop(stopDate.getTime());
-    	b.setID(selectedOrder.getID());
+    	b.setOrderID(selectedOrder.getID());
     	
     	String message = "Your have succesfullt edited your task! \n\n" + selectedOrder.toString() + "\n" + b.toStringPublic() + "\n " + comments;
     	newPopUp("Task Edited",message);
