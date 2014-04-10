@@ -4,6 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+    
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
     <TableLayout
         android:layout_width="match_parent"
@@ -62,7 +66,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </TableRow>
-     
+
+        <TableRow
+            android:id="@+id/tableRow8"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" >
+
+           
+            <Spinner
+                android:id="@+id/spinner1"
+                android:layout_width="fill_parent"
+                android:layout_height="80sp"
+                android:layout_span="3" />
+          
+
+            <Button
+                android:id="@+id/button2"
+                android:background="#999"
+                android:textColor="#ffffff"
+                android:layout_height="80sp"
+                android:layout_width="wrap_content"
+                android:layout_span="1"
+                android:onClick="addNewOrderNumber"
+                android:text="@string/addNewOrderNumber"
+                android:textSize="30sp" />
+        </TableRow>
         
        <TableRow
             android:id="@+id/tableRow4"
@@ -72,9 +100,10 @@
             <EditText
                 android:id="@+id/editTextComments"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="80sp"
                 android:ems="10"
                 android:hint="@string/comments" 
+                android:textSize="20sp"
                 android:layout_span="4"/>
 
         </TableRow>
@@ -88,32 +117,14 @@
             
             <Button
                 android:id="@+id/button1"
+                android:background="@color/orange"
+                android:textColor="#ffffff"
+                android:layout_height="80sp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:onClick="addNewOrder"
                 android:text="@string/addOrderButton" 
+                android:textSize="30sp"
                 android:layout_span="4"/>
-        </TableRow>
-        
-        <TableRow
-            android:id="@+id/tableRow8"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" >
-            
-            <Spinner
-			    android:layout_span="3"
-			    android:id="@+id/spinner"
-			    android:layout_width="fill_parent"
-			    android:layout_height="wrap_content" />
-            
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="addNewOrderNumber"
-                android:text="@string/addNewOrderNumber" 
-                android:layout_span="1"/>
-            
         </TableRow>
         
         
@@ -134,5 +145,7 @@
         
 
     </TableLayout>
+    
+    </ScrollView>
     
 </LinearLayout>

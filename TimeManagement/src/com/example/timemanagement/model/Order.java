@@ -9,6 +9,9 @@ public class Order {
 	
 	public Order() {
 		// Empty constructor
+		this.ID = -1;
+		this.orderNumber = "";
+		this.orderName = "";
 	}
 	
 	public Order(String number, String name) {
@@ -19,9 +22,30 @@ public class Order {
 	public int getID() {
 		return this.ID;
 	}
-	
+
+	public void setID(int ID) {
+		this.ID = ID;
+	}
+	public String getOrderName() {
+		return orderName;
+	}
+
+	public void setOrderName(String orderName) {
+		this.orderName = orderName;
+	}
+
+	public void setOrderNumber(String orderNumber) {
+		this.orderNumber = orderNumber;
+	}
+
 	public String getOrderNumber() {
 		return this.orderNumber;
+	}
+
+	@Override
+	public String toString() {
+		return orderNumber + " - " + orderName;
+		//return "Order [ID=" + ID + ", orderNumber=" + orderNumber + ", orderName=" + orderName + "]";
 	}
 	
 }
