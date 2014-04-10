@@ -43,4 +43,11 @@ public class MainActivity extends Activity {
         
         startActivity(intent);
     }
+    
+    //Statistik view skapas?
+    public void newStatisticsActivity(View view){
+        Intent intent = new Intent(this, StatisticsActivity.class);
+        
+        startActivity(intent);
+    }
 }
