@@ -4,10 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-    <TextView
+	<TextView
         android:id="@+id/txtView"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:text="Statistik" />
-
+        android:text="Översikt Schema" />
+    
 </LinearLayout>

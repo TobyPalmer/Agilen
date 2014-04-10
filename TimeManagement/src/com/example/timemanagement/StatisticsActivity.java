@@ -17,7 +17,7 @@ import android.widget.TimePicker;
 
 import com.example.timemanagement.model.Block;
 
-public class StatisticsActivity extends Activity {
+public class StatisticsActivity extends MainActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
