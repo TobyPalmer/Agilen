@@ -244,8 +244,8 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         		
         		Block block = new Block();
                 block.setID(Integer.parseInt(cursor.getString(0)));
-                block.setStart(cursor.getInt(1));
-                block.setStop(cursor.getInt(2));
+                block.setStart(cursor.getLong(1));
+                block.setStop(cursor.getLong(2));
                 block.setOrderID(cursor.getInt(3));
                 block.setComment(cursor.getString(4));
                 
@@ -283,8 +283,8 @@ public class SQLiteMethods extends SQLiteOpenHelper {
             do {
                 block = new Block();
                 block.setID(Integer.parseInt(cursor.getString(0)));
-                block.setStart(cursor.getInt(1));
-                block.setStop(cursor.getInt(2));
+                block.setStart(cursor.getLong(1));
+                block.setStop(cursor.getLong(2));
                 block.setOrderID(cursor.getInt(3));
                 block.setComment(cursor.getString(4));
                 blocks.add(block);
@@ -311,8 +311,8 @@ public class SQLiteMethods extends SQLiteOpenHelper {
             do {
                 block = new Block();
                 block.setID(Integer.parseInt(cursor.getString(0)));
-                block.setStart(cursor.getInt(1));
-                block.setStop(cursor.getInt(2));
+                block.setStart(cursor.getLong(1));
+                block.setStop(cursor.getLong(2));
                 block.setOrderID(cursor.getInt(3));
                 block.setComment(cursor.getString(4));
                 blocks.add(block);
