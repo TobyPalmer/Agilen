@@ -7,13 +7,14 @@
     android:layout_height="match_parent"
     android:layout_gravity="center_vertical"
     android:gravity="center"
+    android:background ="#eee"
     tools:context=".MainActivity">
-    
+        
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/logga" />
+        android:src="@drawable/logga"/>
 
     <EditText
 	android:id="@+id/userName"
@@ -23,7 +24,7 @@
 	android:layout_marginTop="20dp"
     android:layout_marginLeft="50dp"
     android:layout_marginRight="50dp"
-    android:textSize="30dp"
+    android:textSize="30sp"
     android:paddingLeft="20dp"
     android:background="#FFFFFF"
     android:hint="@string/userName"
@@ -37,11 +38,12 @@
 	android:layout_marginTop="20dp"
     android:layout_marginLeft="50dp"
     android:layout_marginRight="50dp"
-    android:textSize="30dp"
+    android:textSize="30sp"
     android:paddingLeft="20dp"
     android:background="#FFFFFF"
     android:hint="@string/passWord"
 	android:layout_span="4" />
+
 
     <Button
         android:id="@+id/timestampButton"

@@ -11,6 +11,7 @@ public final class R {
     public static final class attr {
     }
     public static final class color {
+        public static final int darkGrey=0x7f060001;
         public static final int orange=0x7f060000;
     }
     public static final class dimen {
@@ -31,7 +32,7 @@ public final class R {
         public static final int TextViewAddedOrder=0x7f090014;
         public static final int TextViewDate=0x7f090006;
         public static final int TextViewStop=0x7f09000b;
-        public static final int action_settings=0x7f09001d;
+        public static final int action_settings=0x7f09001e;
         public static final int button1=0x7f090004;
         public static final int button2=0x7f09000f;
         public static final int changeOrderButton=0x7f090019;
@@ -43,6 +44,7 @@ public final class R {
         public static final int orderNumberPop=0x7f090015;
         public static final int passWord=0x7f090002;
         public static final int spinner1=0x7f09000e;
+        public static final int spinnerItem=0x7f09001d;
         public static final int startButton=0x7f090018;
         public static final int stopButton=0x7f09001a;
         public static final int tableLayout1=0x7f090017;
@@ -64,6 +66,7 @@ public final class R {
         public static final int activity_new_order=0x7f030001;
         public static final int activity_neworderpopup=0x7f030002;
         public static final int activity_timestamp=0x7f030003;
+        public static final int spinner_item=0x7f030004;
     }
     public static final class menu {
         public static final int main=0x7f080000;
