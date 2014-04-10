@@ -31,6 +31,7 @@ public final class R {
     }
     public static final class id {
         public static final int LinearLayout02=0x7f090018;
+        public static final int TableLayout=0x7f090017;
         public static final int TextViewAddedOrder=0x7f090014;
         public static final int TextViewDate=0x7f090005;
         public static final int TextViewStop=0x7f09000a;
@@ -58,7 +59,6 @@ public final class R {
         public static final int timePicker1=0x7f090009;
         public static final int timePicker2=0x7f09000b;
         public static final int timestampButton=0x7f090003;
-        public static final int timestampText=0x7f090017;
         public static final int userName=0x7f090001;
     }
     public static final class layout {

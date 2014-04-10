@@ -9,11 +9,23 @@
     tools:context=".TimestampActivity" >
 
 
-            <TextView
+            <ScrollView 
+                android:layout_width="fill_parent"
+   				android:layout_height="fill_parent">
+            <TableLayout
+                android:id="@+id/TableLayout"
+                android:layout_width="fill_parent"
+   				android:layout_height="fill_parent"
+    		>
+                
+            </TableLayout>
+            </ScrollView>
+            
+            <!--  <TextView
                 android:id="@+id/timestampText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"/>
+                android:textSize="18sp"/>-->
                  
                  <LinearLayout
                      android:id="@+id/LinearLayout02"
