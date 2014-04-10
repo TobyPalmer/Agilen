@@ -20,14 +20,14 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.timemanagement.model.Block;
+import com.example.timemanagement.model.Order;
 
 public class NewOrderActivity extends Activity {
 	
-	private List<String> list = new ArrayList<String>();
+	private List<Order> list = new ArrayList<Order>();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class NewOrderActivity extends Activity {
 		setContentView(R.layout.activity_new_order);
 		
     	final TimePicker timePickerStart = (TimePicker)findViewById(R.id.timePicker1);
-    	final TimePicker timePickerStop = (TimePicker)findViewById(R.id.timePicker2);
+    	final TimePicker timePickerStop = (TimePicker)findViewById(R.id.timePicker2);    	
     	
     	timePickerStart.onFinishTemporaryDetach();
 		
@@ -69,25 +69,19 @@ public class NewOrderActivity extends Activity {
        });
     	//String[] a = list.toArray(new String[list.size()]); 
     	
-        list.add("02042304809 - Utveckling");
-        list.add("02041514809 - Möte");
-        list.add("02041519209 - Design");
-        list.add("01341514809 - Lek");
+    	// Get all orders
+    	list = MainActivity.db.getAllOrders();
+
+    	// Write all orders to console
+    	for (int i = 0; i < list.size(); i++) {
+    	    Order order = list.get(i);
+    	}
+    	
         Spinner s = (Spinner) findViewById(R.id.spinner1);
 		ArrayAdapter adapter = new ArrayAdapter(this, R.layout.spinner_item, list);
  
         s.setAdapter(adapter);
         
-        
-        
-    	/*
-    	Block b = new Block();
-    	//sek - min - tim - dag - år
-    	b.setStart(1000*60*60*24*365*5);
-    	b.setStop(1000*60*60*24*365*6);
-    	
-    	setBlock(b);
-    	*/
 		// Show the Up button in the action bar.
 		setupActionBar();
 	}
@@ -144,7 +138,7 @@ public class NewOrderActivity extends Activity {
     	timePickerStop.setCurrentMinute(stopDate.getMinutes());
 	}
 	
-	 public void addNewOrderNumber(View view){
+	public void addNewOrderNumber(View view){
 		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		 builder.setTitle("New Task");
 		 
@@ -166,12 +160,15 @@ public class NewOrderActivity extends Activity {
 	        	String stringOrderNumber = orderNumber.getText().toString();
 	        	
 	        	if(isInteger(stringOrderNumber)){
-	        		String order = stringOrderNumber + " - " + stringOrderName;
+	        		Order order = new Order(stringOrderNumber, stringOrderName);
 	        		if(!list.contains(order)){
 			        	list.add(order);
 			        	
 			        	String message = "Your have succesfullt added a new task!";
-			        	newPopUp("Task Created",message);	        			
+			        	newPopUp("Task Created",message);	        	
+			        	
+			        	//Save to dB
+			        	MainActivity.db.addOrder(order);
 	        		}
 	        		else{
 	        			newPopUp("Error!","'" + order + "' already exists!");
@@ -209,14 +206,14 @@ public class NewOrderActivity extends Activity {
     	
     	int day = datePicker.getDayOfMonth();
     	int month = datePicker.getMonth();
-    	int year =  datePicker.getYear();
+    	int year =  datePicker.getYear()-1900;
 
     	int startH = timePickerStart.getCurrentHour();
     	int startM = timePickerStart.getCurrentMinute();
     	int stopH = timePickerStop.getCurrentHour();
     	int stopM = timePickerStop.getCurrentMinute();
     	
-    	String spinnerString = spinner.getSelectedItem().toString();
+    	Order selectedOrder = (Order)spinner.getSelectedItem();
     	String comments = editTextComments.getText().toString();
     	
     	Date startDate = new Date(year,month,day,startH,startM);
@@ -224,9 +221,15 @@ public class NewOrderActivity extends Activity {
     
     	Block b = new Block(startDate.getTime());
     	b.setStop(stopDate.getTime());
+    	b.setID(selectedOrder.getID());
     	
-    	String message = "Your have succesfullt edited your task! \n\n" + spinnerString + "\n" + b.toStringPublic() + "\n " + comments;
+    	String message = "Your have succesfullt edited your task! \n\n" + selectedOrder.toString() + "\n" + b.toStringPublic() + "\n " + comments;
     	newPopUp("Task Edited",message);
+    	
+    	//Save to db
+    	MainActivity.db.addBlock(b);
+    	
+    	
     }
     
     public void newPopUp(String title, String message){

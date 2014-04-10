@@ -11,6 +11,8 @@ public class Block {
 	private long start;
 	private long stop;
 	
+	private String comment;
+	
 	public Block() {
 		// Empty constructor
 	}
@@ -20,6 +22,7 @@ public class Block {
 		this.start = s;
 		this.stop = 0;
 		this.orderID = 0;
+		this.comment = "";
 	}
 
 	public Block(int orderID, long s) {
@@ -29,11 +32,12 @@ public class Block {
 		this.orderID = orderID;
 	}
 
-	public Block(int orderID, long start, long stop) {
+	public Block(int orderID, long start, long stop, String comment) {
 		// Start constructor
 		this.start = start;
 		this.stop = stop;
 		this.orderID = orderID;
+		this.comment = comment;
 	}
 
 	
@@ -69,6 +73,14 @@ public class Block {
 		this.stop = s;
 	}
 	
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
 	public String toString() {
 		Date start = new java.util.Date(this.start);
 		String startString = new SimpleDateFormat("HH:mm").format(start);
@@ -76,12 +88,12 @@ public class Block {
 		Date stop = new java.util.Date(this.stop);
 		String stopString = new SimpleDateFormat("HH:mm").format(stop);
 		
-		return "Block, start = " + startString + ", stop =  " + stopString + ", orderID = " + this.orderID + "\n";
+		return "Block, start = " + startString + ", stop =  " + stopString + ", orderID = " + this.orderID + ", comment = " + this.comment + "\n";
 	}
 	
 	public String toStringPublic(){
 		Date start = new java.util.Date(this.start);
-		String startString = new SimpleDateFormat("yy-MM-dd  HH:mm").format(start);
+		String startString = new SimpleDateFormat("yyyy-MM-dd  HH:mm").format(start);
 		
 		Date stop = new java.util.Date(this.stop);
 		String stopString = new SimpleDateFormat("HH:mm").format(stop);
