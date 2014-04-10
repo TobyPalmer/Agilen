@@ -17,5 +17,7 @@
     <string name="addedOrder"></string>
     <string name="addNewOrderNumber">New Order</string>
     <string name="orderName">Order Name</string>
+    <color name="orange">#F88621</color>
+    <color name="darkGrey">#323232</color>
 
 </resources>
