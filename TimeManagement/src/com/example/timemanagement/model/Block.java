@@ -81,7 +81,7 @@ public class Block {
 	
 	public String toStringPublic(){
 		Date start = new java.util.Date(this.start);
-		String startString = new SimpleDateFormat("yy-MM-dd  HH:mm").format(start);
+		String startString = new SimpleDateFormat("yyyy-MM-dd  HH:mm").format(start);
 		
 		Date stop = new java.util.Date(this.stop);
 		String stopString = new SimpleDateFormat("HH:mm").format(stop);

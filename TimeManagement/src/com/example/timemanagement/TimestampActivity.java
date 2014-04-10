@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.timemanagement.model.Block;
+import com.example.timemanagement.model.Order;
 
 public class TimestampActivity extends Activity {
 
@@ -36,10 +37,13 @@ public class TimestampActivity extends Activity {
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
+		l = MainActivity.db.getAllBlocks();
+		
 		TextView current = (TextView)findViewById(R.id.timestampText);
 		current.setText("");
 		for(int i=0; i<l.size();i++){
-			current.append(l.get(i).toString());
+			int orderId = l.get(i).getOrderID();
+			current.append(l.get(i).toStringPublic() + "\n");// + " " + MainActivity.db.getOrder(orderId).toString() + "\n");
 		}
 	}
 

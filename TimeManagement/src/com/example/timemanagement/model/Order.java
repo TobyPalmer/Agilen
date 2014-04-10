@@ -44,7 +44,8 @@ public class Order {
 
 	@Override
 	public String toString() {
-		return "Order [ID=" + ID + ", orderNumber=" + orderNumber + ", orderName=" + orderName + "]";
+		return orderNumber + " - " + orderName;
+		//return "Order [ID=" + ID + ", orderNumber=" + orderNumber + ", orderName=" + orderName + "]";
 	}
 	
 }
