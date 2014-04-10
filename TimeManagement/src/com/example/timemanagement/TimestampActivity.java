@@ -129,7 +129,7 @@ public class TimestampActivity extends Activity {
 			stopped = false;
 		}		
 	}
-	
+
 	public void stopTime(View view){
 		//String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTimeInMillis());
 		//String stopTime = mydate.substring(mydate.length()-8, mydate.length()-3);
@@ -154,18 +154,6 @@ public class TimestampActivity extends Activity {
 
 			
 		}
-	}
-	
-	@SuppressLint("NewApi") public void createButton(){
-		
-		ViewGroup linearLayout = (ViewGroup) findViewById(R.id.linearLayoutOutput);
-		
-		Button bt = new Button(this);
-		bt.setText("A Button");
-		bt.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, 
-		                                    LayoutParams.WRAP_CONTENT));
-		linearLayout.addView(bt);
-		
 	}
 	
 	
