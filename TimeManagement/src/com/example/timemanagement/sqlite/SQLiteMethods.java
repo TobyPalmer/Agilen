@@ -16,7 +16,7 @@ import android.database.Cursor;
 public class SQLiteMethods extends SQLiteOpenHelper {
 	
 	// Database info
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
     private static final String DATABASE_NAME = "TimeManagement";
  
     // Constructor
@@ -40,7 +40,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         	"ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
         	"start INTEGER, " +
         	"stop INTEGER, " +
-        	"orderID INTEGER" +
+        	"orderID INTEGER," +
         	"comment TEXT)";
         db.execSQL(CREATE_BLOCKS_TABLE);
     }

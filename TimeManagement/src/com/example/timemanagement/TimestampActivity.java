@@ -40,10 +40,12 @@ public class TimestampActivity extends Activity {
 		l = MainActivity.db.getAllBlocks();
 		
 		TextView current = (TextView)findViewById(R.id.timestampText);
-		current.setText("");
+		
+		current.setText("Stolrek: "+l.size());
+		
 		for(int i=0; i<l.size();i++){
 			int orderId = l.get(i).getOrderID();
-			current.append(l.get(i).toStringPublic() + "\n");// + " " + MainActivity.db.getOrder(orderId).toString() + "\n");
+			current.append(l.get(i).toStringPublic() + "\n hehe");// + " " + MainActivity.db.getOrder(orderId).toString() + "\n");
 		}
 	}
 

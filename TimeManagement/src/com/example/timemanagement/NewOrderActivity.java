@@ -80,7 +80,6 @@ public class NewOrderActivity extends Activity {
         Spinner s = (Spinner) findViewById(R.id.spinner1);
 		ArrayAdapter adapter = new ArrayAdapter(this, R.layout.spinner_item, list);
  
-		s.setSelection(list.size());
         s.setAdapter(adapter);
         
 		// Show the Up button in the action bar.
@@ -163,7 +162,7 @@ public class NewOrderActivity extends Activity {
 	        	if(isInteger(stringOrderNumber)){
 	        		Order order = new Order(stringOrderNumber, stringOrderName);
 	        		if(!list.contains(order)){
-			        	list.add(0, order);
+			        	list.add(order);
 			        	
 			        	String message = "Your have succesfullt added a new task!";
 			        	newPopUp("Task Created",message);	        	
