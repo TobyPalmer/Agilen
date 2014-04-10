@@ -1,26 +1,20 @@
 package com.example.timemanagement;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.timemanagement.model.Block;
-import com.example.timemanagement.model.Order;
 
 public class TimestampActivity extends Activity {
 
@@ -28,6 +22,7 @@ public class TimestampActivity extends Activity {
 	private int listIndex = 0;
 	boolean started = false;
 	boolean stopped = true;
+	Block b;
 	
 	
 	@Override
@@ -37,16 +32,7 @@ public class TimestampActivity extends Activity {
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
-		l = MainActivity.db.getAllBlocks();
-		
-		TextView current = (TextView)findViewById(R.id.timestampText);
-		
-		current.setText("Stolrek: "+l.size());
-		
-		for(int i=0; i<l.size();i++){
-			int orderId = l.get(i).getOrderID();
-			current.append(l.get(i).toStringPublic() + "\n hehe");// + " " + MainActivity.db.getOrder(orderId).toString() + "\n");
-		}
+		printBlocks();
 	}
 
 	/**
@@ -90,23 +76,19 @@ public class TimestampActivity extends Activity {
 		if(stopped){
 			
 			long startTime = System.currentTimeMillis();
-			TextView current = (TextView)findViewById(R.id.timestampText);
 			
-			Date df = new java.util.Date(startTime);
-			String vv = new SimpleDateFormat("hh:mm").format(df);
-			Block b = new Block(startTime);
-			l.add(b);
+			b = new Block(startTime);
 			
-			current.setText("");
-			for(int i=0; i<l.size();i++){
-				current.append(l.get(i).toString());
-			}
+			MainActivity.db.addBlock(b);
 			
 			stopped = false;
 			started = true;
+			
+			printBlocks();
 		}
 	}
 	
+	/*
 	@SuppressLint("NewApi") public void changeOrder(View view){
 		//String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTimeInMillis());
 		//String changeTime = mydate.substring(mydate.length()-8, mydate.length()-3);
@@ -131,31 +113,45 @@ public class TimestampActivity extends Activity {
 			stopped = false;
 		}		
 	}
-
+*/
+	
 	public void stopTime(View view){
 		//String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTimeInMillis());
 		//String stopTime = mydate.substring(mydate.length()-8, mydate.length()-3);
 		
 		if(started){
 		
-			long stopTime = System.currentTimeMillis();
+			long stopTime = System.currentTimeMillis();		
 			
-			TextView current = (TextView)findViewById(R.id.timestampText);
+			b.setStop(stopTime);
 			
-			l.get(listIndex).setStop(stopTime);
-			
-			current.setText("");
-			for(int i=0; i<l.size();i++){
-				current.append(l.get(i).toString());
-			}
-			
-			listIndex++;
+			MainActivity.db.putBlock(b);			
 			
 			started = false;
 			stopped = true;
-
 			
+			printBlocks();
 		}
+	}
+	
+	public void printBlocks(){
+		l = MainActivity.db.getAllBlocks();
+		
+		TextView current = (TextView)findViewById(R.id.timestampText);
+		
+		current.setText(" ");
+		
+		for(int i=0; i<l.size();i++){
+			int orderId = l.get(i).getOrderID();
+			
+			Log.d("AgilTag",Integer.toString(orderId));
+			
+			if(MainActivity.db.getOrder(orderId)==null)
+				current.append(l.get(i).toStringPublic() + "\n " );
+			else
+				current.append(l.get(i).toStringPublic() + " " +MainActivity.db.getOrder(orderId).toString() + "\n");
+		}	
+		
 	}
 	
 	
