@@ -2,30 +2,27 @@ package com.example.timemanagement;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import com.example.timemanagement.model.Block;
-
-import android.os.Bundle;
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
-import android.support.v4.app.NavUtils;
-import android.text.format.DateUtils;
-import android.annotation.TargetApi;
-import android.os.Build;
 
-public class TimestampActivity extends Activity {
+import com.example.timemanagement.model.Block;
+import com.example.timemanagement.model.Order;
+
+public class TimestampActivity extends MainActivity {
 
 	private List<Block> l = new ArrayList<Block>();
 	private int listIndex = 0;
@@ -40,13 +37,16 @@ public class TimestampActivity extends Activity {
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
+		l = MainActivity.db.getAllBlocks();
+		
 		TextView current = (TextView)findViewById(R.id.timestampText);
-		current.setText("");
+		
+		current.setText("Stolrek: "+l.size());
+		
 		for(int i=0; i<l.size();i++){
-			current.append(l.get(i).toString());
+			int orderId = l.get(i).getOrderID();
+			current.append(l.get(i).toStringPublic() + "\n hehe");// + " " + MainActivity.db.getOrder(orderId).toString() + "\n");
 		}
-		
-		
 	}
 
 	/**
@@ -101,12 +101,13 @@ public class TimestampActivity extends Activity {
 			for(int i=0; i<l.size();i++){
 				current.append(l.get(i).toString());
 			}
+			
 			stopped = false;
 			started = true;
 		}
 	}
 	
-	public void changeOrder(View view){
+	@SuppressLint("NewApi") public void changeOrder(View view){
 		//String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTimeInMillis());
 		//String changeTime = mydate.substring(mydate.length()-8, mydate.length()-3);
 		
@@ -130,7 +131,7 @@ public class TimestampActivity extends Activity {
 			stopped = false;
 		}		
 	}
-	
+
 	public void stopTime(View view){
 		//String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTimeInMillis());
 		//String stopTime = mydate.substring(mydate.length()-8, mydate.length()-3);
@@ -156,5 +157,7 @@ public class TimestampActivity extends Activity {
 			
 		}
 	}
+	
+	
 
 }
