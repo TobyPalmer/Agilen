@@ -86,8 +86,7 @@ public class Block {
 		Date stop = new java.util.Date(this.stop);
 		String stopString = new SimpleDateFormat("HH:mm").format(stop);
 		
-		return startString + " - " + stopString; 
-		
+		return startString + " - " + stopString;
 	}
 	
 	
