@@ -56,11 +56,11 @@
         android:layout_marginRight="50dp"
         android:textSize="30dp"
     	android:textColor="#FFFFFF"
-        android:text="TimeStamp"
+        android:text="Login"
         android:background="@color/orange" 
     	android:onClick="timestampActivity" />
 
-    <Button
+    <!--  <Button
         android:id="@+id/button1"
         android:layout_width="fill_parent"
         android:layout_height="80dp"
@@ -73,6 +73,6 @@
     	android:textColor="#FFFFFF"
         android:text="Order"
         android:background="@color/orange" 
-        android:onClick="newOrderActivity" />
+        android:onClick="newOrderActivity" />-->
 
 </LinearLayout>

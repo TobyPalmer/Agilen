@@ -22,7 +22,7 @@ import android.widget.TextView;
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
 
-public class TimestampActivity extends Activity {
+public class TimestampActivity extends MainActivity {
 
 	private List<Block> l = new ArrayList<Block>();
 	private int listIndex = 0;
