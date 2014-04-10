@@ -25,7 +25,7 @@ import android.widget.TimePicker;
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
 
-public class NewOrderActivity extends Activity {
+public class NewOrderActivity extends MainActivity {
 	
 	private List<Order> list = new ArrayList<Order>();
 	private Spinner s;
