@@ -215,11 +215,12 @@ public class NewOrderActivity extends Activity implements DataPassable{
 		if(o instanceof Block){
 			 timeBlock = (Block)o;
 			 
+			 //Changes the time if the user used invalid values.
 			 if(timeBlock.getStart() > timeBlock.getStop()){
 				 timeBlock.setStop(timeBlock.getStart());
 				 timeBlock.setStart(timeBlock.getStop());
 			 }
-			 
+			 //Refresh date and time
 			 dateButton.setText(timeBlock.toDateString());
 			 startButton.setText(timeBlock.toTimeString(true));
 			 stopButton.setText(timeBlock.toTimeString(false));
