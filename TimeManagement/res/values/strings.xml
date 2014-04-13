@@ -8,9 +8,10 @@
     <string name="title_activity_new_order">NewOrderActivity</string>
     
     <!-- New Order --> 
-    <string name="start">Start: </string>
-    <string name="stop">Stop: </string>
-    <string name="date">Date: </string>
+	<string name="taskDate"></string>
+	<string name="taskStart"></string>
+	<string name="taskStop"></string>
+
     <string name="comments">Comments</string>
     <string name="orderNumber">Order Number</string>
     <string name="addOrderButton">Submit</string>
@@ -18,9 +19,13 @@
 
     <string name="addNewOrderNumber">New Order</string>
     <string name="orderName">Order Name</string>
+    <string name="fa_arrow_right">&#xf061;</string>
+    <string name="fa_arrow_left">&#xf060;</string>
     
     <color name="orange">#F88621</color>
     <color name="darkGrey">#323232</color>
     <color name="lightGrey">#999</color>
+    
+
 
 </resources>

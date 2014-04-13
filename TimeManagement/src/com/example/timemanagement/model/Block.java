@@ -89,5 +89,15 @@ public class Block {
 		return startString + " - " + stopString;
 	}
 	
+	public String toDateString(){
+		return new SimpleDateFormat("dd-MM-yyyy").format(start);
+	}
+	
+	public String toTimeString(boolean isStart){
+		if(isStart)
+			return new SimpleDateFormat("HH:mm").format(start);
+		else
+			return new SimpleDateFormat("HH:mm").format(stop);
+	}
 	
 }
