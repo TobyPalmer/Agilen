@@ -227,5 +227,9 @@ public class NewOrderActivity extends Activity implements DataPassable{
 		}
 		else return;	
 	}
+	
+	public void addNewOrder(View view){
+//		newPopUp("Task added!", );
+	}
     
 }
