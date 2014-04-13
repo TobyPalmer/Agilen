@@ -14,7 +14,6 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,16 +24,19 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+
 import com.example.timemanagement.model.Block;
+import com.example.timemanagement.model.Order;
 
 public class NewOrderActivity extends Activity implements DataPassable{
 	
-	private List<String> list = new ArrayList<String>();
+	private List<Order> list = new ArrayList<Order>();
 	private Block timeBlock;
 	private Button dateButton,
 				   startButton,
 				   stopButton;
 	private TextView arrow;
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +46,7 @@ public class NewOrderActivity extends Activity implements DataPassable{
     	//Gets the current date.
     	//ToDo: Get date from existing task instead.
     	Calendar cal = Calendar.getInstance();
-    	timeBlock = new Block(9, cal.getTimeInMillis(), cal.getTimeInMillis());
+    	timeBlock = new Block(9, cal.getTimeInMillis(), cal.getTimeInMillis(), "comment");
     	dateButton = (Button)findViewById(R.id.taskDate);
     	dateButton.setText(timeBlock.toDateString());
     	
@@ -58,14 +60,11 @@ public class NewOrderActivity extends Activity implements DataPassable{
     	stopButton = (Button)findViewById(R.id.taskStop);
     	stopButton.setText(timeBlock.toTimeString(false));
     	
-        list.add("02042304809 - Utveckling");
-        list.add("02041514809 - Möte");
-        list.add("02041519209 - Design");
-        list.add("01341514809 - Lek");
+    	// Get all orders
+    	list = MainActivity.db.getAllOrders();
+    	
         Spinner s = (Spinner) findViewById(R.id.spinner1);
-		ArrayAdapter adapter = new ArrayAdapter(this, R.layout.spinner_item, list);
- 
-        s.setAdapter(adapter);
+        s.setAdapter( new ArrayAdapter(this, R.layout.spinner_item, list));
         
 		// Show the Up button in the action bar.
 		setupActionBar();
@@ -131,7 +130,11 @@ public class NewOrderActivity extends Activity implements DataPassable{
 		return super.onOptionsItemSelected(item);
 	}
 	
-	 public void addNewOrderNumber(View view){
+	public void setBlock(Block b){
+    	timeBlock = b;
+	}
+	
+	public void addNewOrderNumber(View view){
 		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		 builder.setTitle("New Task");
 		 
@@ -141,7 +144,7 @@ public class NewOrderActivity extends Activity implements DataPassable{
 		    // Pass null as the parent view because its going in the dialog layout
 		    builder.setView(inflater.inflate(R.layout.activity_neworderpopup, null));
 		 
-		 builder.setPositiveButton("Add Task", new DialogInterface.OnClickListener() {
+		 builder.setPositiveButton("Lägg till", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User clicked OK button
 	        	
@@ -153,17 +156,19 @@ public class NewOrderActivity extends Activity implements DataPassable{
 	        	String stringOrderNumber = orderNumber.getText().toString();
 	        	
 	        	if(isInteger(stringOrderNumber)){
-	        		String order = stringOrderNumber + " - " + stringOrderName;
+	        		Order order = new Order(stringOrderNumber, stringOrderName);
 	        		if(!list.contains(order)){
 			        	list.add(order);
 			        	
 			        	String message = "Your have succesfullt added a new task!";
-			        	newPopUp("Task Created",message);	        			
+			        	newPopUp("Task Created",message);	        	
+			        	
+			        	//Save to dB
+			        	MainActivity.db.addOrder(order);
 	        		}
 	        		else{
 	        			newPopUp("Error!","'" + order + "' already exists!");
 	        		}
-
 	        	}
 	        	else{
 	        		newPopUp("Error!","'" + stringOrderNumber + "' is not a valid order number!");
@@ -171,7 +176,7 @@ public class NewOrderActivity extends Activity implements DataPassable{
 	           }
 	       });
 		 
-		 builder.setNegativeButton("Return", new DialogInterface.OnClickListener() {
+		 builder.setNegativeButton("Avbryt", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User cancelled the dialog
 	           }
@@ -181,6 +186,26 @@ public class NewOrderActivity extends Activity implements DataPassable{
 		 
 		 dialog.show(); 
 	 }
+	 
+    public void addNewOrder(View view){
+    	
+    	EditText editTextComments = (EditText)findViewById(R.id.editTextComments);
+    	Spinner spinner = (Spinner)findViewById(R.id.spinner1);
+    	
+    	Order selectedOrder = (Order)spinner.getSelectedItem();
+    	String comments = editTextComments.getText().toString();
+    
+    	timeBlock.setID(selectedOrder.getID());
+    	
+    	String message = "Your have succesfullt edited your task! \n\n" +
+    					 selectedOrder.toString() + "\n" + timeBlock.toStringPublic() +
+    					 "\n " + comments;
+    	newPopUp("Task Edited",message);
+    	
+    	//Save to db
+    	MainActivity.db.addBlock(timeBlock);
+    	
+    }
     
     public void newPopUp(String title, String message){
     	 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -226,10 +251,6 @@ public class NewOrderActivity extends Activity implements DataPassable{
 			 stopButton.setText(timeBlock.toTimeString(false));
 		}
 		else return;	
-	}
-	
-	public void addNewOrder(View view){
-//		newPopUp("Task added!", );
 	}
     
 }

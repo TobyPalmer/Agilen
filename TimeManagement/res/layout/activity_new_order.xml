@@ -90,8 +90,9 @@
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:onClick="addNewOrderNumber"
+                android:layout_gravity="center"
                 android:text="@string/addNewOrderNumber"
-                android:textSize="30sp" />
+                android:textSize="18sp" />
                 
             </LinearLayout>
             
@@ -114,6 +115,7 @@
                 android:layout_width="fill_parent"
                 android:onClick="addNewOrder"
                 android:text="@string/addOrderButton" 
+
                 android:textSize="30sp"/>
      </LinearLayout>
 </LinearLayout>

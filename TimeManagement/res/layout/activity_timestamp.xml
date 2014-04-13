@@ -62,6 +62,6 @@
                      android:background="@color/orange"
                      android:textColor="#FFF"
                      android:textSize="30sp"
-                     android:onClick="changeOrder"
+                     android:onClick="newOrderActivity"
                      android:text="Rapportera"/> 
 </RelativeLayout>
