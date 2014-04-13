@@ -7,16 +7,13 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.ActionBar.LayoutParams;
-import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.timemanagement.model.Block;
@@ -41,11 +38,9 @@ public class TimestampActivity extends MainActivity {
 		
 		TextView current = (TextView)findViewById(R.id.timestampText);
 		
-		current.setText("Stolrek: "+l.size());
-		
 		for(int i=0; i<l.size();i++){
 			int orderId = l.get(i).getOrderID();
-			current.append(l.get(i).toStringPublic() + "\n hehe");// + " " + MainActivity.db.getOrder(orderId).toString() + "\n");
+			current.append(l.get(i).toStringPublic()+"\n");
 		}
 	}
 
@@ -157,7 +152,4 @@ public class TimestampActivity extends MainActivity {
 			
 		}
 	}
-	
-	
-
 }
