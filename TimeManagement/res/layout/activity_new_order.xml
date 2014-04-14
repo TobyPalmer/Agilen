@@ -1,101 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout01"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
     
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-
-    <TableLayout
+    
+    <Button
+    android:id="@+id/taskDate"
+    android:layout_width="wrap_content"
+    android:textSize="30sp"
+    android:layout_height="80dp"
+    android:text="@string/taskDate"
+    android:background="@android:color/transparent" 
+    android:gravity="center" 
+    android:layout_gravity="center"
+    android:onClick="changeDate"/> 
+    
+    <LinearLayout
+    android:layout_width="fill_parent"
+ 	android:layout_height="wrap_content"
+ 	android:id="@+id/LinearLayout02"
+	android:orientation="horizontal">
+    
+	     <Button
+	    android:id="@+id/taskStart"
+	    android:layout_width="wrap_content"
+	    android:textSize="30sp"
+	    android:layout_height="80dp"
+	    android:width="0dp"
+	    android:layout_weight="3"
+	    android:text="@string/taskStart"
+	    android:background="@android:color/transparent" 
+	    android:onClick="changeStart"/> 
+	    
+	    <TextView
+	    android:id="@+id/arrow"
+	    android:layout_width="wrap_content"
+	    android:textSize="30sp"
+	    android:layout_height="80dp"
+	    android:width="0dp"
+	    android:layout_weight="1"
+	    android:text="@string/fa_arrow_right"
+	    android:background="@android:color/transparent" 
+	    android:onClick="changeStart"/> 
+	    
+	    <Button
+	    android:id="@+id/taskStop"
+	    android:layout_width="wrap_content"
+	    android:textSize="30sp"
+	    android:layout_height="80dp"
+	    android:width="0dp"
+	    android:layout_weight="3"
+	    android:text="@string/taskStop"
+	    android:background="@android:color/transparent" 
+	    android:onClick="changeStop"/> 
+    
+    </LinearLayout>
+    
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.48" 
-        android:stretchColumns="1">
+    	android:layout_height="match_parent"
+    	android:id="@+id/LinearLayout03"
+   		android:orientation="vertical"
+   		android:gravity="bottom">
 
-        <TableRow
-            android:id="@+id/tableRow1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/TextViewDate"
+            <LinearLayout
+                android:id="@+id/LinearLayout04"
+                android:orientation="horizontal"
+                android:gravity="bottom"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:text="@string/date" 
-                android:textSize="25sp"
-                android:gravity="center"/>
-
-            <DatePicker
-                android:id="@+id/datePicker1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:calendarViewShown="false"
-                android:spinnersShown="true" 
-                android:layout_span="3"/>
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/textViewStart"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:text="@string/start" 
-                android:gravity="center"/>
-
-            <TimePicker
-                android:id="@+id/timePicker1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/TextViewStop"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:text="@string/stop" 
-                android:gravity="center"/>
-
-            <TimePicker
-                android:id="@+id/timePicker2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow8"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" >
-
-           
-            <Spinner
-                android:id="@+id/spinner1"
-                android:layout_width="fill_parent"
-                android:layout_height="80sp"
-                android:layout_span="3" />
-          
-
-            <Button
+                android:layout_height="80dp"
+                android:background="#77777777" >   
+                    
+             
+                <Spinner
+	                android:id="@+id/spinner1"
+	                android:layout_weight="2"
+	                android:layout_width="0dp"
+	                android:layout_height="fill_parent"
+                 />
+             
+             <Button
                 android:id="@+id/button2"
                 android:background="#999"
                 android:textColor="#ffffff"
-                android:layout_height="80sp"
-                android:layout_width="wrap_content"
-                android:layout_span="1"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:onClick="addNewOrderNumber"
+                android:layout_gravity="center"
                 android:text="@string/addNewOrderNumber"
-                android:textSize="30sp" />
-        </TableRow>
-        
-       <TableRow
-            android:id="@+id/tableRow4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" >
+                android:textSize="18sp" />
+                
+            </LinearLayout>
+            
+
             
             <EditText
                 android:id="@+id/editTextComments"
@@ -103,49 +104,19 @@
                 android:layout_height="80sp"
                 android:ems="10"
                 android:hint="@string/comments" 
-                android:textSize="20sp"
-                android:layout_span="4"/>
+                android:textSize="20sp"/>
 
-        </TableRow>
-        
-
-     
-        <TableRow
-            android:id="@+id/tableRow6"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" >
             
             <Button
                 android:id="@+id/button1"
                 android:background="@color/orange"
                 android:textColor="#ffffff"
                 android:layout_height="80sp"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:onClick="addNewOrder"
                 android:text="@string/addOrderButton" 
-                android:textSize="30sp"
-                android:layout_span="4"/>
-        </TableRow>
-        
-        
-        <TableRow
-            android:id="@+id/tableRow7"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" >
-            
-            
-        <TextView
-                android:id="@+id/TextViewAddedOrder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/addedOrder" 
-                android:layout_span="4"/>
-            
-        </TableRow>
-        
 
-    </TableLayout>
-    
-    </ScrollView>
-    
+                android:textSize="30sp"/>
+     </LinearLayout>
 </LinearLayout>
+     

@@ -33,6 +33,7 @@ public class TimestampActivity extends MainActivity {
 		setupActionBar();
 		
 		printBlocks();
+
 	}
 
 	/**
@@ -155,5 +156,4 @@ public class TimestampActivity extends MainActivity {
 	}
 	
 	
-
 }

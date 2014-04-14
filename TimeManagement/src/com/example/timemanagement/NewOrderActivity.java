@@ -1,14 +1,16 @@
 package com.example.timemanagement;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -17,73 +19,56 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TimePicker;
+import android.widget.TextView;
+
 
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
 
-public class NewOrderActivity extends MainActivity {
+public class NewOrderActivity extends Activity implements DataPassable{
 	
 	private List<Order> list = new ArrayList<Order>();
 	private Spinner s;
 	private ArrayAdapter adapter;
-		
+	private Block timeBlock;
+	private Button dateButton,
+				   startButton,
+				   stopButton;
+	private TextView arrow;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_order);
-		
-    	final TimePicker timePickerStart = (TimePicker)findViewById(R.id.timePicker1);
-    	final TimePicker timePickerStop = (TimePicker)findViewById(R.id.timePicker2);    	
     	
-    	timePickerStart.onFinishTemporaryDetach();
-		
-    	timePickerStart.setIs24HourView(true);
-    	timePickerStop.setIs24HourView(true);
+    	//Gets the current date.
+    	//ToDo: Get date from existing task instead.
+    	Calendar cal = Calendar.getInstance();
+    	timeBlock = new Block(9, cal.getTimeInMillis(), cal.getTimeInMillis(), "comment");
+    	dateButton = (Button)findViewById(R.id.taskDate);
+    	dateButton.setText(timeBlock.toDateString());
     	
-    	timePickerStart.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-
-	         public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-	        	 if(timePickerStart.getCurrentHour()>timePickerStop.getCurrentHour() || (timePickerStart.getCurrentHour()==timePickerStop.getCurrentHour() && timePickerStart.getCurrentMinute()>timePickerStop.getCurrentMinute())){
-		        		 timePickerStart.setCurrentHour(timePickerStart.getCurrentHour());
-		        		 timePickerStart.setCurrentMinute(timePickerStart.getCurrentMinute());
-		        		 timePickerStop.setCurrentHour(timePickerStart.getCurrentHour());
-		        		 timePickerStop.setCurrentMinute(timePickerStart.getCurrentMinute());
-		         }
-	         }
-        });
+    	startButton = (Button)findViewById(R.id.taskStart);
+    	startButton.setText(timeBlock.toTimeString(true));
     	
-    	timePickerStop.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-
-	         public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-	        	 if(timePickerStart.getCurrentHour()>timePickerStop.getCurrentHour() || (timePickerStart.getCurrentHour()==timePickerStop.getCurrentHour() && timePickerStart.getCurrentMinute()>timePickerStop.getCurrentMinute())){
-		        		 timePickerStart.setCurrentHour(timePickerStop.getCurrentHour());
-		        		 timePickerStart.setCurrentMinute(timePickerStop.getCurrentMinute());
-		        		 timePickerStop.setCurrentHour(timePickerStop.getCurrentHour());
-		        		 timePickerStop.setCurrentMinute(timePickerStop.getCurrentMinute());
-		         }
-	         }
-	        
-	         
-       });
-    	//String[] a = list.toArray(new String[list.size()]); 
+    	arrow = (TextView)findViewById(R.id.arrow);
+    	Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
+    	arrow.setTypeface(font);
+    	
+    	stopButton = (Button)findViewById(R.id.taskStop);
+    	stopButton.setText(timeBlock.toTimeString(false));
     	
     	// Get all orders
     	list = MainActivity.db.getAllOrders();
-
-    	// Write all orders to console
-    	for (int i = 0; i < list.size(); i++) {
-    	    Order order = list.get(i);
-    	}
     	
         s = (Spinner) findViewById(R.id.spinner1);
 		adapter = new ArrayAdapter(this, R.layout.spinner_item, list);
  
         s.setAdapter(adapter);
-        
+
 		// Show the Up button in the action bar.
 		setupActionBar();
 	}
@@ -96,6 +81,32 @@ public class NewOrderActivity extends MainActivity {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
+	}
+	/**
+	 * Sends the timeblock to a DatePickFragment popup.
+	 * @param view
+	 */
+	public void changeDate(View view){
+	    DialogFragment newFragment = new DatePickFragment(timeBlock);
+	    newFragment.show(getFragmentManager(), "datePicker");
+	}
+	
+	/**
+	 * Sends the timeblock to a TimePickFragment popup as start.
+	 * @param view
+	 */
+	public void changeStart(View view){
+	    DialogFragment newFragment = new TimePickFragment(timeBlock, true);
+	    newFragment.show(getFragmentManager(), "startPicker");
+	}
+	
+	/**
+	 * Sends the timeblock to a DatePickFragment popup as stop.
+	 * @param view
+	 */
+	public void changeStop(View view){
+	    DialogFragment newFragment = new TimePickFragment(timeBlock, false);
+	    newFragment.show(getFragmentManager(), "stopPicker");
 	}
 
 	@Override
@@ -122,22 +133,8 @@ public class NewOrderActivity extends MainActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void setBlock(Block b){
-    	DatePicker datePicker = (DatePicker)findViewById(R.id.datePicker1);
-    	TimePicker timePickerStart = (TimePicker)findViewById(R.id.timePicker1);
-    	TimePicker timePickerStop = (TimePicker)findViewById(R.id.timePicker2);
-    	EditText comments = (EditText)findViewById(R.id.editTextComments);
-    	
-    	Date startDate = new Date(b.getStart());
-    	Date stopDate = new Date(b.getStop());
-    	
-    	datePicker.updateDate(startDate.getYear(), startDate.getMonth(), startDate.getDay());
-    	
-    	timePickerStart.setCurrentHour(startDate.getHours());
-    	timePickerStop.setCurrentHour(stopDate.getHours());
-    	timePickerStart.setCurrentMinute(startDate.getMinutes());
-    	timePickerStop.setCurrentMinute(stopDate.getMinutes());
+    	timeBlock = b;
 	}
 	
 	public void addNewOrderNumber(View view){
@@ -150,7 +147,7 @@ public class NewOrderActivity extends MainActivity {
 		    // Pass null as the parent view because its going in the dialog layout
 		    builder.setView(inflater.inflate(R.layout.activity_neworderpopup, null));
 		 
-		 builder.setPositiveButton("Add Task", new DialogInterface.OnClickListener() {
+		 builder.setPositiveButton("Lägg till", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User clicked OK button
 	        	
@@ -178,7 +175,6 @@ public class NewOrderActivity extends MainActivity {
 	        		else{
 	        			newPopUp("Error!","'" + order + "' already exists!");
 	        		}
-
 	        	}
 	        	else{
 	        		newPopUp("Error!","'" + stringOrderNumber + "' is not a valid order number!");
@@ -186,54 +182,34 @@ public class NewOrderActivity extends MainActivity {
 	           }
 	       });
 		 
-		 builder.setNegativeButton("Return", new DialogInterface.OnClickListener() {
+		 builder.setNegativeButton("Avbryt", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User cancelled the dialog
 	           }
 	       });
 
-		 
-		 
 		 AlertDialog dialog = builder.create();
 		 
-		 dialog.show();
-
-		 
+		 dialog.show(); 
 	 }
 	 
     public void addNewOrder(View view){
     	
-    	DatePicker datePicker = (DatePicker)findViewById(R.id.datePicker1);
-    	TimePicker timePickerStart = (TimePicker)findViewById(R.id.timePicker1);
-    	TimePicker timePickerStop = (TimePicker)findViewById(R.id.timePicker2);
     	EditText editTextComments = (EditText)findViewById(R.id.editTextComments);
     	Spinner spinner = (Spinner)findViewById(R.id.spinner1);
     	
-    	int day = datePicker.getDayOfMonth();
-    	int month = datePicker.getMonth();
-    	int year =  datePicker.getYear()-1900;
-
-    	int startH = timePickerStart.getCurrentHour();
-    	int startM = timePickerStart.getCurrentMinute();
-    	int stopH = timePickerStop.getCurrentHour();
-    	int stopM = timePickerStop.getCurrentMinute();
-    	
     	Order selectedOrder = (Order)spinner.getSelectedItem();
     	String comments = editTextComments.getText().toString();
-    	
-    	Date startDate = new Date(year,month,day,startH,startM);
-    	Date stopDate = new Date(year,month,day,stopH,stopM);
     
-    	Block b = new Block(startDate.getTime());
-    	b.setStop(stopDate.getTime());
-    	b.setOrderID(selectedOrder.getID());
+    	timeBlock.setID(selectedOrder.getID());
     	
-    	String message = "Your have succesfullt edited your task! \n\n" + selectedOrder.toString() + "\n" + b.toStringPublic() + "\n " + comments;
+    	String message = "Your have succesfullt edited your task! \n\n" +
+    					 selectedOrder.toString() + "\n" + timeBlock.toStringPublic() +
+    					 "\n " + comments;
     	newPopUp("Task Edited",message);
     	
     	//Save to db
-    	MainActivity.db.addBlock(b);
-    	
+    	MainActivity.db.addBlock(timeBlock);
     	
     }
     
@@ -264,6 +240,23 @@ public class NewOrderActivity extends MainActivity {
         // only got here if we didn't return false
         return true;
     }
-    
 
+	@Override
+	public void update(Object o) {
+		if(o instanceof Block){
+			 timeBlock = (Block)o;
+			 
+			 //Changes the time if the user used invalid values.
+			 if(timeBlock.getStart() > timeBlock.getStop()){
+				 timeBlock.setStop(timeBlock.getStart());
+				 timeBlock.setStart(timeBlock.getStop());
+			 }
+			 //Refresh date and time
+			 dateButton.setText(timeBlock.toDateString());
+			 startButton.setText(timeBlock.toTimeString(true));
+			 stopButton.setText(timeBlock.toTimeString(false));
+		}
+		else return;	
+	}
+    
 }
