@@ -201,7 +201,7 @@ public class NewOrderActivity extends Activity implements DataPassable{
     	Order selectedOrder = (Order)spinner.getSelectedItem();
     	String comments = editTextComments.getText().toString();
     
-    	timeBlock.setID(selectedOrder.getID());
+    	timeBlock.setOrderID(selectedOrder.getID());
     	
     	String message = "Your have succesfullt edited your task! \n\n" +
     					 selectedOrder.toString() + "\n" + timeBlock.toStringPublic() +

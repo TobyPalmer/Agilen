@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -12,8 +12,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.example.timemanagement.R.color;
 import com.example.timemanagement.model.Block;
 
 public class TimestampActivity extends MainActivity {
@@ -23,6 +27,7 @@ public class TimestampActivity extends MainActivity {
 	boolean started = false;
 	boolean stopped = true;
 	Block b;
+	private int row=0;
 	
 	
 	@Override
@@ -136,6 +141,62 @@ public class TimestampActivity extends MainActivity {
 	}
 	
 	public void printBlocks(){
+		
+		l = MainActivity.db.getAllBlocks();
+		
+		//TextView current = (TextView)findViewById(R.id.timestampText);
+		
+		/* Find Tablelayout defined in main.xml */
+		TableLayout tl = (TableLayout) findViewById(R.id.TableLayout);		
+		tl.removeAllViews();
+		
+		for(int i=0; i<l.size();i++){
+			
+			String s = "";
+			
+			int orderId = l.get(i).getOrderID();
+			final Block block = l.get(i);
+			
+			if(MainActivity.db.getOrder(orderId)==null)
+				s = l.get(i).toStringPublic();
+			else
+				s = block.toStringPublic() + " " + MainActivity.db.getOrder(orderId).toString();
+			
+			/* Create a new row to be added. */
+			TableRow tr = new TableRow(this);
+			
+			tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.FILL_PARENT));
+			/*Set text*/
+			TextView t = new TextView(this);
+			t.setText(s);
+			
+			/* Create a Button to be the row-content. */
+			Button b = new Button(this);
+			b.setText("Edit");
+			b.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));		
+		    b.setOnClickListener(new View.OnClickListener() {
+
+		        public void onClick(View v) {
+		            // TODO Auto-generated method stub
+		        	Log.w("AgilTag", block.toString());
+		        	
+		        }
+		    });
+			
+			/* Add Button to row. */
+			tr.addView(t);
+			tr.addView(b);
+			if(i%2==0)
+				tr.setBackgroundColor(color.lightGrey);
+
+			/* Add row to TableLayout. */
+			//tr.setBackgroundResource(R.drawable.sf_gradient_03);
+			tl.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+			
+		}	
+	}
+	
+	/*public void printBlocks(){
 		l = MainActivity.db.getAllBlocks();
 		
 		TextView current = (TextView)findViewById(R.id.timestampText);
@@ -143,17 +204,17 @@ public class TimestampActivity extends MainActivity {
 		current.setText(" ");
 		
 		for(int i=0; i<l.size();i++){
-			int orderId = l.get(i).getOrderID();
 			
-			Log.d("AgilTag",Integer.toString(orderId));
+			int orderId = l.get(i).getOrderID();
 			
 			if(MainActivity.db.getOrder(orderId)==null)
 				current.append(l.get(i).toStringPublic() + "\n " );
 			else
-				current.append(l.get(i).toStringPublic() + " " +MainActivity.db.getOrder(orderId).toString() + "\n");
+				current.append(l.get(i).toStringPublic() + " " +MainActivity.db.getOrder(orderId).toString() + "\n ");
+			
+			createButton();
 		}	
-		
-	}
+	}*/
 	
 	
 }

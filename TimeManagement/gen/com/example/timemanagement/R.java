@@ -34,6 +34,7 @@ public final class R {
         public static final int LinearLayout02=0x7f090007;
         public static final int LinearLayout03=0x7f09000b;
         public static final int LinearLayout04=0x7f09000c;
+        public static final int TableLayout=0x7f090013;
         public static final int action_settings=0x7f090018;
         public static final int arrow=0x7f090009;
         public static final int button1=0x7f090010;
@@ -52,7 +53,6 @@ public final class R {
         public static final int taskStart=0x7f090008;
         public static final int taskStop=0x7f09000a;
         public static final int timestampButton=0x7f090004;
-        public static final int timestampText=0x7f090013;
         public static final int txtView=0x7f090000;
         public static final int userName=0x7f090002;
     }
