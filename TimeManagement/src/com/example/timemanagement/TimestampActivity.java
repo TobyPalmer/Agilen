@@ -4,21 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.example.timemanagement.R.color;
 import com.example.timemanagement.model.Block;
+import com.example.timemanagement.model.Order;
 
 public class TimestampActivity extends MainActivity {
 
@@ -158,9 +164,11 @@ public class TimestampActivity extends MainActivity {
 			final Block block = l.get(i);
 			
 			if(MainActivity.db.getOrder(orderId)==null)
-				s = l.get(i).toStringPublic();
+				s = l.get(i).toStringPublic() + " - " + block.getComment();
 			else
-				s = block.toStringPublic() + " " + MainActivity.db.getOrder(orderId).toString();
+				s = block.toStringPublic() + "  -  " + block.getComment();
+				//s = block.toStringPublic() + " " + MainActivity.db.getOrder(orderId).toString();
+				
 			
 			/* Create a new row to be added. */
 			TableRow tr = new TableRow(this);
@@ -182,10 +190,29 @@ public class TimestampActivity extends MainActivity {
 		        	
 		        }
 		    });
+		    
+			Button c = new Button(this);
+			c.setText("Comment");
+			c.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+		    c.setOnClickListener(new View.OnClickListener() {
+
+		        public void onClick(View v) {
+		            // TODO Auto-generated method stub
+		        	Log.w("AgilTag", block.toString());
+		        	addComment(v, block);
+		        	
+		        }
+		    });
+			
+			Button d = new Button(this);
+			d.setText("Delete");
+			d.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
 			
 			/* Add Button to row. */
 			tr.addView(t);
 			tr.addView(b);
+			tr.addView(c);
+			tr.addView(d);
 			if(i%2==0)
 				tr.setBackgroundColor(color.lightGrey);
 
@@ -195,6 +222,44 @@ public class TimestampActivity extends MainActivity {
 			
 		}	
 	}
+	
+	
+	public void addComment(View view, final Block block){
+		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		 builder.setTitle("LŠgg till kommentar");
+		 
+		 LayoutInflater inflater = getLayoutInflater();
+
+		    // Inflate and set the layout for the dialog
+		    // Pass null as the parent view because its going in the dialog layout
+		    builder.setView(inflater.inflate(R.layout.activity_addcommentpopup, null));
+		 
+		 builder.setPositiveButton("LŠgg till", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	               // User clicked OK button
+	        	
+	        	Dialog d = (Dialog) dialog;
+
+	           	EditText comment = (EditText)d.findViewById(R.id.addCommentPop);
+	        	String commentText = comment.getText().toString();
+	        	block.setComment(commentText);
+	        	MainActivity.db.putBlock(block);
+	        	printBlocks();
+	        	
+	        	
+	           }	
+	       });
+		 
+		 builder.setNegativeButton("Avbryt", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	               // User cancelled the dialog
+	           }
+	       });
+
+		 AlertDialog dialog = builder.create();
+		 
+		 dialog.show(); 
+	 }
 	
 	/*public void printBlocks(){
 		l = MainActivity.db.getAllBlocks();
