@@ -27,7 +27,6 @@ public final class R {
         public static final int TextViewAddedOrder=0x7f080011;
         public static final int TextViewDate=0x7f080003;
         public static final int TextViewStop=0x7f080008;
-        //public static final int action_settings=0x7f080016;
         public static final int action_settings=0x7f08001a;
         public static final int button1=0x7f080001;
         public static final int button2=0x7f08000c;
