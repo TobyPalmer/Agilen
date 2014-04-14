@@ -207,6 +207,15 @@ public class TimestampActivity extends MainActivity {
 			Button d = new Button(this);
 			d.setText("Delete");
 			d.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+		    d.setOnClickListener(new View.OnClickListener() {
+
+		        public void onClick(View v) {
+		            // TODO Auto-generated method stub
+		        	Log.w("AgilTag", block.toString());
+		        	deleteBlock(v, block);
+		        	
+		        }
+		    });
 			
 			/* Add Button to row. */
 			tr.addView(t);
@@ -251,6 +260,35 @@ public class TimestampActivity extends MainActivity {
 	       });
 		 
 		 builder.setNegativeButton("Avbryt", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	               // User cancelled the dialog
+	           }
+	       });
+
+		 AlertDialog dialog = builder.create();
+		 
+		 dialog.show(); 
+	 }
+	
+	public void deleteBlock(View view, final Block block){
+		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		 builder.setTitle("Är du säker?");
+	
+		    // Inflate and set the layout for the dialog
+		    // Pass null as the parent view because its going in the dialog layout
+		 
+		 builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	               // User clicked OK button
+
+		        	MainActivity.db.deleteBlock(block);
+		        	printBlocks();
+	        	
+	        	
+	           }	
+	       });
+		 
+		 builder.setNegativeButton("Nej", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User cancelled the dialog
 	           }
