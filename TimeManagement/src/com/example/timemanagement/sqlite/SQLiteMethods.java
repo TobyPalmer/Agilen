@@ -16,7 +16,7 @@ import android.database.Cursor;
 public class SQLiteMethods extends SQLiteOpenHelper {
 	
 	// Database info
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 7;
     private static final String DATABASE_NAME = "TimeManagement";
  
     // Constructor

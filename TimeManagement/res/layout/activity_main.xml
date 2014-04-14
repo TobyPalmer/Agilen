@@ -56,7 +56,7 @@
         android:layout_marginRight="50dp"
         android:textSize="30dp"
     	android:textColor="#FFFFFF"
-        android:text="Login"
+        android:text="Logga in"
         android:background="@color/orange" 
     	android:onClick="timestampActivity" />
 
