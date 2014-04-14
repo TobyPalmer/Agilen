@@ -31,3 +31,4 @@ gen/com/example/timemanagement/R.java
 
 # TeXlipse plugin
 .texlipse
+*.orig

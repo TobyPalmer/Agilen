@@ -20,8 +20,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.timemanagement.model.Block;
+import com.example.timemanagement.model.Order;
 
-public class TimestampActivity extends Activity {
+public class TimestampActivity extends MainActivity {
 
 	private List<Block> l = new ArrayList<Block>();
 	private int listIndex = 0;
@@ -36,10 +37,15 @@ public class TimestampActivity extends Activity {
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
+		l = MainActivity.db.getAllBlocks();
+		
 		TextView current = (TextView)findViewById(R.id.timestampText);
-		current.setText("");
+		
+		current.setText("Stolrek: "+l.size());
+		
 		for(int i=0; i<l.size();i++){
-			current.append(l.get(i).toString());
+			int orderId = l.get(i).getOrderID();
+			current.append(l.get(i).toStringPublic() + "\n hehe");// + " " + MainActivity.db.getOrder(orderId).toString() + "\n");
 		}
 	}
 
@@ -125,7 +131,7 @@ public class TimestampActivity extends Activity {
 			stopped = false;
 		}		
 	}
-	
+
 	public void stopTime(View view){
 		//String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTimeInMillis());
 		//String stopTime = mydate.substring(mydate.length()-8, mydate.length()-3);
@@ -150,18 +156,6 @@ public class TimestampActivity extends Activity {
 
 			
 		}
-	}
-	
-	@SuppressLint("NewApi") public void createButton(){
-		
-		ViewGroup linearLayout = (ViewGroup) findViewById(R.id.linearLayoutOutput);
-		
-		Button bt = new Button(this);
-		bt.setText("A Button");
-		bt.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, 
-		                                    LayoutParams.WRAP_CONTENT));
-		linearLayout.addView(bt);
-		
 	}
 	
 	
