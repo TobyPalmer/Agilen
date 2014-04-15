@@ -24,7 +24,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
 
@@ -242,21 +241,25 @@ public class NewOrderActivity extends Activity implements DataPassable{
     }
 
 	@Override
-	public void update(Object o) {
-		if(o instanceof Block){
-			 timeBlock = (Block)o;
+	public void update(PickFragment p, Object o) {		
+		  timeBlock = (Block)o;
 			 
-			 //Changes the time if the user used invalid values.
-			 if(timeBlock.getStart() > timeBlock.getStop()){
-				 timeBlock.setStop(timeBlock.getStart());
-				 timeBlock.setStart(timeBlock.getStop());
+			 if(p instanceof TimePickFragment){
+				 
+				 //Changes the time if the user used invalid values.
+				 if(((TimePickFragment) p).isStart() && (timeBlock.getStart() > timeBlock.getStop())){
+					 timeBlock.setStop(timeBlock.getStart());
+					 timeBlock.setStart(timeBlock.getStop());
+				 }
+				 else if((timeBlock.getStart() > timeBlock.getStop())){
+					 timeBlock.setStart(timeBlock.getStop());
+					 timeBlock.setStop(timeBlock.getStart());
+				 }
 			 }
+	
 			 //Refresh date and time
 			 dateButton.setText(timeBlock.toDateString());
 			 startButton.setText(timeBlock.toTimeString(true));
 			 stopButton.setText(timeBlock.toTimeString(false));
-		}
-		else return;	
 	}
-    
 }

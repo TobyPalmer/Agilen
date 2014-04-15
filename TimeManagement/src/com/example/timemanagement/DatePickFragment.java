@@ -39,7 +39,7 @@ public class DatePickFragment extends PickFragment
 		 timeBlock.setStart(cal.getTimeInMillis());
 		 
 		 //Update the parent activity with the new date.
-		 parentActivity.update(timeBlock);
+		 parentActivity.update(this, timeBlock);
 	}
 
 }

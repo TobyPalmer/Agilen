@@ -7,7 +7,6 @@ import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -235,7 +234,7 @@ public class TimestampActivity extends MainActivity {
 	
 	public void addComment(View view, final Block block){
 		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		 builder.setTitle("LŠgg till kommentar");
+		 builder.setTitle("Lï¿½gg till kommentar");
 		 
 		 LayoutInflater inflater = getLayoutInflater();
 
@@ -243,7 +242,7 @@ public class TimestampActivity extends MainActivity {
 		    // Pass null as the parent view because its going in the dialog layout
 		    builder.setView(inflater.inflate(R.layout.activity_addcommentpopup, null));
 		 
-		 builder.setPositiveButton("LŠgg till", new DialogInterface.OnClickListener() {
+		 builder.setPositiveButton("Lï¿½gg till", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User clicked OK button
 	        	
@@ -272,7 +271,7 @@ public class TimestampActivity extends MainActivity {
 	
 	public void deleteBlock(View view, final Block block){
 		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		 builder.setTitle("€r du sŠker?");
+		 builder.setTitle("ï¿½r du sï¿½ker?");
 	
 		    // Inflate and set the layout for the dialog
 		    // Pass null as the parent view because its going in the dialog layout

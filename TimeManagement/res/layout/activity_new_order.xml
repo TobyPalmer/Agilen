@@ -44,6 +44,7 @@
 	    android:layout_weight="1"
 	    android:text="@string/fa_arrow_right"
 	    android:background="@android:color/transparent" 
+	    android:gravity="center"
 	    android:onClick="changeStart"/> 
 	    
 	    <Button
