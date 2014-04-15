@@ -35,13 +35,14 @@ public class ListActivity extends MainActivity
 	
 	String[] listContent = 
 		{
-			"Anna",
-			"vill",
-			"att",
-			"det", 
-			"här",
-			"ska",
-			"fungera"
+			"08:00 - 09:37, SAAB ",
+			"09:37 - 10:00, Frukost",
+			"10:00 - 10:17, Scrummöte",
+			"10:17 - 11:50, Arbete", 
+			"11:50 - 13:17, Lunch",
+			"13:17 - 14:02, Internt möte", 
+			"14:02 - 16:23, SAAB",
+			"16:23 - 17:05, Arbete"
 		};
 	
 	
