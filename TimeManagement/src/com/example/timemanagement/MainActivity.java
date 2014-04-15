@@ -46,4 +46,12 @@ public class MainActivity extends Activity {
         
         startActivity(intent);
     }
+    
+    public void listActivity(View view){
+        Intent intent = new Intent(this, ListActivity.class);
+        
+        startActivity(intent);
+    }
+    
+    
 }

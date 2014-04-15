@@ -149,7 +149,7 @@ public class NewOrderActivity extends Activity implements DataPassable{
 		    // Pass null as the parent view because its going in the dialog layout
 		    builder.setView(inflater.inflate(R.layout.activity_neworderpopup, null));
 		 
-		 builder.setPositiveButton("LÃ¤gg till", new DialogInterface.OnClickListener() {
+		 builder.setPositiveButton("Lägg till", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User clicked OK button
 	        	
@@ -165,7 +165,7 @@ public class NewOrderActivity extends Activity implements DataPassable{
 	        		if(!list.contains(order)){
 			        	list.add(order);
 			        	
-			        	String message = "Your have succesfullt added a new task!";
+			        	String message = "You have succesfully added a new task!";
 			        	newPopUp("Task Created",message);
 			        	
 			            s.setSelection(list.size()-1);
@@ -205,7 +205,7 @@ public class NewOrderActivity extends Activity implements DataPassable{
     
     	timeBlock.setOrderID(selectedOrder.getID());
     	
-    	String message = "Your have succesfullt edited your task! \n\n" +
+    	String message = "You have succesfully edited your task! \n\n" +
     					 selectedOrder.toString() + "\n" + timeBlock.toStringPublic() +
     					 "\n " + comments;
     	newPopUp("Task Edited",message);

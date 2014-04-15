@@ -5,9 +5,33 @@
     android:orientation="vertical" >
     	
     <TextView
-        android:id="@+id/txtView"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:text="Översitk Lista " />
+        android:id="@+id/day"
+        android:layout_width="fill_parent"
+        android:layout_height="40sp"/>
+    
+     <ListView android:id="@+id/l_view"
+        android:layout_width="fill_parent"   
+      	android:layout_height="80dp">  
+    </ListView> 
+    
+    <Button
+    android:id="@+id/nextDay"
+    android:layout_width="wrap_content"
+    android:textSize="30sp"
+    android:layout_height="80dp"
+    android:text="@string/nextDay"
+    android:background="@color/orange" 
+    android:gravity="center" 
+    android:layout_gravity="center"/> 
+    
+     <Button
+    android:id="@+id/prevDay"
+    android:layout_width="wrap_content"
+    android:textSize="30sp"
+    android:layout_height="80dp"
+    android:text="Previous"
+    android:background="@color/orange" 
+    android:gravity="center" 
+    android:layout_gravity="center"/> 
     
 </LinearLayout>
