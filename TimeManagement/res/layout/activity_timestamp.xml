@@ -76,4 +76,6 @@
                      android:textSize="30sp"
                      android:onClick="listActivity"
                      android:text="Rapportera"/> 
+                     <!--android:onClick="newOrderActivity"-->
+                     
 </RelativeLayout>

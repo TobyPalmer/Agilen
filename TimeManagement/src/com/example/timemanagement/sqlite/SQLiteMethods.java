@@ -293,6 +293,8 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         return blocks;
     }
     
+   
+    
     /**
      * GET: Return all blocks
      * 

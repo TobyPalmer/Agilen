@@ -47,10 +47,12 @@ public class MainActivity extends Activity {
         startActivity(intent);
     }
     
+
     // Making ListView
     public void listActivity(View view){
         Intent intent = new Intent(this, ListActivity.class);
         
         startActivity(intent);
     }
+
 }
