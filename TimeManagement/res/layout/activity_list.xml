@@ -1,13 +1,114 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-    	
-    <TextView
-        android:id="@+id/txtView"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:text="Översitk Lista " />
-    
+<?xml version="1.0" encoding="utf-8"?>  
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	tools:context=".TimestampActivity" >
+
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
+	>
+
+	
+		<Button
+			android:id="@+id/prevDay"
+			android:layout_width="0dp"
+			android:layout_height="30dp"
+			android:layout_weight="1"
+			android:background="@color/orange"
+			android:textColor="#FFF"
+			android:textSize="20sp"
+			android:layout_alignParentLeft="true"
+			android:text="Prev"
+			android:onClick=""	 
+		/>
+		
+		<TextView
+			android:layout_width="0dp"
+			android:layout_height="30dp"
+			android:layout_weight="2"
+			android:textSize="20sp"
+			android:gravity="center"
+			android:text="Dagens datum"
+		/>  
+	                
+		<Button
+			android:id="@+id/nextDay"
+			android:layout_width="0dp"
+			android:layout_height="30dp"
+			android:layout_weight="1"
+			android:background="@color/orange"
+			android:textColor="#FFF"
+			android:textSize="20sp"
+			android:layout_alignParentRight="true"			
+			android:text="Next" 
+			android:onClick=""
+		/>
+	
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
+		android:layout_marginTop="40dp"
+	>           
+	                   
+		<ListView
+			android:id="@+id/list"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"    
+		/>
+		
+	</LinearLayout>
+                 
+</RelativeLayout>
+<!-- 
+
+<LinearLayout
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical" 
+>
+
+	 <Button
+                         android:id="@+id/startButton"
+                         android:layout_width="0dp"
+                         android:background="@color/lightGrey"
+                         android:layout_height="80dp"
+                         android:layout_weight="1"
+                         android:onClick="startTime"
+                         android:text="Ny Task"
+                         android:textColor="#FFF"
+                         android:textSize="30sp" />
+                     
+                     <Button
+                         android:id="@+id/stopButton"
+                         android:layout_width="0dp"
+                         android:layout_height="80dp"
+                         android:background="@color/orange"
+                         android:textSize="30sp"
+                         android:layout_weight="1"
+                         android:layout_marginLeft="20dp"
+                         android:layout_marginBottom="100dp"
+                         android:textColor="#FFF"
+                         android:onClick="stopTime"
+                         android:text="Stopp" />
+
+	<TextView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="Listöversikt"
+	/>  
+	
+	<ListView
+		android:id="@+id/list"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"    
+	/>
+	
 </LinearLayout>
+ -->
