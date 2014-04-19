@@ -76,16 +76,6 @@ import android.graphics.Typeface;
 			// Show the Up button in the action bar.
 			setupActionBar();
 			
-			myList = (ListView)findViewById(R.id.list);
-			
-			ArrayAdapter<String> adapter = 
-					new ArrayAdapter<String>
-						(this, 
-						android.R.layout.simple_list_item_1,
-						listContent);
-			
-			myList.setAdapter(adapter);
-			
 			//Create a list of all the blocks
 	    	bList = MainActivity.db.getAllBlocks();
 			
@@ -105,7 +95,7 @@ import android.graphics.Typeface;
 			iterateBlocks(dateString);
 
 	    	Button nextButton = (Button) findViewById(R.id.nextDay);
-	    	nextButton.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));		
+	    	//nextButton.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));		
 	    	nextButton.setOnClickListener(new View.OnClickListener() {
 
 		        public void onClick(View v) {
@@ -116,7 +106,7 @@ import android.graphics.Typeface;
 		    });
 		    
 		    Button prevButton = (Button) findViewById(R.id.prevDay);
-		    prevButton.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));		
+		    //prevButton.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));		
 		    prevButton.setOnClickListener(new View.OnClickListener() {
 
 		        public void onClick(View v) {
@@ -125,6 +115,7 @@ import android.graphics.Typeface;
 		        	iterateBlocks(dateString);	
 		        }
 		    });
+		
 		}
 		
 		public void nextDate()
