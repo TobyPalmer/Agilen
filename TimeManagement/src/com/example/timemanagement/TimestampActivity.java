@@ -235,7 +235,7 @@ public class TimestampActivity extends MainActivity {
 	
 	public void addComment(View view, final Block block){
 		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		 builder.setTitle("Lägg till kommentar");
+		 builder.setTitle("L‰gg till kommentar");
 		 
 		 LayoutInflater inflater = getLayoutInflater();
 
@@ -243,7 +243,7 @@ public class TimestampActivity extends MainActivity {
 		    // Pass null as the parent view because its going in the dialog layout
 		    builder.setView(inflater.inflate(R.layout.activity_addcommentpopup, null));
 		 
-		 builder.setPositiveButton("Lägg till", new DialogInterface.OnClickListener() {
+		 builder.setPositiveButton("L‰gg till", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User clicked OK button
 	        	
@@ -272,7 +272,7 @@ public class TimestampActivity extends MainActivity {
 	
 	public void deleteBlock(View view, final Block block){
 		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		 builder.setTitle("Är du säker?");
+		 builder.setTitle("‰r du s‰ker?");
 	
 		    // Inflate and set the layout for the dialog
 		    // Pass null as the parent view because its going in the dialog layout
