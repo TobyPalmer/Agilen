@@ -10,10 +10,12 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,7 +25,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
@@ -38,12 +39,16 @@ public class NewOrderActivity extends Activity implements DataPassable{
 				   startButton,
 				   stopButton;
 	private TextView arrow;
+	private EditText comment;
+	private boolean newTask;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_order);
     	
+		newTask = true;
+		
     	//Gets the current date.
     	//ToDo: Get date from existing task instead.
     	Calendar cal = Calendar.getInstance();
@@ -53,6 +58,8 @@ public class NewOrderActivity extends Activity implements DataPassable{
     	
     	startButton = (Button)findViewById(R.id.taskStart);
     	startButton.setText(timeBlock.toTimeString(true));
+    	
+    	comment = (EditText)findViewById(R.id.editTextComments);
     	
     	arrow = (TextView)findViewById(R.id.arrow);
     	Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
@@ -68,6 +75,12 @@ public class NewOrderActivity extends Activity implements DataPassable{
 		adapter = new ArrayAdapter(this, R.layout.spinner_item, list);
  
         s.setAdapter(adapter);
+        
+        if(getIntent().getExtras()!=null){
+        	newTask = false;
+        	timeBlock = (Block) getIntent().getSerializableExtra("Block");
+        	update(timeBlock);
+        }
 
 		// Show the Up button in the action bar.
 		setupActionBar();
@@ -202,6 +215,7 @@ public class NewOrderActivity extends Activity implements DataPassable{
     	String comments = editTextComments.getText().toString();
     
     	timeBlock.setOrderID(selectedOrder.getID());
+    	timeBlock.setComment(comments);
     	
     	String message = "Your have succesfullt edited your task! \n\n" +
     					 selectedOrder.toString() + "\n" + timeBlock.toStringPublic() +
@@ -209,7 +223,27 @@ public class NewOrderActivity extends Activity implements DataPassable{
     	newPopUp("Task Edited",message);
     	
     	//Save to db
-    	MainActivity.db.addBlock(timeBlock);
+    	if(getIntent().getExtras()!=null)
+    		MainActivity.db.putBlock(timeBlock);
+    	else
+    		MainActivity.db.addBlock(timeBlock);
+    	
+    	 AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		 builder.setTitle("Uppgift sparad");
+		 builder.setMessage(message);
+		 
+		 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	               // User clicked OK button
+	        	   startActivity(new Intent(getApplicationContext(), TimestampActivity.class));
+
+
+	           }
+	     });
+		
+		 AlertDialog dialog = builder.create();
+		 
+		 dialog.show();
     	
     }
     
@@ -221,6 +255,7 @@ public class NewOrderActivity extends Activity implements DataPassable{
 		 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User clicked OK button
+	        	   
 
 	           }
 	     });
@@ -255,8 +290,33 @@ public class NewOrderActivity extends Activity implements DataPassable{
 			 dateButton.setText(timeBlock.toDateString());
 			 startButton.setText(timeBlock.toTimeString(true));
 			 stopButton.setText(timeBlock.toTimeString(false));
+			 
+			 
+			 if(!newTask){
+				 Log.w("AgilTag","kk");
+				 updateSpinner();
+				 updateComment();
+				 newTask = true;
+			 }
+			 
+	         
 		}
 		else return;	
 	}
+	
+	public void updateSpinner(){
+	   //Update spinner
+	   Order order = MainActivity.db.getOrder(timeBlock.getOrderID());
+       s.setSelection(list.indexOf(order));
+       adapter.notifyDataSetChanged();		
+	}
+	
+	public void updateComment(){
+        //Update comments
+        String comments = MainActivity.db.getBlock(timeBlock.getID()).getComment();
+        comment.setText(comments);	 
+	}
+	
+	
     
 }
