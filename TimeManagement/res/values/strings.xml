@@ -11,6 +11,9 @@
 	<string name="taskStop"></string>
 
     <string name="comments">Kommentar</string>
+    <string name="trash">&#xf014;</string>
+    <string name="edit">&#xf044;</string>
+    <string name="comment">&#xf075;</string>
     <string name="orderNumber">Ordernummer</string>
     <string name="addOrderButton">Spara</string>
     <string name="addedOrder"></string>
@@ -25,6 +28,12 @@
     <color name="orange">#F88621</color>
     <color name="darkGrey">#323232</color>
     <color name="lightGrey">#999</color>
+    
+    <color name="title_background">#0000FF</color>
+    
+    <color name="deleteColor">#88FF0000</color>
+    <color name="editColor">#88ffffff</color>
+    <color name="commentColor">#88888888</color>
     
 
 
