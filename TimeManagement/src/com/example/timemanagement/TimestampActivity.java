@@ -1,21 +1,28 @@
 package com.example.timemanagement;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
+import android.graphics.Point;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.text.Html;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TableLayout;
@@ -146,15 +153,25 @@ public class TimestampActivity extends MainActivity {
 		}
 	}
 	
-	public void printBlocks(){
+	@SuppressLint("NewApi") public void printBlocks(){
 		
 		l = MainActivity.db.getAllBlocks();
+		Collections.sort(l);
+		
+		Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
 		
 		//TextView current = (TextView)findViewById(R.id.timestampText);
+		
+	    Display display = getWindowManager().getDefaultDisplay();
+	    Point size = new Point();
+	    display.getSize(size);
+	    int width = size.x;
+	    int height = size.y;
 		
 		/* Find Tablelayout defined in main.xml */
 		TableLayout tl = (TableLayout) findViewById(R.id.TableLayout);		
 		tl.removeAllViews();
+		tl.setPadding(0, 0, 0, 350);
 		
 		for(int i=0; i<l.size();i++){
 			
@@ -162,12 +179,15 @@ public class TimestampActivity extends MainActivity {
 			
 			int orderId = l.get(i).getOrderID();
 			final Block block = l.get(i);
+			Order order = MainActivity.db.getOrder(orderId);
 			
-			if(MainActivity.db.getOrder(orderId)==null)
-				s = l.get(i).toStringPublic() + " - " + block.getComment();
+			if(MainActivity.db.getOrder(orderId)!=null)
+				s = block.toStringPublic() + " - <b>" + order.getOrderName() + "</b> - <i>" + block.getComment() + "</i>";
 			else
-				s = block.toStringPublic() + "  -  " + block.getComment();
+				s = block.toStringPublic() + " - <i>" + block.getComment() + "</i>";
 				//s = block.toStringPublic() + " " + MainActivity.db.getOrder(orderId).toString();
+			
+			
 				
 			
 			/* Create a new row to be added. */
@@ -176,11 +196,17 @@ public class TimestampActivity extends MainActivity {
 			tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.FILL_PARENT));
 			/*Set text*/
 			TextView t = new TextView(this);
-			t.setText(s);
+			t.setText(Html.fromHtml(s));
+			
+			/*Set time*/
+			TextView t2 = new TextView(this);
+			t2.setText(block.printTime());
 			
 			/* Create a Button to be the row-content. */
 			Button b = new Button(this);
-			b.setText("Edit");
+			b.setTypeface(font);
+			b.setBackgroundColor(getResources().getColor(color.editColor));
+			b.setText(R.string.edit);
 			b.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));		
 		    b.setOnClickListener(new View.OnClickListener() {
 
@@ -188,25 +214,35 @@ public class TimestampActivity extends MainActivity {
 		            // TODO Auto-generated method stub
 		        	Log.w("AgilTag", block.toString());
 		        	
+		        	Intent i = new Intent(getApplicationContext(), NewOrderActivity.class);
+		        	
+		        	i.putExtra("Block", block);
+		        	i.putExtra("String", "editBlock");
+		        	        	
+		        	startActivity(i);	
 		        }
 		    });
 		    
 			Button c = new Button(this);
-			c.setText("Comment");
-			c.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+			c.setTypeface(font);
+			c.setText(R.string.comment);
+			c.setBackgroundColor(getResources().getColor(color.commentColor));
+			c.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
 		    c.setOnClickListener(new View.OnClickListener() {
 
 		        public void onClick(View v) {
 		            // TODO Auto-generated method stub
-		        	Log.w("AgilTag", block.toString());
+		        	//Log.w("AgilTag", block.toString());
 		        	addComment(v, block);
 		        	
 		        }
 		    });
 			
 			Button d = new Button(this);
-			d.setText("Delete");
-			d.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+	    	d.setTypeface(font);
+			d.setText(R.string.trash);
+			d.setBackgroundColor(getResources().getColor(color.deleteColor));
+			d.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
 		    d.setOnClickListener(new View.OnClickListener() {
 
 		        public void onClick(View v) {
@@ -218,16 +254,18 @@ public class TimestampActivity extends MainActivity {
 		    });
 			
 			/* Add Button to row. */
-			tr.addView(t);
-			tr.addView(b);
-			tr.addView(c);
-			tr.addView(d);
+		    
+			tr.addView(t, (int)(width*0.6), 70);
+			tr.addView(t2,(int)(width*0.1), 70);
+			tr.addView(b, (int)(width*0.1), 70);
+			tr.addView(c, (int)(width*0.1), 70);
+			tr.addView(d, (int)(width*0.1), 70);
 			if(i%2==0)
-				tr.setBackgroundColor(color.lightGrey);
+				tr.setBackgroundColor(getResources().getColor(color.lightGrey));
 
 			/* Add row to TableLayout. */
 			//tr.setBackgroundResource(R.drawable.sf_gradient_03);
-			tl.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+			tl.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.FILL_PARENT));
 			
 		}	
 	}
@@ -237,11 +275,24 @@ public class TimestampActivity extends MainActivity {
 		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		 builder.setTitle("Lägg till kommentar");
 		 
+		 String s = "";
+		 if(block.getOrderID()!=0){
+			 Order o = MainActivity.db.getOrder(block.getOrderID());
+			 s="Kommentera '<i>" + block.toStringPublic() + ": <b>" + o.getOrderName() + "</b> </i>' :"; 	 
+		 } 
+		 else
+			 s="Kommentera '<i>" + block.toStringPublic() + "</i>' :";
+			 
+		 builder.setMessage(Html.fromHtml(s));
+
+		 
 		 LayoutInflater inflater = getLayoutInflater();
 
 		    // Inflate and set the layout for the dialog
 		    // Pass null as the parent view because its going in the dialog layout
 		    builder.setView(inflater.inflate(R.layout.activity_addcommentpopup, null));
+		    
+		   
 		 
 		 builder.setPositiveButton("Lägg till", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
@@ -272,7 +323,20 @@ public class TimestampActivity extends MainActivity {
 	
 	public void deleteBlock(View view, final Block block){
 		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		 builder.setTitle("är du säker?");
+
+
+		 builder.setTitle("Ta bort");
+		 
+		 String s = "";
+		 if(block.getOrderID()!=0){
+			 Order o = MainActivity.db.getOrder(block.getOrderID());
+			 s="Vill du ta bort '<i>" + block.toStringPublic() + ": <b>" + o.getOrderName() + "</b> </i> '?"; 	 
+		 } 
+		 else
+			 s="Vill du ta bort '<i>" + block.toStringPublic() + "</i>' ?";
+			 
+		 builder.setMessage(Html.fromHtml(s));
+
 	
 		    // Inflate and set the layout for the dialog
 		    // Pass null as the parent view because its going in the dialog layout
@@ -291,6 +355,8 @@ public class TimestampActivity extends MainActivity {
 		 builder.setNegativeButton("Nej", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User cancelled the dialog
+	        	   getWindow().setSoftInputMode(
+	        			      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 	           }
 	       });
 

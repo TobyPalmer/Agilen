@@ -1,9 +1,10 @@
 package com.example.timemanagement.model;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Block {
+public class Block implements Serializable, Comparable<Block>{
 
 	private int ID; // primary key
 	private int orderID; // foreign key
@@ -93,12 +94,15 @@ public class Block {
 	
 	public String toStringPublic(){
 		Date start = new java.util.Date(this.start);
-		String startString = new SimpleDateFormat("yyyy-MM-dd  HH:mm").format(start);
+		String startString = new SimpleDateFormat("HH:mm").format(start);
 		
 		Date stop = new java.util.Date(this.stop);
 		String stopString = new SimpleDateFormat("HH:mm").format(stop);
 		
-		return startString + " - " + stopString;
+		if(this.stop!=0)
+			return startString + " - " + stopString;
+		else
+			return startString + " - xx:xx";
 	}
 	
 	public String toDateString(){
@@ -110,6 +114,33 @@ public class Block {
 			return new SimpleDateFormat("HH:mm").format(start);
 		else
 			return new SimpleDateFormat("HH:mm").format(stop);
+	}
+	
+	public String printTime(){
+		
+		Long diff;
+		
+		if(stop!=0)
+			diff = stop-start;
+		else
+			diff = System.currentTimeMillis() - start;
+		
+		diff -= 1000*60*60;
+		
+		Date date = new java.util.Date(diff);
+		
+		return date.getHours() + "h" + date.getMinutes() + "m";
+	}
+	
+	 
+	@Override
+	public int compareTo(Block b) {
+        if(b.getStart()<getStart())
+        	return -1;
+        else if(b.getStart()>getStart())
+        	return 1;
+        else
+        	return 0;
 	}
 	
 }
