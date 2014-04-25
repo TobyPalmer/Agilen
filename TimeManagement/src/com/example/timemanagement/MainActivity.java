@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 public class MainActivity extends Activity {
@@ -26,6 +27,19 @@ public class MainActivity extends Activity {
 
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+    	if(item.getItemId()==R.id.action_settings)
+    	{
+    		listActivity();
+    		return true;
+    	}
+    	
+    	return false;
+  
     }
     
     public void timestampActivity(View view){
@@ -49,7 +63,7 @@ public class MainActivity extends Activity {
     
 
     // Making ListView
-    public void listActivity(View view){
+    public void listActivity(){
         Intent intent = new Intent(this, ListActivity.class);
         
         startActivity(intent);

@@ -74,7 +74,7 @@
                      android:background="@color/orange"
                      android:textColor="#FFF"
                      android:textSize="30sp"
-                     android:onClick="listActivity"
+                     android:onClick="newOrderActivity"
                      android:text="Rapportera"/> 
                      <!--android:onClick="newOrderActivity"-->
                      
