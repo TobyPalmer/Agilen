@@ -15,17 +15,21 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.example.timemanagement.R.color;
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
 
@@ -38,6 +42,7 @@ public class NewOrderActivity extends Activity implements DataPassable{
 	private Button dateButton,
 				   startButton,
 				   stopButton;
+	private Button d;
 	private TextView arrow;
 	private EditText comment;
 	private boolean newTask;
@@ -68,6 +73,8 @@ public class NewOrderActivity extends Activity implements DataPassable{
     	stopButton = (Button)findViewById(R.id.taskStop);
     	stopButton.setText(timeBlock.toTimeString(false));
     	
+    	
+    	
     	// Get all orders
     	list = MainActivity.db.getAllOrders();
     	
@@ -81,6 +88,23 @@ public class NewOrderActivity extends Activity implements DataPassable{
         	timeBlock = (Block) getIntent().getSerializableExtra("Block");
         	update(timeBlock);
         }
+        
+        d = (Button)findViewById(R.id.deleteButton);
+	       if(getIntent().getExtras()!=null){
+	        	d.setVisibility(View.VISIBLE);
+	       }
+	       else{
+	        	d.setVisibility(View.INVISIBLE);
+	       }
+	    d.setOnClickListener(new View.OnClickListener() {
+
+	    	
+	        public void onClick(View v) {
+            	Log.w("AgilTag", timeBlock.toString());
+	        	deleteBlock(v, timeBlock);
+	        	
+	        }
+	    });
 
 		// Show the Up button in the action bar.
 		setupActionBar();
@@ -318,6 +342,51 @@ public class NewOrderActivity extends Activity implements DataPassable{
         String comments = MainActivity.db.getBlock(timeBlock.getID()).getComment();
         comment.setText(comments);	 
 	}
+	
+	public void deleteBlock(View view, final Block block){
+		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+
+		 builder.setTitle("Ta bort");
+		 
+		 String s = "";
+		 if(block.getOrderID()!=0){
+			 Order o = MainActivity.db.getOrder(block.getOrderID());
+			 s="Vill du ta bort '<i>" + block.toStringPublic() + ": <b>" + o.getOrderName() + "</b> </i> '?"; 	 
+		 } 
+		 else
+			 s="Vill du ta bort '<i>" + block.toStringPublic() + "</i>' ?";
+			 
+		 builder.setMessage(Html.fromHtml(s));
+
+	
+		    // Inflate and set the layout for the dialog
+		    // Pass null as the parent view because its going in the dialog layout
+		 
+		 builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	               // User clicked OK button
+
+		        	MainActivity.db.deleteBlock(block);
+		        	startActivity(new Intent(getApplicationContext(), TimestampActivity.class));
+		        	
+	        	
+	        	
+	           }	
+	       });
+		 
+		 builder.setNegativeButton("Nej", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	               // User cancelled the dialog
+	        	   getWindow().setSoftInputMode(
+	        			      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+	           }
+	       });
+
+		 AlertDialog dialog = builder.create();
+		 
+		 dialog.show(); 
+	 }
 	
 	
     
