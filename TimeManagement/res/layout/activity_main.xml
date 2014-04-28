@@ -59,6 +59,7 @@
         android:text="Logga in"
         android:background="@color/orange" 
     	android:onClick="timestampActivity" />
+    	
 
     <!--  <Button
         android:id="@+id/button1"
