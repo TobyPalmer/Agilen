@@ -32,12 +32,28 @@ public class MainActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-    	if(item.getItemId()==R.id.action_settings)
+    	if(item.getItemId()==R.id.menu_checkview)
     	{
     		listActivity();
     		return true;
+    	}else if(item.getItemId()==R.id.menu_statistics)
+    	{
+    		statisticsActivity();
+    		return true;
+    	}else if(item.getItemId()==R.id.menu_timestamp)
+    	{
+    		timestampActivity();
+    		return true;
+    	}else if(item.getItemId()==R.id.menu_schedule)
+    	{
+    		scheduleActivity();
+    		return true;
+    	}else if(item.getItemId()==R.id.menu_settings)
+    	{
+    		settingActivity();
+    		return true;
     	}
-    	
+    	 	
     	return false;
   
     }
@@ -65,6 +81,34 @@ public class MainActivity extends Activity {
     // Making ListView
     public void listActivity(){
         Intent intent = new Intent(this, ListActivity.class);
+        
+        startActivity(intent);
+    }
+    
+    // Making Statistics view
+    public void statisticsActivity(){
+        Intent intent = new Intent(this, StatisticsActivity.class);
+        
+        startActivity(intent);
+    }
+    
+    // Making Schedule view
+    public void scheduleActivity(){
+        Intent intent = new Intent(this, ScheduleActivity.class);
+        
+        startActivity(intent);
+    }
+    
+    // Making Timestamp view
+    public void timestampActivity(){
+        Intent intent = new Intent(this, TimestampActivity.class);
+        
+        startActivity(intent);
+    }
+    
+    // Making Settings view
+    public void settingActivity(){
+        Intent intent = new Intent(this, SettingActivity.class);
         
         startActivity(intent);
     }
