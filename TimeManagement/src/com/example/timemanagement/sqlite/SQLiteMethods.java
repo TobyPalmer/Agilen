@@ -12,6 +12,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.Cursor;
+import android.support.v4.util.LogWriter;
+import android.util.Log;
 
 public class SQLiteMethods extends SQLiteOpenHelper {
 	
@@ -319,6 +321,37 @@ public class SQLiteMethods extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         return blocks;
+    }
+    
+    /**
+     * GET: Return all blocks
+     * 
+     * @return 
+     */
+    public List<Block> getBlocksBetweenDate(long start, long stop) {
+    	
+    	  List<Block> blocks = new LinkedList<Block>();
+    	
+    	  SQLiteDatabase db = this.getReadableDatabase();
+    	  
+    	  Cursor cursor = db.rawQuery("SELECT * FROM blocks "
+    	  							+ "WHERE start > ? AND stop < ?",
+    			  new String[] {String.valueOf(start), String.valueOf(stop)});
+    	  
+
+         
+          if (cursor.moveToFirst()) {
+              do {
+                  Block block = new Block();
+                  block.setID(Integer.parseInt(cursor.getString(0)));
+                  block.setStart(cursor.getLong(1));
+                  block.setStop(cursor.getLong(2));
+                  block.setOrderID(cursor.getInt(3));
+                  block.setComment(cursor.getString(4));
+                  blocks.add(block);
+              } while (cursor.moveToNext());
+          }
+          return blocks;
     }
     
     /**

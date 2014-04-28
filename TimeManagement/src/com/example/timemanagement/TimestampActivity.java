@@ -1,16 +1,23 @@
 package com.example.timemanagement;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Point;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.text.Html;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,23 +34,44 @@ import com.example.timemanagement.model.Order;
 
 public class TimestampActivity extends MainActivity {
 
-	private List<Block> l = new ArrayList<Block>();
-	private int listIndex = 0;
+	// longs that represents the start- and endtime of the day
+	private long start, stop;
+	
 	boolean started = false;
 	boolean stopped = true;
 	Block b;
-	private int row=0;
-	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_timestamp);
-		// Show the Up button in the action bar.
+		// Show the Up button in the action bar
 		setupActionBar();
 		
+		//Sets stop to the end of this day.
+		Calendar cal = Calendar.getInstance();
+		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
+				cal.get(Calendar.DAY_OF_MONTH), 23, 59);
+		stop = cal.getTimeInMillis();
+		
+		//Sets start to the start of this day.
+		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
+				cal.get(Calendar.DAY_OF_MONTH), 0, 0);
+		start = cal.getTimeInMillis();
+		
+		//update view
+		setDayText(start);
 		printBlocks();
-
+	}
+	
+	/**
+	 * Helper method that updates the day TextView.
+	 * 
+	 * @param time the time that the view should be updated with
+	 */
+	private void setDayText(long time){
+		TextView day = (TextView) findViewById(R.id.day);
+		day.setText(new SimpleDateFormat("yyyy-MM-dd").format(time));
 	}
 
 	/**
@@ -145,29 +173,39 @@ public class TimestampActivity extends MainActivity {
 		}
 	}
 	
+
 	public void printBlocks(){
 		
-		l = MainActivity.db.getAllBlocks();
+		// Gets all the blocks between 00:00 and 23:59 of the chosen day
+		List<Block> blocksOfToday = MainActivity.db.getBlocksBetweenDate(start, stop);
 		
-		//TextView current = (TextView)findViewById(R.id.timestampText);
+		Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
+		
+	    Display display = getWindowManager().getDefaultDisplay();
+	    Point size = new Point();
+	    display.getSize(size);
+	    int width = size.x;
+	    int height = size.y;
 		
 		/* Find Tablelayout defined in main.xml */
 		TableLayout tl = (TableLayout) findViewById(R.id.TableLayout);		
 		tl.removeAllViews();
 		
-		for(int i=0; i<l.size();i++){
+		for(int i=0; i<blocksOfToday.size();i++){
 			
 			String s = "";
 			
-			int orderId = l.get(i).getOrderID();
-			final Block block = l.get(i);
+
+			int orderId = blocksOfToday.get(i).getOrderID();
+			final Block block = blocksOfToday.get(i);
+			Order order = MainActivity.db.getOrder(orderId);
 			
 			if(MainActivity.db.getOrder(orderId)==null)
-				s = l.get(i).toStringPublic() + " - " + block.getComment();
+				s = blocksOfToday.get(i).toStringPublic() + " - " + block.getComment();
 			else
 				s = block.toStringPublic() + "  -  " + block.getComment();
 				//s = block.toStringPublic() + " " + MainActivity.db.getOrder(orderId).toString();
-				
+
 			
 			/* Create a new row to be added. */
 			TableRow tr = new TableRow(this);
@@ -231,10 +269,45 @@ public class TimestampActivity extends MainActivity {
 		}	
 	}
 	
+	/**
+	 * Adds one day on the value of start/stop and updates the view 
+	 * 
+	 * @param v
+	 */
+	public void showTomorrow(View v){
+		start += 86400000;
+		stop += 86400000;
+		setDayText(start);
+		printBlocks();
+	}
+	
+	/**
+	 * Subtracts one day on the value of start/stop and updates the view 
+	 * 
+	 * @param v
+	 */
+	public void showYesterday(View v){
+		start -= 86400000;
+		stop -= 86400000;
+		setDayText(start);
+		printBlocks();
+	}
+		
+	
 	
 	public void addComment(View view, final Block block){
 		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		 builder.setTitle("L�gg till kommentar");
+		 
+		 String s = "";
+		 if(block.getOrderID()!=0){
+			 Order o = MainActivity.db.getOrder(block.getOrderID());
+			 s="Kommentera '<i>" + block.toStringPublic() + ": <b>" + o.getOrderName() + "</b> </i>' :"; 	 
+		 } 
+		 else
+			 s="Kommentera '<i>" + block.toStringPublic() + "</i>' :";
+			 
+		 builder.setMessage(Html.fromHtml(s));
 		 
 		 LayoutInflater inflater = getLayoutInflater();
 
