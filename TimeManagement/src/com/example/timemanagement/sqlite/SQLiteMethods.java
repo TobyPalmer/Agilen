@@ -325,11 +325,13 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         return blocks;
     }
     
-    /**
-     * GET: Return all blocks
-     * 
-     * @return 
-     */
+   /**
+    * Function that returns all timeblocks between two given UNIX-times.
+    * 
+    * @param start The start of the interval
+    * @param stop The stop of the interval
+    * @return All timeblocks in the chosen interval
+    */
     public List<Block> getBlocksBetweenDate(long start, long stop) {
     	
     	  List<Block> blocks = new LinkedList<Block>();
@@ -341,7 +343,6 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     			  new String[] {String.valueOf(start), String.valueOf(stop)});
     	  
 
-         
           if (cursor.moveToFirst()) {
               do {
                   Block block = new Block();

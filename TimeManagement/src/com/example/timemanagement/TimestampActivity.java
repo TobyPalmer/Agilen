@@ -1,13 +1,10 @@
 package com.example.timemanagement;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 
-import java.util.Collections;
 import java.util.List;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -72,7 +69,7 @@ public class TimestampActivity extends MainActivity {
 	/**
 	 * Helper method that updates the day TextView.
 	 * 
-	 * @param time the time that the view should be updated with
+	 * @param time The time that the view should be updated with
 	 */
 	private void setDayText(long time){
 		TextView day = (TextView) findViewById(R.id.day);
@@ -292,7 +289,7 @@ public class TimestampActivity extends MainActivity {
 	}
 	
 	/**
-	 * Adds one day on the value of start/stop and updates the view 
+	 * Adds one day on the value of start/stop and updates the view. 
 	 * 
 	 * @param v
 	 */
@@ -304,7 +301,7 @@ public class TimestampActivity extends MainActivity {
 	}
 	
 	/**
-	 * Subtracts one day on the value of start/stop and updates the view 
+	 * Subtracts one day on the value of start/stop and updates the view. 
 	 * 
 	 * @param v
 	 */
@@ -393,8 +390,6 @@ public class TimestampActivity extends MainActivity {
 
 		        	MainActivity.db.deleteBlock(block);
 		        	printBlocks();
-	        	
-	        	
 	           }	
 	       });
 		 
