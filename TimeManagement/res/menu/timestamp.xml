@@ -1,9 +1,33 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/menu_checkview"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="@string/action_settings"/>
+        android:title="@string/menu_checkview"/>
+    
+    <item
+      android:id="@+id/menu_statistics"
+      android:orderInCategory="100"
+      android:showAsAction="never"
+      android:title="@string/menu_statistics"/>
+   
+   <!--<item
+      android:id="@+id/menu_timestamp"
+      android:orderInCategory="100"
+      android:showAsAction="never"
+      android:title="@string/menu_timestamp"/>-->
+    
+   <item
+      android:id="@+id/menu_schedule"
+      android:orderInCategory="100"
+      android:showAsAction="never"
+      android:title="@string/menu_schedule"/>
+       
+   <item
+      android:id="@+id/menu_settings"
+      android:orderInCategory="100"
+      android:showAsAction="never"
+      android:title="@string/menu_settings"/>
 
 </menu>
