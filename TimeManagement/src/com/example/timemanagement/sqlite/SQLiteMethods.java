@@ -3,6 +3,11 @@ package com.example.timemanagement.sqlite;
 import com.example.timemanagement.model.Order;
 import com.example.timemanagement.model.Block;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,14 +16,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.Cursor;
-import android.support.v4.util.LogWriter;
 import android.util.Log;
 
 public class SQLiteMethods extends SQLiteOpenHelper {
 	
 	// Database info
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
     private static final String DATABASE_NAME = "TimeManagement";
  
     // Constructor
@@ -42,8 +45,9 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         	"ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
         	"start INTEGER, " +
         	"stop INTEGER, " +
-        	"orderID INTEGER," +
-        	"comment TEXT)";
+        	"orderID INTEGER, " +
+        	"comment TEXT, "
+        	+"checked INTEGER)";
         db.execSQL(CREATE_BLOCKS_TABLE);
     }
     
@@ -200,11 +204,13 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     private static final String BLOCKS_TABLE_KEY_STOP = "stop";
     private static final String BLOCKS_TABLE_KEY_ORDERID = "orderID";
     private static final String BLOCKS_TABLE_KEY_COMMENT = "comment";
+    private static final String BLOCKS_TABLE_KEY_CHECKED = "checked";
     private static final String[] BLOCKS_TABLE_COLUMNS = {BLOCKS_TABLE_KEY_ID, 
     														BLOCKS_TABLE_KEY_START, 
     														BLOCKS_TABLE_KEY_STOP, 
     														BLOCKS_TABLE_KEY_ORDERID,
-    														BLOCKS_TABLE_KEY_COMMENT};
+    														BLOCKS_TABLE_KEY_COMMENT,
+    														BLOCKS_TABLE_KEY_CHECKED};
    
     /**
      * INSERT: Create new block
@@ -218,6 +224,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         values.put(BLOCKS_TABLE_KEY_STOP, block.getStop());
         values.put(BLOCKS_TABLE_KEY_ORDERID, block.getOrderID());
         values.put(BLOCKS_TABLE_KEY_COMMENT, block.getComment());
+        values.put(BLOCKS_TABLE_KEY_CHECKED, block.getChecked());
  
         block.setID((int)db.insert(BLOCKS_TABLE, null, values));
         db.close(); 
@@ -250,6 +257,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
                 block.setStop(cursor.getLong(2));
                 block.setOrderID(cursor.getInt(3));
                 block.setComment(cursor.getString(4));
+                block.setChecked(cursor.getInt(5));
                 
 	            return block;
         	}
@@ -289,6 +297,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
                 block.setStop(cursor.getLong(2));
                 block.setOrderID(cursor.getInt(3));
                 block.setComment(cursor.getString(4));
+                block.setChecked(cursor.getInt(5));
                 blocks.add(block);
             } while (cursor.moveToNext());
         }
@@ -319,6 +328,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
                 block.setStop(cursor.getLong(2));
                 block.setOrderID(cursor.getInt(3));
                 block.setComment(cursor.getString(4));
+                block.setChecked(cursor.getInt(5));
                 blocks.add(block);
             } while (cursor.moveToNext());
         }
@@ -351,6 +361,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
                   block.setStop(cursor.getLong(2));
                   block.setOrderID(cursor.getInt(3));
                   block.setComment(cursor.getString(4));
+                  block.setChecked(cursor.getInt(5));
                   blocks.add(block);
               } while (cursor.moveToNext());
           }
@@ -371,6 +382,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         values.put(BLOCKS_TABLE_KEY_STOP, block.getStop());
         values.put(BLOCKS_TABLE_KEY_ORDERID, block.getOrderID());
         values.put(BLOCKS_TABLE_KEY_COMMENT, block.getComment());
+        values.put(BLOCKS_TABLE_KEY_CHECKED, block.getChecked());
      
         int i = db.update(BLOCKS_TABLE, 
         					values, 
@@ -395,5 +407,65 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         			new String[] { String.valueOf(block.getID()) });
 
         db.close();
+    }
+    
+    /**
+     * Get all data as JSON string
+     * 
+     * @return
+     */
+    public String toJSONString() {
+    	// Get all orders
+        List<Order> orders = new ArrayList<Order>();
+        orders = this.getAllOrders();
+        
+        // Create root node
+        JSONObject userData = new JSONObject();
+        
+        // Create order node
+        JSONArray orderData = new JSONArray();
+        
+        // Define orders node
+        for(int i = 0; i < orders.size(); i++) {
+        	// Create order node
+        	JSONObject theOrder = new JSONObject(); 
+        	
+        	// Get blocks for this order
+        	try {
+        		// Get blocks
+        		List<Block> blocks = new ArrayList<Block>(); 
+        		blocks = this.getBlocks(orders.get(i).getID());
+
+        		// Will contain the block data
+        		JSONArray blockData = new JSONArray();
+        		
+        		// Create block nodes
+        		for(int j = 0; j < blocks.size(); j++) {
+        			JSONObject theBlock = new JSONObject();
+        			theBlock.put("start", blocks.get(j).getStart());
+        			theBlock.put("stop", blocks.get(j).getStop());
+        			theBlock.put("comment", blocks.get(j).getComment());
+        			blockData.put(theBlock);
+        		}
+        		
+        		// Define order node
+        		theOrder.put("orderNumber", orders.get(i).getOrderNumber());
+        		theOrder.put("orderName", orders.get(i).getOrderName());
+        		theOrder.put("blocks", blockData);
+        		
+        		// Add this order to order-node
+        		orderData.put(theOrder);
+        	} catch(JSONException e) {
+            	Log.w("timemanagement", "JSONException: " + e.toString());
+            }
+        }
+        try {
+        	userData.put("orders", orderData.toString());
+        } catch(JSONException e) {
+        	Log.w("timemanagement", "JSONException: " + e.toString());
+        }
+        
+        String output = userData.toString();
+        return output;
     }
 }

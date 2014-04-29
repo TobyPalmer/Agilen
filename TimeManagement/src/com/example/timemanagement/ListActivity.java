@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import com.example.timemanagement.R.color;
 import com.example.timemanagement.model.Block;
+import com.example.timemanagement.model.Order;
 import com.example.timemanagement.sqlite.SQLiteMethods;
 
 import com.example.timemanagement.R;
@@ -35,7 +36,11 @@ import android.app.Activity;
 import android.graphics.Typeface;
 
 
-public class ListActivity extends MainActivity {
+
+
+
+
+	public class ListActivity extends MainActivity {
 		
 		ListView myList;
 		
@@ -43,11 +48,10 @@ public class ListActivity extends MainActivity {
 			{
 				"08:00 - 09:37, SAAB ",
 				"09:37 - 10:00, Frukost",
-
-				"10:00 - 10:17, Scrummï¿½te",
+				"10:00 - 10:17, Scrummöte",
 				"10:17 - 11:50, Arbete", 
 				"11:50 - 13:17, Lunch",
-				"13:17 - 14:02, Internt mï¿½te", 
+				"13:17 - 14:02, Internt möte", 
 				"14:02 - 16:23, SAAB",
 				"16:23 - 17:05, Arbete"
 			};
@@ -56,10 +60,11 @@ public class ListActivity extends MainActivity {
 		String s, dateString;
 		Block b;
 		int n = 0;
-		long today, day_next;
+		int hoursDay, minutesDay;
+		long today, day_next, timeDiff;
 		private Date d;
 		private ListView l_view;
-		private TextView day;
+		private TextView day, total;
 		private ArrayAdapter<String> listAdapter;
 		private ArrayList<String> blockList;
 		private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -76,9 +81,9 @@ public class ListActivity extends MainActivity {
 			//Create a list of all the blocks
 	    	bList = MainActivity.db.getAllBlocks();
 			
-
 			l_view = (ListView) findViewById(R.id.l_view);
 			day = (TextView) findViewById(R.id.day);
+			total = (TextView) findViewById(R.id.total);
 			
 			blockList = new ArrayList<String>();		
 			
@@ -136,21 +141,52 @@ public class ListActivity extends MainActivity {
 		{
 			blockList.clear();
 			//Iterate through the blocks
-	    	Iterator<Block> it = bList.iterator(); 
+			hoursDay =  minutesDay = 0;
+	    	
+			Iterator<Block> it = bList.iterator(); 
 	    	while(it.hasNext())
 	    	{
 	    		b = it.next();
-	    	    s = b.toStringPublic();
+	    		s = b.toStringPublic();		
+	    		if(b.getOrderID()!=0){
+	    			Order order = MainActivity.db.getOrder(b.getOrderID());
+	    			s += " - " + order.getOrderName();
+	    		}
+	    		
+	    		s += " - " + b.printTime();
+
 	    	    if(b.toDateString().equals(dateString))
 	    	    {
 	    	    	blockList.add(s);
+	    	      
+		    	    //adds the hours and minutes of a block to hoursDay and minutesDay
+		    		if(b.getStop()!=0)
+		    			timeDiff = b.getStop()-b.getStart();
+		    		else
+		    			timeDiff = System.currentTimeMillis() - b.getStart();
+		    		
+		    		timeDiff -= 1000*60*60;
+		    		
+		    		Date date = new java.util.Date(timeDiff);
+		    	    
+		    	    hoursDay += date.getHours();
+		    	    minutesDay += date.getMinutes();
+		    	    if(minutesDay > 60){
+		    	    	hoursDay += minutesDay/60;
+		    	    	minutesDay = minutesDay % 60;    	    	
+		    	    }
+	    	    
 	    	    }
 	    	}
 	    	
-
+	    	String s = "Total time: " + hoursDay + "h " + minutesDay + "m";
+	    	Log.d("hours",s);
+	    	
 	    	listAdapter = new ArrayAdapter<String>(this,R.layout.listrow, blockList);
 	    	l_view.setAdapter(listAdapter);
 	    	day.setText(dateString);
+	    	
+	    	total.setText(s);
 		}
 
 		/**
@@ -166,7 +202,6 @@ public class ListActivity extends MainActivity {
 		@Override
 		public boolean onCreateOptionsMenu(Menu menu) {
 			// Inflate the menu; this adds items to the action bar if it is present.
-
 			getMenuInflater().inflate(R.menu.list, menu);
 			return true;
 		}
@@ -188,5 +223,5 @@ public class ListActivity extends MainActivity {
 			return super.onOptionsItemSelected(item);
 		}		
 
-}
+	}
 

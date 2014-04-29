@@ -163,6 +163,7 @@ public class TimestampActivity extends ListActivity {
 		
 		// Fetch blocks from database
 		//blocksOfToday = MainActivity.db.getAllBlocks();
+
 		
 		// Initial strings for blocks, will be converted to ArrayAdapter
         String[] items = new String[blocksOfToday.size()];
