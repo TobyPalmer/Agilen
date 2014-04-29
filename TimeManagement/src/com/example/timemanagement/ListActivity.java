@@ -171,6 +171,10 @@ import android.graphics.Typeface;
 		    	    
 		    	    hoursDay += date.getHours();
 		    	    minutesDay += date.getMinutes();
+		    	    if(minutesDay > 60){
+		    	    	hoursDay += minutesDay/60;
+		    	    	minutesDay = minutesDay % 60;    	    	
+		    	    }
 	    	    
 	    	    }
 	    	}
