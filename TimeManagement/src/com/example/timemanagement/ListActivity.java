@@ -23,10 +23,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-
 import android.widget.Button;
 import android.widget.ListView;
-
 import android.widget.TextView;
 
 import com.example.timemanagement.R.color;
@@ -48,35 +46,26 @@ import android.graphics.Typeface;
 
 	public class ListActivity extends MainActivity {
 		
-		ListView myList;
 		
-		String[] listContent = 
-			{
-				"08:00 - 09:37, SAAB ",
-				"09:37 - 10:00, Frukost",
-				"10:00 - 10:17, Scrummöte",
-				"10:17 - 11:50, Arbete", 
-				"11:50 - 13:17, Lunch",
-				"13:17 - 14:02, Internt möte", 
-				"14:02 - 16:23, SAAB",
-				"16:23 - 17:05, Arbete"
-			};
-
 		private List<Block> bList = new ArrayList<Block>();
-		String s, dateString;
-		Block b;
-		int n = 0;
-
-		int hoursDay, minutesDay;
-		long today, day_next, timeDiff, stop, start;
 		private Date d;
 		private ListView l_view;
 		private TextView day, total;
 		private CustomListAdapter1 listAdapter;
+		private Date currentDate;
 
 		private ArrayList<String> blockList;
 		private ArrayList<Integer> blockStatesList;
+		
 		private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		
+		private String s, dateString;
+		private Block b;
+		private int n = 0;
+
+		private int hoursDay, minutesDay;
+		private long today, day_next, timeDiff, stop, start;
+		
 		
 		@Override
 		protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +100,7 @@ import android.graphics.Typeface;
 			
 			//Calendar cal = new GregorianCalendar();
 			today = System.currentTimeMillis();
+			currentDate = new Date(today);
 			day_next = 1000 * 60 * 60 * 24;
 			
 			dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -119,14 +109,20 @@ import android.graphics.Typeface;
 			dateString = (dateFormat.format(d));
 			iterateBlocks(dateString);
 
-	    	Button nextButton = (Button) findViewById(R.id.nextDay);
+	    	final Button nextButton = (Button) findViewById(R.id.nextDay);
+	    	nextButton.setEnabled(false);
 	    	//nextButton.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));		
 	    	nextButton.setOnClickListener(new View.OnClickListener() {
 
 		        public void onClick(View v) {
 		            // TODO Auto-generated method stub
-		        	nextDate();
-		        	iterateBlocks(dateString);	
+		        	
+		        	if(d.compareTo(currentDate) == 0)
+		        	{
+		        		nextDate();
+		        		iterateBlocks(dateString);
+		        		nextButton.setEnabled(false);
+		        	}	
 		        }
 		    });
 		    
@@ -136,11 +132,60 @@ import android.graphics.Typeface;
 
 		        public void onClick(View v) {
 		            // TODO Auto-generated method stub
+		        	Log.e("KOmmer in hit","Noh");		        	
+		        	if(d.compareTo(currentDate) != 0)
+		        	{		        		
+		        		nextButton.setEnabled(true);
+		        	}		        	
 		        	prevDate();
 		        	iterateBlocks(dateString);	
 		        }
 		    });
+		    
+		    Button selectAllButton = (Button) findViewById(R.id.selectAll);	    			
+	    	selectAllButton.setOnClickListener(new View.OnClickListener() {
+		        public void onClick(View v) {
+		            // TODO Auto-generated method stub
+		        	Log.e("Button","selectAllButton");
+		        	Iterator<Block> it = bList.iterator(); 
+			    	while(it.hasNext())
+			    	{
+			    		b = it.next();
+			    		if(b.getOrderID() != 0){
+			    			b.setChecked(1);
+			    		}			    		
+			    	}
+			    	setAllChecks(1);
+			    	iterateBlocks(dateString);
+		        }
+		    });
+	    	
+	    	Button deselectAllButton = (Button) findViewById(R.id.deselectAll);
+	    	deselectAllButton.setOnClickListener(new View.OnClickListener() {
+
+		        public void onClick(View v) {
+		            // TODO Auto-generated method stub
+
+		        	Log.e("Button","deselectAllButton");
+		        	Iterator<Block> it = bList.iterator(); 
+			    	while(it.hasNext())
+			    	{
+			    		b = it.next();
+			    		if(b.getOrderID() != 0){
+			    			b.setChecked(0);
+			    		}			    		
+			    	}
+			    	setAllChecks(0);
+			    	iterateBlocks(dateString);
+		        }
+		    });
+		}
 		
+		private void setAllChecks(int value){
+			for(int i = 0; i < blockStatesList.size();i++){
+				blockStatesList.set(i, value);				
+			}
+			listAdapter.setBlockStatesList(blockStatesList);
 		}
 		
 		public void nextDate()
@@ -169,51 +214,56 @@ import android.graphics.Typeface;
 	    	while(it.hasNext())
 	    	{
 	    		b = it.next();
-	    		s = b.toStringPublic();		
-	    		if(b.getOrderID()!=0){
-	    			Order order = MainActivity.db.getOrder(b.getOrderID());
-	    			s += " - " + order.getOrderName();
-	    		}
-	    		
-	    		s += " - " + b.printTime();
-	    		
-	    		if(b.getChecked() == 1){
-	    			s += " - Checked! ";
-	    		}
-	    		
-	    	    //adds the hours and minutes of a block to hoursDay and minutesDay
 	    		if(b.getStop()!=0)
-	    			timeDiff = b.getStop()-b.getStart();
-	    		else
-	    			timeDiff = System.currentTimeMillis() - b.getStart();
-	    		
-	    		timeDiff -= 1000*60*60;
-	    		
-	    		Date date = new java.util.Date(timeDiff);
+	    		{
+		    		s = new SimpleDateFormat("HH:mm").format(b.getStart());
+		    		s += " - ";
+		    		s += new SimpleDateFormat("HH:mm").format(b.getStop());	    			
+		    		if(b.getOrderID()!=0){
+		    			Order order = MainActivity.db.getOrder(b.getOrderID());
+		    			s += " - " + order.getOrderName();
+		    		}
+		    		
+		    		s += " - " + b.printTime();
+		    		
+		    		if(b.getChecked() == 1){
+		    			s += " - Checked! ";
+		    		}
+		    		
+		    	    //adds the hours and minutes of a block to hoursDay and minutesDay
+		    		if(b.getStop()!=0)
+		    			timeDiff = b.getStop()-b.getStart();
+		    		else
+		    			timeDiff = System.currentTimeMillis() - b.getStart();
+		    		
+		    		timeDiff -= 1000*60*60;
+		    		
+		    		Date date = new java.util.Date(timeDiff);
+		    	    
+		    	    hoursDay += date.getHours();
+		    	    minutesDay += date.getMinutes();
+		    	    if(minutesDay > 60){
+		    	    	hoursDay += minutesDay/60;
+		    	    	minutesDay = minutesDay % 60;    	    	
+		    	    }
 	    	    
-	    	    hoursDay += date.getHours();
-	    	    minutesDay += date.getMinutes();
-	    	    if(minutesDay > 60){
-	    	    	hoursDay += minutesDay/60;
-	    	    	minutesDay = minutesDay % 60;    	    	
-	    	    }
-    	    
-    	
-    	String s = "Total time: " + hoursDay + "h " + minutesDay + "m";
-	    		
-	    		
-	    	    if(b.toDateString().equals(dateString))
-	    	    {
-	    	    	blockList.add(s);
-
-	    	    	if(!(b.getOrderID() == 0)){
-	    	    		blockStatesList.add(b.getChecked());
-	    	    	}
-	    	    	else{
-	    	    		blockStatesList.add(2);
-	    	    	}
-	    	    	
-	    	    }
+	    	
+		    	    //s += "Total time: " + hoursDay + "h " + minutesDay + "m";
+		    		
+		    		
+		    	    if(b.toDateString().equals(dateString))
+		    	    {
+		    	    	blockList.add(s);
+	
+		    	    	if(!(b.getOrderID() == 0)){
+		    	    		blockStatesList.add(b.getChecked());
+		    	    	}
+		    	    	else{
+		    	    		blockStatesList.add(2);
+		    	    	}
+		    	    	
+		    	    }
+	    		}
 	    	}
 	    	
 	    	//listAdapter = new ArrayAdapter<String>(this,R.layout.listrow, blockList);
