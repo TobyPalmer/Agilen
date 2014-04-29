@@ -13,6 +13,7 @@ public class Block implements Serializable, Comparable<Block>{
 	private long stop;
 	
 	private String comment;
+	private int checked;
 	
 	public Block() {
 		// Empty constructor
@@ -24,6 +25,7 @@ public class Block implements Serializable, Comparable<Block>{
 		this.stop = 0;
 		this.orderID = 0;
 		this.comment = "";
+		this.checked = 0;
 	}
 
 	public Block(int orderID, long s) {
@@ -31,6 +33,7 @@ public class Block implements Serializable, Comparable<Block>{
 		this.start = s;
 		this.stop = 0;
 		this.orderID = orderID;
+		this.checked = 0;
 	}
 
 	public Block(int orderID, long start, long stop, String comment) {
@@ -39,11 +42,20 @@ public class Block implements Serializable, Comparable<Block>{
 		this.stop = stop;
 		this.orderID = orderID;
 		this.comment = comment;
+		this.checked = 0;
 	}
 
 	
 	public int getID() {
 		return ID;
+	}
+
+	public int getChecked() {
+		return checked;
+	}
+
+	public void setChecked(int checked) {
+		this.checked = checked;
 	}
 
 	public void setID(int iD) {
@@ -89,7 +101,8 @@ public class Block implements Serializable, Comparable<Block>{
 		Date stop = new java.util.Date(this.stop);
 		String stopString = new SimpleDateFormat("HH:mm").format(stop);
 		
-		return "Block, start = " + startString + ", stop =  " + stopString + ", orderID = " + this.orderID + ", comment = " + this.comment + "\n";
+		return "Block, start = " + startString + ", stop =  " + stopString + ", orderID = " + this.orderID 
+				+ ", comment = " + this.comment + ", checked = " + this.checked + "\n";
 	}
 	
 	public String toStringPublic(){

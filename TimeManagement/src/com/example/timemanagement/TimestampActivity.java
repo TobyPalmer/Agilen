@@ -179,7 +179,6 @@ public class TimestampActivity extends MainActivity {
 		
 		// Gets all the blocks between 00:00 and 23:59 of the chosen day
 		List<Block> blocksOfToday = MainActivity.db.getBlocksBetweenDate(start, stop);
-
 		
 		Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
 		
