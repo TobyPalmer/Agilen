@@ -11,7 +11,6 @@ import android.R.color;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -30,15 +29,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.ListView;
 
 import com.example.swipetodismiss.*;
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
 
-public class TimestampActivity extends ListActivity {
+public class TimestampActivity extends MainActivity {
 	
 	// Contains all blocks in list view
 	private List<Block> l = new ArrayList<Block>();
+	private ArrayAdapter<String> listAdapter;
+	private ListView listView;
 	
 	// Handles current "running" block
 	Block b;
@@ -47,6 +49,7 @@ public class TimestampActivity extends ListActivity {
 	
 	// Contains strings representing all blocks
 	ArrayAdapter<String> mAdapter;
+	
 
 	// longs that represents the start- and endtime of the day
 	private long start, stop;
@@ -55,6 +58,8 @@ public class TimestampActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_timestamp);
+		
+		listView = (ListView) findViewById(android.R.id.list);
 		// Show the Up button in the action bar
 		setupActionBar();
 		
@@ -73,6 +78,7 @@ public class TimestampActivity extends ListActivity {
 		setDayText(start);
 		printBlocks();
 		
+
 		//onclick that starts and stops the time.
 		//It also changes the color and text on the button
 		final Button start = (Button)findViewById(R.id.startButton);
@@ -92,6 +98,7 @@ public class TimestampActivity extends ListActivity {
 	        	
 	        }
 	    });
+
 		
 
 	}
@@ -209,14 +216,14 @@ public class TimestampActivity extends ListActivity {
         
         // Define the data structure for the list strings
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, new ArrayList<String>(Arrays.asList(items)));        
-        setListAdapter(mAdapter);
+        listView.setAdapter(mAdapter);
         
         
         
         // Create a ListView-specific touch listener. ListViews are given special treatment because
         // by default they handle touches for their list items... i.e. they're in charge of drawing
         // the pressed state (the list selector), handling list item clicks, etc.
-        ListView listView = getListView();
+        //ListView listView = l_view.getListView();
         SwipeDismissListViewTouchListener touchListener =
                 new SwipeDismissListViewTouchListener(
                         listView,
