@@ -386,10 +386,6 @@ public class TimestampActivity extends MainActivity {
 		 
 		 dialog.show(); 
 	 }
-	   public void newOrderActivity(View view){
-	        Intent intent = new Intent(this, NewOrderActivity.class);
-	        
-	        startActivity(intent);
-	    }
+	
 	
 }
