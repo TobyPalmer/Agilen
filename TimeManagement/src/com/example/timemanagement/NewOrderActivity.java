@@ -86,7 +86,7 @@ public class NewOrderActivity extends Activity implements DataPassable{
         if(getIntent().getExtras()!=null){
         	newTask = false;
         	timeBlock = (Block) getIntent().getSerializableExtra("Block");
-//        	update(timeBlock);
+        	update(timeBlock);
         }
         
         d = (Button)findViewById(R.id.deleteButton);
@@ -307,11 +307,8 @@ public class NewOrderActivity extends Activity implements DataPassable{
         // only got here if we didn't return false
         return true;
     }
-    
-    /**
-     * Method that gets called when a Pickfragment adjusts the date.
-     */
-    @Override
+
+	@Override
 	public void update(PickFragment p, Object o) {		
 		  timeBlock = (Block)o;
 			 
@@ -326,8 +323,7 @@ public class NewOrderActivity extends Activity implements DataPassable{
 					 timeBlock.setStart(timeBlock.getStop());
 					 timeBlock.setStop(timeBlock.getStart());
 				 }
-			}
-				 
+	
 			 //Refresh date and time
 			 dateButton.setText(timeBlock.toDateString());
 			 startButton.setText(timeBlock.toTimeString(true));
@@ -341,7 +337,33 @@ public class NewOrderActivity extends Activity implements DataPassable{
 				 newTask = true;
 			 }
 			 
+	
+		}
 		else return;	
+	}
+	
+	public void update(Block timeBlock){
+		
+		 if(timeBlock.getStart() > timeBlock.getStop()){
+			 timeBlock.setStop(timeBlock.getStart());
+			 timeBlock.setStart(timeBlock.getStop());
+		 }
+		 else if((timeBlock.getStart() > timeBlock.getStop())){
+			 timeBlock.setStart(timeBlock.getStop());
+			 timeBlock.setStop(timeBlock.getStart());
+		 }
+
+		 //Refresh date and time
+		 dateButton.setText(timeBlock.toDateString());
+		 startButton.setText(timeBlock.toTimeString(true));
+		 stopButton.setText(timeBlock.toTimeString(false));
+		 
+		 if(!newTask){
+			 Log.w("AgilTag","kk");
+			 updateSpinner();
+			 updateComment();
+			 newTask = true;
+		 }
 	}
 	
 	public void updateSpinner(){
