@@ -259,7 +259,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
                 block.setOrderID(cursor.getInt(3));
                 block.setComment(cursor.getString(4));
                 block.setChecked(cursor.getInt(5));
-                
+
 	            return block;
         	}
         	else { // No rows
