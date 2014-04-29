@@ -4,5 +4,5 @@ package com.example.timemanagement;
  * @author augek158
  */
 public interface DataPassable {
-	public void update(Object o);
+	public void update(PickFragment p, Object o);
 }

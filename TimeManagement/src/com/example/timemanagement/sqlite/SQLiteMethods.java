@@ -12,6 +12,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.Cursor;
+import android.support.v4.util.LogWriter;
+import android.util.Log;
 
 public class SQLiteMethods extends SQLiteOpenHelper {
 	
@@ -321,6 +323,38 @@ public class SQLiteMethods extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         return blocks;
+    }
+    
+   /**
+    * Function that returns all timeblocks between two given UNIX-times.
+    * 
+    * @param start The start of the interval
+    * @param stop The stop of the interval
+    * @return All timeblocks in the chosen interval
+    */
+    public List<Block> getBlocksBetweenDate(long start, long stop) {
+    	
+    	  List<Block> blocks = new LinkedList<Block>();
+    	
+    	  SQLiteDatabase db = this.getReadableDatabase();
+    	  
+    	  Cursor cursor = db.rawQuery("SELECT * FROM blocks "
+    	  							+ "WHERE start > ? AND stop < ?",
+    			  new String[] {String.valueOf(start), String.valueOf(stop)});
+    	  
+
+          if (cursor.moveToFirst()) {
+              do {
+                  Block block = new Block();
+                  block.setID(Integer.parseInt(cursor.getString(0)));
+                  block.setStart(cursor.getLong(1));
+                  block.setStop(cursor.getLong(2));
+                  block.setOrderID(cursor.getInt(3));
+                  block.setComment(cursor.getString(4));
+                  blocks.add(block);
+              } while (cursor.moveToNext());
+          }
+          return blocks;
     }
     
     /**

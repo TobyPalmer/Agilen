@@ -86,7 +86,7 @@ public class NewOrderActivity extends Activity implements DataPassable{
         if(getIntent().getExtras()!=null){
         	newTask = false;
         	timeBlock = (Block) getIntent().getSerializableExtra("Block");
-        	update(timeBlock);
+//        	update(timeBlock);
         }
         
         d = (Button)findViewById(R.id.deleteButton);
@@ -186,7 +186,7 @@ public class NewOrderActivity extends Activity implements DataPassable{
 		    // Pass null as the parent view because its going in the dialog layout
 		    builder.setView(inflater.inflate(R.layout.activity_neworderpopup, null));
 		 
-		 builder.setPositiveButton("Lägg till", new DialogInterface.OnClickListener() {
+		 builder.setPositiveButton("Lï¿½gg till", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User clicked OK button
 	        	
@@ -303,15 +303,21 @@ public class NewOrderActivity extends Activity implements DataPassable{
     }
 
 	@Override
-	public void update(Object o) {
-		if(o instanceof Block){
-			 timeBlock = (Block)o;
+	public void update(PickFragment p, Object o) {		
+		  timeBlock = (Block)o;
 			 
-			 //Changes the time if the user used invalid values.
-			 if(timeBlock.getStart() > timeBlock.getStop()){
-				 timeBlock.setStop(timeBlock.getStart());
-				 timeBlock.setStart(timeBlock.getStop());
-			 }
+			 if(p instanceof TimePickFragment){
+				 
+				 //Changes the time if the user used invalid values.
+				 if(((TimePickFragment) p).isStart() && (timeBlock.getStart() > timeBlock.getStop())){
+					 timeBlock.setStop(timeBlock.getStart());
+					 timeBlock.setStart(timeBlock.getStop());
+				 }
+				 else if((timeBlock.getStart() > timeBlock.getStop())){
+					 timeBlock.setStart(timeBlock.getStop());
+					 timeBlock.setStop(timeBlock.getStart());
+				 }
+	
 			 //Refresh date and time
 			 dateButton.setText(timeBlock.toDateString());
 			 startButton.setText(timeBlock.toTimeString(true));
@@ -389,5 +395,5 @@ public class NewOrderActivity extends Activity implements DataPassable{
 	 }
 	
 	
-    
+
 }

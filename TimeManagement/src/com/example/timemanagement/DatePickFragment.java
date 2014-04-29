@@ -37,9 +37,10 @@ public class DatePickFragment extends PickFragment
 			int dayOfMonth){
 		 cal.set(year, monthOfYear, dayOfMonth);
 		 timeBlock.setStart(cal.getTimeInMillis());
+		 timeBlock.setStop(cal.getTimeInMillis());
 		 
 		 //Update the parent activity with the new date.
-		 parentActivity.update(timeBlock);
+		 parentActivity.update(this, timeBlock);
 	}
 
 }
