@@ -3,6 +3,11 @@ package com.example.timemanagement.sqlite;
 import com.example.timemanagement.model.Order;
 import com.example.timemanagement.model.Block;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,7 +16,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.Cursor;
+import android.util.Log;
 
 public class SQLiteMethods extends SQLiteOpenHelper {
 	
@@ -361,5 +366,65 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         			new String[] { String.valueOf(block.getID()) });
 
         db.close();
+    }
+    
+    /**
+     * Get all data as JSON string
+     * 
+     * @return
+     */
+    public String toJSONString() {
+    	// Get all orders
+        List<Order> orders = new ArrayList<Order>();
+        orders = this.getAllOrders();
+        
+        // Create root node
+        JSONObject userData = new JSONObject();
+        
+        // Create order node
+        JSONArray orderData = new JSONArray();
+        
+        // Define orders node
+        for(int i = 0; i < orders.size(); i++) {
+        	// Create order node
+        	JSONObject theOrder = new JSONObject(); 
+        	
+        	// Get blocks for this order
+        	try {
+        		// Get blocks
+        		List<Block> blocks = new ArrayList<Block>(); 
+        		blocks = this.getBlocks(orders.get(i).getID());
+
+        		// Will contain the block data
+        		JSONArray blockData = new JSONArray();
+        		
+        		// Create block nodes
+        		for(int j = 0; j < blocks.size(); j++) {
+        			JSONObject theBlock = new JSONObject();
+        			theBlock.put("start", blocks.get(j).getStart());
+        			theBlock.put("stop", blocks.get(j).getStop());
+        			theBlock.put("comment", blocks.get(j).getComment());
+        			blockData.put(theBlock);
+        		}
+        		
+        		// Define order node
+        		theOrder.put("orderNumber", orders.get(i).getOrderNumber());
+        		theOrder.put("orderName", orders.get(i).getOrderName());
+        		theOrder.put("blocks", blockData);
+        		
+        		// Add this order to order-node
+        		orderData.put(theOrder);
+        	} catch(JSONException e) {
+            	Log.w("timemanagement", "JSONException: " + e.toString());
+            }
+        }
+        try {
+        	userData.put("orders", orderData.toString());
+        } catch(JSONException e) {
+        	Log.w("timemanagement", "JSONException: " + e.toString());
+        }
+        
+        String output = userData.toString();
+        return output;
     }
 }
