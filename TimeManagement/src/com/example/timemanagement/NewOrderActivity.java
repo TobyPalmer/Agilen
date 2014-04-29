@@ -301,8 +301,11 @@ public class NewOrderActivity extends Activity implements DataPassable{
         // only got here if we didn't return false
         return true;
     }
-
-	@Override
+    
+    /**
+     * Method that gets called when a Pickfragment adjusts the date.
+     */
+    @Override
 	public void update(PickFragment p, Object o) {		
 		  timeBlock = (Block)o;
 			 
@@ -317,7 +320,8 @@ public class NewOrderActivity extends Activity implements DataPassable{
 					 timeBlock.setStart(timeBlock.getStop());
 					 timeBlock.setStop(timeBlock.getStart());
 				 }
-	
+			}
+				 
 			 //Refresh date and time
 			 dateButton.setText(timeBlock.toDateString());
 			 startButton.setText(timeBlock.toTimeString(true));
@@ -331,8 +335,6 @@ public class NewOrderActivity extends Activity implements DataPassable{
 				 newTask = true;
 			 }
 			 
-	         
-		}
 		else return;	
 	}
 	
