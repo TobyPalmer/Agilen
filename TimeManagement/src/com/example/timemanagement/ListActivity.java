@@ -23,11 +23,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
+
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
+
 import android.widget.TextView;
 
 import com.example.timemanagement.R.color;
@@ -67,11 +66,14 @@ import android.graphics.Typeface;
 		String s, dateString;
 		Block b;
 		int n = 0;
-		long today, day_next, stop, start;
+
+		int hoursDay, minutesDay;
+		long today, day_next, timeDiff, stop, start;
 		private Date d;
 		private ListView l_view;
-		private TextView day;
+		private TextView day, total;
 		private CustomListAdapter1 listAdapter;
+
 		private ArrayList<String> blockList;
 		private ArrayList<Integer> blockStatesList;
 		private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -102,6 +104,7 @@ import android.graphics.Typeface;
 			
 			l_view = (ListView) findViewById(R.id.l_view);
 			day = (TextView) findViewById(R.id.day);
+			total = (TextView) findViewById(R.id.total);
 			
 			blockList = new ArrayList<String>();
 			blockStatesList = new ArrayList<Integer>();
@@ -160,7 +163,9 @@ import android.graphics.Typeface;
 		{
 			blockList.clear();
 			//Iterate through the blocks
-	    	Iterator<Block> it = bList.iterator(); 
+			hoursDay =  minutesDay = 0;
+	    	
+			Iterator<Block> it = bList.iterator(); 
 	    	while(it.hasNext())
 	    	{
 	    		b = it.next();
@@ -176,10 +181,31 @@ import android.graphics.Typeface;
 	    			s += " - Checked! ";
 	    		}
 	    		
+	    	    //adds the hours and minutes of a block to hoursDay and minutesDay
+	    		if(b.getStop()!=0)
+	    			timeDiff = b.getStop()-b.getStart();
+	    		else
+	    			timeDiff = System.currentTimeMillis() - b.getStart();
+	    		
+	    		timeDiff -= 1000*60*60;
+	    		
+	    		Date date = new java.util.Date(timeDiff);
+	    	    
+	    	    hoursDay += date.getHours();
+	    	    minutesDay += date.getMinutes();
+	    	    if(minutesDay > 60){
+	    	    	hoursDay += minutesDay/60;
+	    	    	minutesDay = minutesDay % 60;    	    	
+	    	    }
+    	    
+    	
+    	String s = "Total time: " + hoursDay + "h " + minutesDay + "m";
+	    		
 	    		
 	    	    if(b.toDateString().equals(dateString))
 	    	    {
 	    	    	blockList.add(s);
+
 	    	    	if(!(b.getOrderID() == 0)){
 	    	    		blockStatesList.add(b.getChecked());
 	    	    	}
@@ -217,11 +243,13 @@ import android.graphics.Typeface;
 										
 										@Override
 										public void onClick(DialogInterface dialog, int which) {
+											Block block = bList.get(position);
 											Intent i = new Intent(getApplicationContext(), NewOrderActivity.class);
-								        	
-								        	i.putExtra("Block", bList.get(position));
-								        	i.putExtra("String", "editBlock");								        	        	
-								        	startActivity(i);											
+			            		        	
+			            		        	i.putExtra("Block", block);
+			            		        	i.putExtra("String", "editBlock");
+			            		        	        	
+			            		        	startActivity(i);											
 										}
 									});
 	    					
@@ -247,7 +275,10 @@ import android.graphics.Typeface;
 	    			
 	    		}
 	    	});
+     
 	    	day.setText(dateString);
+	    	
+	    	total.setText(s);
 		}
 		
 		private String getDateString(){
