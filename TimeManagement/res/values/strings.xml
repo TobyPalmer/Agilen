@@ -24,6 +24,7 @@
     <string name="orderNumber">Ordernummer</string>
     <string name="addOrderButton">Spara</string>
     <string name="addedOrder"></string>
+    <string name="delete">Ta Bort</string>
 
     <string name="addNewOrderNumber">Nytt Ordernummer</string>
     <string name="orderName">Ordernamn</string>
