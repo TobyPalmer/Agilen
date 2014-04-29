@@ -60,10 +60,11 @@ import android.graphics.Typeface;
 		String s, dateString;
 		Block b;
 		int n = 0;
-		long today, day_next;
+		int hoursDay, minutesDay;
+		long today, day_next, timeDiff;
 		private Date d;
 		private ListView l_view;
-		private TextView day;
+		private TextView day, total;
 		private ArrayAdapter<String> listAdapter;
 		private ArrayList<String> blockList;
 		private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -82,6 +83,7 @@ import android.graphics.Typeface;
 			
 			l_view = (ListView) findViewById(R.id.l_view);
 			day = (TextView) findViewById(R.id.day);
+			total = (TextView) findViewById(R.id.total);
 			
 			blockList = new ArrayList<String>();		
 			
@@ -139,7 +141,9 @@ import android.graphics.Typeface;
 		{
 			blockList.clear();
 			//Iterate through the blocks
-	    	Iterator<Block> it = bList.iterator(); 
+			hoursDay =  minutesDay = 0;
+	    	
+			Iterator<Block> it = bList.iterator(); 
 	    	while(it.hasNext())
 	    	{
 	    		b = it.next();
@@ -154,12 +158,31 @@ import android.graphics.Typeface;
 	    	    if(b.toDateString().equals(dateString))
 	    	    {
 	    	    	blockList.add(s);
+	    	      
+		    	    //adds the hours and minutes of a block to hoursDay and minutesDay
+		    		if(b.getStop()!=0)
+		    			timeDiff = b.getStop()-b.getStart();
+		    		else
+		    			timeDiff = System.currentTimeMillis() - b.getStart();
+		    		
+		    		timeDiff -= 1000*60*60;
+		    		
+		    		Date date = new java.util.Date(timeDiff);
+		    	    
+		    	    hoursDay += date.getHours();
+		    	    minutesDay += date.getMinutes();
+	    	    
 	    	    }
 	    	}
+	    	
+	    	String s = "Total time: " + hoursDay + "h " + minutesDay + "m";
+	    	Log.d("hours",s);
 	    	
 	    	listAdapter = new ArrayAdapter<String>(this,R.layout.listrow, blockList);
 	    	l_view.setAdapter(listAdapter);
 	    	day.setText(dateString);
+	    	
+	    	total.setText(s);
 		}
 
 		/**
