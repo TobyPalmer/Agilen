@@ -18,7 +18,7 @@ import android.util.Log;
 public class SQLiteMethods extends SQLiteOpenHelper {
 	
 	// Database info
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
     private static final String DATABASE_NAME = "TimeManagement";
  
     // Constructor
@@ -42,8 +42,9 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         	"ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
         	"start INTEGER, " +
         	"stop INTEGER, " +
-        	"orderID INTEGER," +
-        	"comment TEXT)";
+        	"orderID INTEGER, " +
+        	"comment TEXT, "
+        	+"checked INTEGER)";
         db.execSQL(CREATE_BLOCKS_TABLE);
     }
     
@@ -200,11 +201,13 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     private static final String BLOCKS_TABLE_KEY_STOP = "stop";
     private static final String BLOCKS_TABLE_KEY_ORDERID = "orderID";
     private static final String BLOCKS_TABLE_KEY_COMMENT = "comment";
+    private static final String BLOCKS_TABLE_KEY_CHECKED = "checked";
     private static final String[] BLOCKS_TABLE_COLUMNS = {BLOCKS_TABLE_KEY_ID, 
     														BLOCKS_TABLE_KEY_START, 
     														BLOCKS_TABLE_KEY_STOP, 
     														BLOCKS_TABLE_KEY_ORDERID,
-    														BLOCKS_TABLE_KEY_COMMENT};
+    														BLOCKS_TABLE_KEY_COMMENT,
+    														BLOCKS_TABLE_KEY_CHECKED};
    
     /**
      * INSERT: Create new block
@@ -218,6 +221,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         values.put(BLOCKS_TABLE_KEY_STOP, block.getStop());
         values.put(BLOCKS_TABLE_KEY_ORDERID, block.getOrderID());
         values.put(BLOCKS_TABLE_KEY_COMMENT, block.getComment());
+        values.put(BLOCKS_TABLE_KEY_CHECKED, block.getChecked());
  
         block.setID((int)db.insert(BLOCKS_TABLE, null, values));
         db.close(); 
@@ -250,6 +254,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
                 block.setStop(cursor.getLong(2));
                 block.setOrderID(cursor.getInt(3));
                 block.setComment(cursor.getString(4));
+                block.setChecked(cursor.getInt(5));
                 
 	            return block;
         	}
@@ -289,6 +294,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
                 block.setStop(cursor.getLong(2));
                 block.setOrderID(cursor.getInt(3));
                 block.setComment(cursor.getString(4));
+                block.setChecked(cursor.getInt(5));
                 blocks.add(block);
             } while (cursor.moveToNext());
         }
@@ -319,6 +325,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
                 block.setStop(cursor.getLong(2));
                 block.setOrderID(cursor.getInt(3));
                 block.setComment(cursor.getString(4));
+                block.setChecked(cursor.getInt(5));
                 blocks.add(block);
             } while (cursor.moveToNext());
         }
@@ -351,6 +358,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
                   block.setStop(cursor.getLong(2));
                   block.setOrderID(cursor.getInt(3));
                   block.setComment(cursor.getString(4));
+                  block.setChecked(cursor.getInt(5));
                   blocks.add(block);
               } while (cursor.moveToNext());
           }
@@ -371,6 +379,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         values.put(BLOCKS_TABLE_KEY_STOP, block.getStop());
         values.put(BLOCKS_TABLE_KEY_ORDERID, block.getOrderID());
         values.put(BLOCKS_TABLE_KEY_COMMENT, block.getComment());
+        values.put(BLOCKS_TABLE_KEY_CHECKED, block.getChecked());
      
         int i = db.update(BLOCKS_TABLE, 
         					values, 
