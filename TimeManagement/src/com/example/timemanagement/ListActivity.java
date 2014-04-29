@@ -35,11 +35,7 @@ import android.app.Activity;
 import android.graphics.Typeface;
 
 
-
-
-
-
-	public class ListActivity extends MainActivity {
+public class ListActivity extends MainActivity {
 		
 		ListView myList;
 		
@@ -47,10 +43,11 @@ import android.graphics.Typeface;
 			{
 				"08:00 - 09:37, SAAB ",
 				"09:37 - 10:00, Frukost",
-				"10:00 - 10:17, Scrummöte",
+
+				"10:00 - 10:17, Scrummï¿½te",
 				"10:17 - 11:50, Arbete", 
 				"11:50 - 13:17, Lunch",
-				"13:17 - 14:02, Internt möte", 
+				"13:17 - 14:02, Internt mï¿½te", 
 				"14:02 - 16:23, SAAB",
 				"16:23 - 17:05, Arbete"
 			};
@@ -79,6 +76,7 @@ import android.graphics.Typeface;
 			//Create a list of all the blocks
 	    	bList = MainActivity.db.getAllBlocks();
 			
+
 			l_view = (ListView) findViewById(R.id.l_view);
 			day = (TextView) findViewById(R.id.day);
 			
@@ -149,6 +147,7 @@ import android.graphics.Typeface;
 	    	    }
 	    	}
 	    	
+
 	    	listAdapter = new ArrayAdapter<String>(this,R.layout.listrow, blockList);
 	    	l_view.setAdapter(listAdapter);
 	    	day.setText(dateString);
@@ -167,6 +166,7 @@ import android.graphics.Typeface;
 		@Override
 		public boolean onCreateOptionsMenu(Menu menu) {
 			// Inflate the menu; this adds items to the action bar if it is present.
+
 			getMenuInflater().inflate(R.menu.list, menu);
 			return true;
 		}
@@ -188,5 +188,5 @@ import android.graphics.Typeface;
 			return super.onOptionsItemSelected(item);
 		}		
 
-	}
+}
 

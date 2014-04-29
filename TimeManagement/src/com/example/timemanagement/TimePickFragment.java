@@ -14,6 +14,11 @@ public class TimePickFragment extends PickFragment
 							implements TimePickerDialog.OnTimeSetListener {
 	
 	private boolean isStart;
+	
+	public boolean isStart() {
+		return isStart;
+	}
+
 	/**
 	 * @param timeBlock
 	 * @param isStart determines if the timeBlock represents the start- or endtime.
@@ -53,7 +58,7 @@ public class TimePickFragment extends PickFragment
 		 	timeBlock.setStop(cal.getTimeInMillis());
 		 
 		 //Update the parent activity with the new time.
-		 parentActivity.update(timeBlock);
+		 parentActivity.update(this, timeBlock);
 	}
 
 }
