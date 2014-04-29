@@ -21,7 +21,8 @@ import android.util.Log;
 public class SQLiteMethods extends SQLiteOpenHelper {
 	
 	// Database info
-    private static final int DATABASE_VERSION = 8;
+
+    private static final int DATABASE_VERSION = 10;
     private static final String DATABASE_NAME = "TimeManagement";
  
     // Constructor
@@ -258,7 +259,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
                 block.setOrderID(cursor.getInt(3));
                 block.setComment(cursor.getString(4));
                 block.setChecked(cursor.getInt(5));
-                
+
 	            return block;
         	}
         	else { // No rows
@@ -335,13 +336,14 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         return blocks;
     }
     
-   /**
-    * Function that returns all timeblocks between two given UNIX-times.
-    * 
-    * @param start The start of the interval
-    * @param stop The stop of the interval
-    * @return All timeblocks in the chosen interval
-    */
+
+    /**
+     * Returns all blocks in a specific time interval.
+     * 
+     * @param start The start of the interval
+     * @param stop The end of the interval
+     * @return The list with the matching blocks.
+     */
     public List<Block> getBlocksBetweenDate(long start, long stop) {
     	
     	  List<Block> blocks = new LinkedList<Block>();
