@@ -1,47 +1,52 @@
 package com.example.timemanagement;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ListActivity;
 import android.content.DialogInterface;
-
 import android.content.Intent;
-import android.graphics.Point;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.Html;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.TableLayout;
-import android.widget.TableRow;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.timemanagement.R.color;
+import com.example.swipetodismiss.*;
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
 
-public class TimestampActivity extends MainActivity {
+public class TimestampActivity extends ListActivity {
+	
+	// Contains all blocks in list view
+	private List<Block> l = new ArrayList<Block>();
+	
+	// Handles current "running" block
+	Block b;
+	boolean started = false;
+	boolean stopped = true;
+	
+	// Contains strings representing all blocks
+	ArrayAdapter<String> mAdapter;
 
 	// longs that represents the start- and endtime of the day
 	private long start, stop;
-	
-	boolean started = false;
-	boolean stopped = true;
-	Block b;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +69,8 @@ public class TimestampActivity extends MainActivity {
 		//update view
 		setDayText(start);
 		printBlocks();
+		
+
 	}
 	
 	/**
@@ -129,32 +136,7 @@ public class TimestampActivity extends MainActivity {
 		}
 	}
 	
-	/*
-	@SuppressLint("NewApi") public void changeOrder(View view){
-		//String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTimeInMillis());
-		//String changeTime = mydate.substring(mydate.length()-8, mydate.length()-3);
-		
-		if(started){
-		
-			long changeTime = System.currentTimeMillis();
-	
-			TextView current = (TextView)findViewById(R.id.timestampText);
-			
-			l.get(listIndex).setStop(changeTime);
-			listIndex++;
-			Block b = new Block(changeTime);
-			l.add(b);
-			
-			current.setText("");
-			for(int i=0; i<l.size();i++){
-				current.append(l.get(i).toString());
-			}
-			
-			started = true;
-			stopped = false;
-		}		
-	}
-*/
+
 	
 	public void stopTime(View view){
 		//String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTimeInMillis());
@@ -174,119 +156,86 @@ public class TimestampActivity extends MainActivity {
 			printBlocks();
 		}
 	}
-
+	
 	public void printBlocks(){
+		 
+		final List<Block> blocksOfToday = MainActivity.db.getBlocksBetweenDate(start, stop);
 		
-		// Gets all the blocks between 00:00 and 23:59 of the chosen day
-		List<Block> blocksOfToday = MainActivity.db.getBlocksBetweenDate(start, stop);
-
+		// Fetch blocks from database
+		//blocksOfToday = MainActivity.db.getAllBlocks();
 		
-		Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
-		
-	    Display display = getWindowManager().getDefaultDisplay();
-	    Point size = new Point();
-	    display.getSize(size);
-	    int width = size.x;
-	    int height = size.y;
-		
-		/* Find Tablelayout defined in main.xml */
-		TableLayout tl = (TableLayout) findViewById(R.id.TableLayout);		
-		tl.removeAllViews();
-		tl.setPadding(0, 0, 0, 350);
-		
-		for(int i=0; i<blocksOfToday.size();i++){
-			
-			String s = "";
-
-			int orderId = blocksOfToday.get(i).getOrderID();
+		// Initial strings for blocks, will be converted to ArrayAdapter
+        String[] items = new String[blocksOfToday.size()];
+        
+        // Define initial block strings
+        for (int i = 0; i < items.length; i++) {
+        	int orderId = blocksOfToday.get(i).getOrderID();
 			final Block block = blocksOfToday.get(i);
 			Order order = MainActivity.db.getOrder(orderId);
 			
+        	String s = "";
+			//s = blocksOfToday.get(i).getID() + " " + blocksOfToday.get(i).toStringPublic();
 			if(MainActivity.db.getOrder(orderId)==null)
 				s = blocksOfToday.get(i).toStringPublic() + " - " + block.getComment();
 			else
-				s = block.toStringPublic() + " - <i>" + order.getOrderName() + "</i>";
-//				s = block.toStringPublic() + " " + MainActivity.db.getOrder(orderId).toString();
-			
-			/* Create a new row to be added. */
-			TableRow tr = new TableRow(this);
-			
-			tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.FILL_PARENT));
-			/*Set text*/
-			TextView t = new TextView(this);
-			t.setText(Html.fromHtml(s));
-			
-			/*Set time*/
-			TextView t2 = new TextView(this);
-			t2.setText(block.printTime());
-			
-			/* Create a Button to be the row-content. */
-			Button b = new Button(this);
-			b.setTypeface(font);
-			b.setBackgroundColor(getResources().getColor(color.editColor));
-			b.setText(R.string.edit);
-			b.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));		
-		    b.setOnClickListener(new View.OnClickListener() {
+				s = block.toStringPublic() + " - " + order.getOrderName() + " " + block.getComment();
+//				
+			items[i] = s;
+        }
+        
+        // Define the data structure for the list strings
+        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, new ArrayList<String>(Arrays.asList(items)));        
+        setListAdapter(mAdapter);
+        
+        
+        
+        // Create a ListView-specific touch listener. ListViews are given special treatment because
+        // by default they handle touches for their list items... i.e. they're in charge of drawing
+        // the pressed state (the list selector), handling list item clicks, etc.
+        ListView listView = getListView();
+        SwipeDismissListViewTouchListener touchListener =
+                new SwipeDismissListViewTouchListener(
+                        listView,
+                        new SwipeDismissListViewTouchListener.DismissCallbacks() {
+                            @Override
+                            public boolean canDismiss(int position) {
+                                return true;
+                            }
 
-		        public void onClick(View v) {
-		            // TODO Auto-generated method stub
-		        	Log.w("AgilTag", block.toString());
-		        	
-		        	Intent i = new Intent(getApplicationContext(), NewOrderActivity.class);
-		        	
-		        	i.putExtra("Block", block);
-		        	i.putExtra("String", "editBlock");
-		        	        	
-		        	startActivity(i);	
-		        }
-		    });
-		    
-			Button c = new Button(this);
-			c.setTypeface(font);
-			c.setText(R.string.comment);
-			c.setBackgroundColor(getResources().getColor(color.commentColor));
-			c.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
-		    c.setOnClickListener(new View.OnClickListener() {
-
-		        public void onClick(View v) {
-		            // TODO Auto-generated method stub
-		        	//Log.w("AgilTag", block.toString());
-		        	addComment(v, block);
-		        	
-		        }
-		    });
-			
-			Button d = new Button(this);
-	    	d.setTypeface(font);
-			d.setText(R.string.trash);
-			d.setBackgroundColor(getResources().getColor(color.deleteColor));
-			d.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
-		    d.setOnClickListener(new View.OnClickListener() {
-
-		        public void onClick(View v) {
-		            // TODO Auto-generated method stub
-		        	Log.w("AgilTag", block.toString());
-		        	deleteBlock(v, block);
-		        	
-		        }
-		    });
-			
-			/* Add Button to row. */
-		    
-			tr.addView(t, (int)(width*0.6), 70);
-			tr.addView(t2,(int)(width*0.1), 70);
-			tr.addView(b, (int)(width*0.1), 70);
-			tr.addView(c, (int)(width*0.1), 70);
-			tr.addView(d, (int)(width*0.1), 70);
-			if(i%2==0)
-				tr.setBackgroundColor(getResources().getColor(color.lightGrey));
-
-			/* Add row to TableLayout. */
-			//tr.setBackgroundResource(R.drawable.sf_gradient_03);
-			tl.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.FILL_PARENT));
-			
-		}	
+                            public void onClick(ListView listView, int position) {
+                            	Block block = blocksOfToday.get(position);
+                            	Log.w("timemanagement", "GUI: Clicked block:" + block.getID());
+            		        	
+            		        	Intent i = new Intent(getApplicationContext(), NewOrderActivity.class);
+            		        	
+            		        	i.putExtra("Block", block);
+            		        	i.putExtra("String", "editBlock");
+            		        	        	
+            		        	startActivity(i);
+                            	
+                            }
+                            
+                            @Override
+                            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+                                for (int position : reverseSortedPositions) {
+                                	Log.w("timemanagement", "GUI: Swipe-removed block, position = " + position + ", block.getID() = " + blocksOfToday.get(position).getID());
+                                	//MainActivity.db.deleteBlock(blocksOfToday.get(position));
+                                	deleteBlock(listView,blocksOfToday.get(position));
+                                	blocksOfToday.remove(position);
+                                	mAdapter.remove(mAdapter.getItem(position));
+                                }
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        });
+        
+        listView.setOnTouchListener(touchListener);
+        // Setting this scroll listener is required to ensure that during ListView scrolling,
+        // we don't look for swipes.
+        listView.setOnScrollListener(touchListener.makeScrollListener());
+		
+		
 	}
+	
 	
 	/**
 	 * Adds one day on the value of start/stop and updates the view. 
@@ -348,7 +297,7 @@ public class TimestampActivity extends MainActivity {
 	        	String commentText = comment.getText().toString();
 	        	block.setComment(commentText);
 	        	MainActivity.db.putBlock(block);
-	        	printBlocks();
+	        	//printBlocks();
 	        	
 	        	
 	           }	
@@ -389,7 +338,7 @@ public class TimestampActivity extends MainActivity {
 	               // User clicked OK button
 
 		        	MainActivity.db.deleteBlock(block);
-		        	printBlocks();
+		        	//printBlocks();
 	           }	
 	       });
 		 
@@ -398,6 +347,7 @@ public class TimestampActivity extends MainActivity {
 	               // User cancelled the dialog
 	        	   getWindow().setSoftInputMode(
 	        			      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+	        	   printBlocks();
 	           }
 	       });
 
@@ -405,26 +355,6 @@ public class TimestampActivity extends MainActivity {
 		 
 		 dialog.show(); 
 	 }
-	
-	/*public void printBlocks(){
-		l = MainActivity.db.getAllBlocks();
-		
-		TextView current = (TextView)findViewById(R.id.timestampText);
-		
-		current.setText(" ");
-		
-		for(int i=0; i<l.size();i++){
-			
-			int orderId = l.get(i).getOrderID();
-			
-			if(MainActivity.db.getOrder(orderId)==null)
-				current.append(l.get(i).toStringPublic() + "\n " );
-			else
-				current.append(l.get(i).toStringPublic() + " " +MainActivity.db.getOrder(orderId).toString() + "\n ");
-			
-			createButton();
-		}	
-	}*/
 	
 	
 }
