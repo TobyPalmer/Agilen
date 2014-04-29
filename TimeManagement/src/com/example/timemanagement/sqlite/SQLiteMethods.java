@@ -18,7 +18,7 @@ import android.util.Log;
 public class SQLiteMethods extends SQLiteOpenHelper {
 	
 	// Database info
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 9;
     private static final String DATABASE_NAME = "TimeManagement";
  
     // Constructor
@@ -326,9 +326,11 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     }
     
     /**
-     * GET: Return all blocks
+     * Returns all blocks in a specific time interval.
      * 
-     * @return 
+     * @param start The start of the interval
+     * @param stop The end of the interval
+     * @return The list with the matching blocks.
      */
     public List<Block> getBlocksBetweenDate(long start, long stop) {
     	

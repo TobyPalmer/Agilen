@@ -212,15 +212,21 @@ public class NewOrderActivity extends Activity implements DataPassable{
     
     	EditText editTextComments = (EditText)findViewById(R.id.editTextComments);
     	Spinner spinner = (Spinner)findViewById(R.id.spinner1);
+    	Order selectedOrder = null;
+    	String orderString = "";
     	
-    	Order selectedOrder = (Order)spinner.getSelectedItem();
+    	if(spinner.getAdapter().getCount() > 0){
+    		selectedOrder = (Order)spinner.getSelectedItem();
+    		timeBlock.setOrderID(selectedOrder.getID());
+    		orderString =  selectedOrder.toString();
+    	}
+    		
     	String comments = editTextComments.getText().toString();
     
-    	timeBlock.setOrderID(selectedOrder.getID());
     	timeBlock.setComment(comments);
     	
     	String message = "You have succesfully edited your task! \n\n" +
-    					 selectedOrder.toString() + "\n" + timeBlock.toStringPublic() +
+    					 orderString + "\n" + timeBlock.toStringPublic() +
     					 "\n " + comments;
     	newPopUp("Task Edited",message);
     	
