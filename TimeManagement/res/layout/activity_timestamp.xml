@@ -93,16 +93,16 @@
 
                      <Button
                          android:id="@+id/startButton"
-                         android:layout_width="0dp"
-                         android:background="@color/lightGrey"
+                         android:layout_width="fill_parent"
+                         android:background="#00ff00"
                          android:layout_height="80dp"
-                         android:layout_weight="1"
-                         android:onClick="startTime"
-                         android:text="Ny Task"
+	 
+	                     android:layout_marginBottom="100dp"
+                         android:text="@string/start"
                          android:textColor="#FFF"
                          android:textSize="30sp" />
                      
-                     <Button
+                    <!--  <Button
                          android:id="@+id/stopButton"
                          android:layout_width="0dp"
                          android:layout_height="80dp"
@@ -113,7 +113,7 @@
                          android:layout_marginBottom="100dp"
                          android:textColor="#FFF"
                          android:onClick="stopTime"
-                         android:text="Stopp" />
+                         android:text="Stopp" />--> 
                </LinearLayout>
 
                  <Button

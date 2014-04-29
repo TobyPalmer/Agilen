@@ -25,6 +25,8 @@
     <string name="addOrderButton">Spara</string>
     <string name="addedOrder"></string>
     <string name="delete">Ta Bort</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
 
     <string name="addNewOrderNumber">Nytt Ordernummer</string>
     <string name="orderName">Ordernamn</string>
@@ -45,6 +47,7 @@
     <color name="deleteColor">#88FF0000</color>
     <color name="editColor">#88ffffff</color>
     <color name="commentColor">#88888888</color>
+    <color name="green">#00ff00</color>
     
 
 
