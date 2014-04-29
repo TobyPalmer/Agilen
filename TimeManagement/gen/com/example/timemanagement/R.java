@@ -50,11 +50,11 @@ public final class R {
         public static final int editTextComments=0x7f090013;
         public static final int imageView1=0x7f090005;
         public static final int l_view=0x7f090004;
-        public static final int menu_checkview=0x7f090024;
-        public static final int menu_schedule=0x7f090022;
-        public static final int menu_settings=0x7f090023;
-        public static final int menu_statistics=0x7f090020;
-        public static final int menu_timestamp=0x7f090021;
+        public static final int menu_checkview=0x7f090020;
+        public static final int menu_schedule=0x7f090023;
+        public static final int menu_settings=0x7f090024;
+        public static final int menu_statistics=0x7f090021;
+        public static final int menu_timestamp=0x7f090022;
         public static final int nextDay=0x7f090003;
         public static final int orderNamePop=0x7f090018;
         public static final int orderNumberPop=0x7f090017;
