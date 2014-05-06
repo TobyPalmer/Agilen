@@ -27,7 +27,7 @@
     <string name="delete">Ta bort</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
-    <string name="newBlock">Skapa tidsblock</string>
+    <string name="newBlock">Manuell rapportering</string>
 
     <string name="addNewOrderNumber">Nytt ordernummer</string>
     <string name="orderName">Ordernamn</string>
@@ -43,13 +43,14 @@
     <color name="orange">#F88621</color>
     <color name="darkGrey">#323232</color>
     <color name="lightGrey">#999</color>
+    <color name="green">#57BF23</color>
+    <color name="red">#FB3804</color>
     
     <color name="title_background">#0000FF</color>
     
     <color name="deleteColor">#88FF0000</color>
     <color name="editColor">#88ffffff</color>
     <color name="commentColor">#88888888</color>
-    <color name="green">#00ff00</color>
     
 
 

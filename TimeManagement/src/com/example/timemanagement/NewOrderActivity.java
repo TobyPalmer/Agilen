@@ -43,7 +43,7 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 	private Button dateButton,
 				   startButton,
 				   stopButton;
-	private Button d;
+	private Button d, delete, save, taskdate, taskstart, taskstop;
 	private TextView arrow;
 	private EditText comment;
 	private boolean newTask;
@@ -55,6 +55,21 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
     	
 		newTask = true;
 		
+		//Setting the font
+		Typeface font_neo = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
+    	
+        delete = (Button)findViewById(R.id.deleteButton);
+        save = (Button)findViewById(R.id.button1);
+        taskdate = (Button)findViewById(R.id.taskDate);
+        taskstart = (Button)findViewById(R.id.taskStart);
+        taskstop = (Button)findViewById(R.id.taskStop);
+        
+    	delete.setTypeface(font_neo);
+    	save.setTypeface(font_neo);
+    	taskdate.setTypeface(font_neo);
+    	taskstart.setTypeface(font_neo);
+    	taskstop.setTypeface(font_neo);
+
     	//Gets the current date.
     	//ToDo: Get date from existing task instead.
     	Calendar cal = Calendar.getInstance();
