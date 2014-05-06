@@ -32,30 +32,29 @@ public class MainActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-    	if(item.getItemId()==R.id.menu_checkview)
+    	switch(item.getItemId()) 
     	{
-    		listActivity();
-    		return true;
-    	}else if(item.getItemId()==R.id.menu_statistics)
-    	{
-    		statisticsActivity();
-    		return true;
-    	}else if(item.getItemId()==R.id.menu_timestamp)
-    	{
-    		timestampActivity();
-    		return true;
-    	}else if(item.getItemId()==R.id.menu_schedule)
-    	{
-    		scheduleActivity();
-    		return true;
-    	}else if(item.getItemId()==R.id.menu_settings)
-    	{
-    		settingActivity();
-    		return true;
+        	case R.id.menu_timestamp:
+        		timestampActivity();
+        		return true;
+        		
+        	case R.id.menu_checkview:
+        		listActivity();
+        		return true;
+        		
+        	case R.id.menu_schedule:
+        		scheduleActivity();
+        		return true;
+        	
+        	case R.id.menu_statistics:
+        		statisticsActivity();
+        		return true;
+        		
+        	case R.id.menu_settings:
+        		settingActivity();
+        		return true;
     	}
-    	 	
     	return false;
-  
     }
     
     public void timestampActivity(View view){
