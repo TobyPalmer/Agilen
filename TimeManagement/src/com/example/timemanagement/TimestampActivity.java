@@ -10,9 +10,9 @@ import java.util.List;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -32,10 +33,12 @@ import com.example.swipetodismiss.*;
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
 
-public class TimestampActivity extends ListActivity {
+public class TimestampActivity extends MainActivity {
 	
 	// Contains all blocks in list view
 	private List<Block> l = new ArrayList<Block>();
+	private ArrayAdapter<String> listAdapter;
+	private ListView listView;
 	
 	// Calendar that is set to the chosen day.
 	private Calendar cal;
@@ -48,6 +51,7 @@ public class TimestampActivity extends ListActivity {
 	
 	// Contains strings representing all blocks
 	ArrayAdapter<String> mAdapter;
+	
 
 	// longs that represents the start- and endtime of the day
 	private long start, stop;
@@ -55,6 +59,12 @@ public class TimestampActivity extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_timestamp);
+		
+		listView = (ListView) findViewById(android.R.id.list);
+		// Show the Up button in the action bar
+		setupActionBar();
+
 		
 		// Sets the start and stop to that of the current day.
 		cal = Calendar.getInstance();
@@ -74,14 +84,33 @@ public class TimestampActivity extends ListActivity {
 				setStartAndStop(intentBlock);
 			}
 		}
-			
-		setContentView(R.layout.activity_timestamp);
-		// Show the Up button in the action bar
-		setupActionBar();
+	
 		
 		// update view
 		setDayText(start);
 		printBlocks();
+		
+
+		//onclick that starts and stops the time.
+		//It also changes the color and text on the button
+		final Button start = (Button)findViewById(R.id.startButton);
+		start.setBackgroundColor(Color.GREEN);
+	    start.setOnClickListener(new View.OnClickListener() {
+	        public void onClick(View v) {
+	        	if(stopped){
+	        		start.setBackgroundColor(Color.RED);
+	        		start.setText(R.string.stop);
+	        		startTime(v);	
+	        	}
+	        	else{
+	        		start.setBackgroundColor(Color.GREEN);
+	        		start.setText(R.string.start);
+	        		stopTime(v);  	
+	        	}
+	        	
+	        }
+	    });
+
 		
 
 	}
@@ -219,14 +248,14 @@ public class TimestampActivity extends ListActivity {
         
         // Define the data structure for the list strings
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, new ArrayList<String>(Arrays.asList(items)));        
-        setListAdapter(mAdapter);
+        listView.setAdapter(mAdapter);
         
         
         
         // Create a ListView-specific touch listener. ListViews are given special treatment because
         // by default they handle touches for their list items... i.e. they're in charge of drawing
         // the pressed state (the list selector), handling list item clicks, etc.
-        ListView listView = getListView();
+        //ListView listView = l_view.getListView();
         SwipeDismissListViewTouchListener touchListener =
                 new SwipeDismissListViewTouchListener(
                         listView,
