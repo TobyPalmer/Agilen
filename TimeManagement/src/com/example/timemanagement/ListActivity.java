@@ -39,11 +39,6 @@ import android.app.AlertDialog;
 import android.graphics.Color;
 import android.graphics.Typeface;
 
-
-
-
-
-
 	public class ListActivity extends MainActivity {
 		
 		
@@ -109,34 +104,25 @@ import android.graphics.Typeface;
 			dateString = (dateFormat.format(d));
 			iterateBlocks(dateString);
 
-	    	final Button nextButton = (Button) findViewById(R.id.nextDay);
-	    	nextButton.setEnabled(false);
+	    	Button nextButton = (Button) findViewById(R.id.nextDay);
 	    	//nextButton.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));		
 	    	nextButton.setOnClickListener(new View.OnClickListener() {
 
 		        public void onClick(View v) {
-		            // TODO Auto-generated method stub
-		        	
-		        	if(d.compareTo(currentDate) == 0)
-		        	{
+		        	if(d.before(currentDate)){
 		        		nextDate();
 		        		iterateBlocks(dateString);
-		        		nextButton.setEnabled(false);
-		        	}	
+		        	}
 		        }
-		    });
+	    	});
+		        		
+		        	
 		    
 		    Button prevButton = (Button) findViewById(R.id.prevDay);
 		    //prevButton.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));		
 		    prevButton.setOnClickListener(new View.OnClickListener() {
 
 		        public void onClick(View v) {
-		            // TODO Auto-generated method stub
-		        	Log.e("KOmmer in hit","Noh");		        	
-		        	if(d.compareTo(currentDate) != 0)
-		        	{		        		
-		        		nextButton.setEnabled(true);
-		        	}		        	
 		        	prevDate();
 		        	iterateBlocks(dateString);	
 		        }
@@ -166,7 +152,6 @@ import android.graphics.Typeface;
 		        public void onClick(View v) {
 		            // TODO Auto-generated method stub
 
-		        	Log.e("Button","deselectAllButton");
 		        	Iterator<Block> it = bList.iterator(); 
 			    	while(it.hasNext())
 			    	{
@@ -192,7 +177,6 @@ import android.graphics.Typeface;
 		{
 			today += day_next;
 			d = new Date(today);
-			Log.d("Datum", d.toString());
 			dateString = (dateFormat.format(d));
 		}
 	
@@ -200,7 +184,6 @@ import android.graphics.Typeface;
 		{
 			today -= day_next;
 			d = new Date(today);
-			Log.d("Datum", d.toString());
 			dateString = (dateFormat.format(d));
 		}
 		
@@ -317,9 +300,9 @@ import android.graphics.Typeface;
 	    				
 	    			}
 	    			catch (Exception e){
-	    				Log.e("Något blev fel! At position:",Integer.toString(position));
+	    				Log.e("Nï¿½got blev fel! At position:",Integer.toString(position));
 	    			}
-	    			Log.e("Värde i listan: ",value);
+	    			Log.e("Vï¿½rde i listan: ",value);
 	    			Log.e("Position i listan: ",Integer.toString(position));
 	    			iterateBlocks(getDateString());
 	    			

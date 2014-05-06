@@ -403,9 +403,6 @@ public class NewOrderActivity extends Activity implements DataPassable{
 
 		        	MainActivity.db.deleteBlock(block);
 		        	startActivity(new Intent(getApplicationContext(), TimestampActivity.class));
-		        	
-	        	
-	        	
 	           }	
 	       });
 		 
