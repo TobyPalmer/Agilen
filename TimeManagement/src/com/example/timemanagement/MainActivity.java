@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.util.Log;
 
 public class MainActivity extends Activity {
 	
@@ -68,25 +69,20 @@ public class MainActivity extends Activity {
         
         startActivity(intent);
     }
-    
-    //Statistik view skapas?
-    public void newStatisticsActivity(View view){
-        Intent intent = new Intent(this, StatisticsActivity.class);
-        
-        startActivity(intent);
-    }
-    
 
     // Making ListView
     public void listActivity(){
         Intent intent = new Intent(this, ListActivity.class);
         
+        Log.d("In Main: void listActivity", "TEST");
         startActivity(intent);
     }
     
     // Making Statistics view
     public void statisticsActivity(){
         Intent intent = new Intent(this, StatisticsActivity.class);
+        
+        Log.d("In Main: void statisticsActivity", "TEST");
         
         startActivity(intent);
     }
