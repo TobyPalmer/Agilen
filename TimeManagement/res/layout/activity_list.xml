@@ -1,90 +1,100 @@
-<?xml version="1.0" encoding="utf-8"?>  
-
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	tools:context=".TimestampActivity" >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TimestampActivity" >
 
-	<LinearLayout
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_alignParentTop="true"
-	>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
 
-	
-		<Button
-			android:id="@+id/prevDay"
-			android:layout_width="0dp"
-			android:layout_height="fill_parent"
-			android:layout_weight="1"
-			android:background="@color/orange"
-			android:textColor="#FFF"
-			android:textSize="20sp"
-			android:layout_alignParentLeft="true"
-			android:text="Prev"
-			android:onClick=""	 
-		/>
-		
-		<TextView
-		    android:id="@+id/day"
-			android:layout_width="0dp"
-			android:layout_height="fill_parent"
-			android:layout_weight="2"
-			android:textSize="25sp"
-			android:gravity="center"
-			android:text="2014-04-15"
-		/>  
-	                
-		<Button
-			android:id="@+id/nextDay"
-			android:layout_width="0dp"
-			android:layout_height="fill_parent"
-			android:layout_weight="1"
-			android:background="@color/orange"
-			android:textColor="#FFF"
-			android:textSize="20sp"
-			android:layout_alignParentRight="true"			
-			android:text="Next" 
-			android:onClick=""
-		/>
-	
-	</LinearLayout>
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_alignParentBottom = "true" >
 
-	<LinearLayout
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_alignParentTop="true"
-		android:layout_marginTop="60dp"
-	>           
-	                   
-		<ListView
-			android:id="@+id/l_view"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"    
-		/>
-		
-	</LinearLayout>
-	
-	<LinearLayout
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true"
-		android:layout_marginTop="60dp"
-	>           
-	                   
-	<TextView
-		    android:id="@+id/total"
-			android:layout_width="0dp"
-			android:layout_height="50dp"
-			android:layout_weight="2"
-			android:textSize="25sp"
-			android:gravity="center"
-			android:text="Total"
-		/>  
-		
-	</LinearLayout>
-	
+            <Button
+                android:id="@+id/prevDay"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_alignParentLeft="true"
+                android:layout_weight="1"
+                android:background="@color/orange"
+                android:text="Prev"
+                android:textColor="#FFF"
+                android:textSize="20sp" />
 
-                 
+            <TextView
+                android:id="@+id/day"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="2014-04-15"
+                android:textSize="25sp" />
+
+            <Button
+                android:id="@+id/nextDay"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="100dp"
+                android:layout_weight="1"
+                android:background="@color/orange"
+                android:text="Next"
+                android:textColor="#FFF"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/l_view"
+            android:layout_width="fill_parent"
+            android:layout_height="400dp"
+            android:layout_weight="3" >
+        </ListView>
+
+        <TextView
+            android:id="@+id/total"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:gravity="bottom|fill_vertical|fill_horizontal"
+            android:text="Total"
+            android:textSize="25sp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+              >
+
+            <Button
+                android:id="@+id/deselectAll"
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:layout_weight="2"
+                android:background="@color/orange"
+                android:text="Avmarkera alla"
+                android:textColor="#FFF"
+                android:textSize="20sp"
+                 />
+
+            <Button
+                android:id="@+id/selectAll"
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:layout_weight="2"
+                android:background="@color/orange"
+                android:text="Markera alla"
+                android:textColor="#FFF"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
 </RelativeLayout>
