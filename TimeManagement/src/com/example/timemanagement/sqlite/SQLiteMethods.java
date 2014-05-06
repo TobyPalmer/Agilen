@@ -534,13 +534,13 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         	try {
         		file.createNewFile();
         	} catch (Exception e) {
-        		Log.w("timemanagement", "SQLiteMethods.exportCSV(): trying to create new file, Exception: " + e.toString());
+        		Log.w("timemanagement", "SQLiteMethods.exportJSON(): trying to create new file, Exception: " + e.toString());
         		return false;
         	}
         }
         // Write to file
         try {
-	    	Log.w("timemanagement", "SQLiteMethods.exportCSV(): writing file...");
+	    	Log.w("timemanagement", "SQLiteMethods.exportJSON(): writing file...");
 	        FileWriter fw = new FileWriter(file.toString(), false);
 	        // ************************************************** //
 	        fw.write(json);
@@ -548,7 +548,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
 	        fw.close();
 	        return true;
         } catch(Exception e) {
-        	Log.w("timemanagement", "SQLiteMethods.exportCSV(): trying to write to file, Exception: " + e.toString());
+        	Log.w("timemanagement", "SQLiteMethods.exportJSON(): trying to write to file, Exception: " + e.toString());
         	return false;
         }
     }
