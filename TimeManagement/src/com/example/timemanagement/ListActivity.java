@@ -57,10 +57,8 @@ import android.graphics.Typeface;
 		
 		private String s, dateString;
 		private Block b;
-		private int n = 0;
-
-		private int hoursDay, minutesDay;
-		private long today, day_next, timeDiff, stop, start;
+		private int minutesDay;
+		private long today, timeDiff, stop, start;
 		
 		
 		@Override
@@ -96,10 +94,8 @@ import android.graphics.Typeface;
 			
 			//Calendar cal = new GregorianCalendar();
 			today = System.currentTimeMillis();
-			currentDate = new Date(today);
-			day_next = 1000 * 60 * 60 * 24;
-			
-			dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+			currentDate = new Date(start);
+			dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			
 			d = new Date(today);
 			dateString = (dateFormat.format(d));
@@ -113,12 +109,11 @@ import android.graphics.Typeface;
 	    	prev = (Button)findViewById(R.id.prevDay);
 	    	prev.setTypeface(font);
 
-	    	Button nextButton = (Button) findViewById(R.id.nextDay);
-	    	//nextButton.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));		
-	    	nextButton.setOnClickListener(new View.OnClickListener() {
+//	    	final Button nextButton = (Button) findViewById(R.id.nextDay);		
+	    	next.setOnClickListener(new View.OnClickListener() {
 
 		        public void onClick(View v) {
-		        	if(d.before(currentDate)){
+		        	if(new Date(start).before(currentDate)){
 		        		nextDate();
 		        		iterateBlocks(dateString);
 		        	}
@@ -127,9 +122,9 @@ import android.graphics.Typeface;
 		        		
 		        	
 		    
-		    Button prevButton = (Button) findViewById(R.id.prevDay);
+		    prev = (Button) findViewById(R.id.prevDay);
 		    //prevButton.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));		
-		    prevButton.setOnClickListener(new View.OnClickListener() {
+		    prev.setOnClickListener(new View.OnClickListener() {
 
 		        public void onClick(View v) {
 		        	prevDate();
@@ -182,25 +177,26 @@ import android.graphics.Typeface;
 			listAdapter.setBlockStatesList(blockStatesList);
 		}
 		
-		public void nextDate()
-		{
-			today += day_next;
-			d = new Date(today);
-			dateString = (dateFormat.format(d));
+		public void nextDate(){
+			start += 86400000;
+			stop += 86400000;
+			dateString = (dateFormat.format(start));
+			bList = MainActivity.db.getBlocksBetweenDate(start, stop);
 		}
 	
-		public void prevDate()
-		{
-			today -= day_next;
-			d = new Date(today);
-			dateString = (dateFormat.format(d));
+		public void prevDate(){
+			start -= 86400000;
+			stop -= 86400000;
+			dateString = (dateFormat.format(start));
+			bList = MainActivity.db.getBlocksBetweenDate(start, stop);
 		}
+		
 		
 		public void iterateBlocks(String dateString)
 		{
 			blockList.clear();
 			//Iterate through the blocks
-			hoursDay =  minutesDay = 0;
+			minutesDay = 0;
 	    	
 			Iterator<Block> it = bList.iterator(); 
 	    	while(it.hasNext())
@@ -232,17 +228,12 @@ import android.graphics.Typeface;
 		    		
 		    		Date date = new java.util.Date(timeDiff);
 		    	    
-		    	    hoursDay += date.getHours();
+		    	    date.getHours();
 		    	    minutesDay += date.getMinutes();
 		    	    if(minutesDay > 60){
-		    	    	hoursDay += minutesDay/60;
 		    	    	minutesDay = minutesDay % 60;    	    	
 		    	    }
-	    	    
-	    	
-		    	    //s += "Total time: " + hoursDay + "h " + minutesDay + "m";
-		    		
-		    		
+	    	    	
 		    	    if(b.toDateString().equals(dateString))
 		    	    {
 		    	    	blockList.add(s);
