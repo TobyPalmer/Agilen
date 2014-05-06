@@ -24,9 +24,9 @@
                 android:layout_alignParentLeft="true"
                 android:layout_weight="1"
                 android:background="@color/orange"
-                android:text="Prev"
+                android:text="@string/fa_arrow_left" 
                 android:textColor="#FFF"
-                android:textSize="20sp" />
+                android:textSize="50sp" />
 
             <TextView
                 android:id="@+id/day"
@@ -35,7 +35,7 @@
                 android:layout_weight="2"
                 android:gravity="center"
                 android:text="2014-04-15"
-                android:textSize="25sp" />
+                android:textSize="30sp" />
 
             <Button
                 android:id="@+id/nextDay"
@@ -45,9 +45,9 @@
                 android:layout_marginBottom="100dp"
                 android:layout_weight="1"
                 android:background="@color/orange"
-                android:text="Next"
+                android:text="@string/fa_arrow_right" 
                 android:textColor="#FFF"
-                android:textSize="20sp" />
+                android:textSize="50sp" />
 
         </LinearLayout>
 
@@ -55,7 +55,9 @@
             android:id="@+id/l_view"
             android:layout_width="fill_parent"
             android:layout_height="400dp"
-            android:layout_weight="3" >
+            android:layout_weight="3" 
+			android:textSize="50sp"
+            >
         </ListView>
 
         <TextView

@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Time Management</string>
+    <string name="app_name">Chronox</string>
     
-    <string name="menu_checkview">Checkview</string>
-    <string name="menu_statistics">Statistics</string>
-    <string name="menu_timestamp">Timestamp</string>
-    <string name="menu_schedule">Schedule</string>
-    <string name="menu_settings">Setting</string>
+
+    <string name="menu_checkview">Avcheckning</string>
+    <string name="menu_statistics">Statistik</string>
+    <string name="menu_timestamp">Tidslogg</string>
+    <string name="menu_schedule">Schemavy</string>
+    <string name="menu_settings">Inställningar</string>
+
     
     
-    <string name="title_activity_timestamp">TimestampActivity</string>
-    <string name="title_activity_new_order">NewOrderActivity</string>
+    <string name="title_activity_timestamp">Tidslogg</string>
+    <string name="title_activity_new_order">Editera block</string>
     
 	<string name="taskDate"></string>
 	<string name="taskStart"></string>
@@ -24,17 +26,19 @@
     <string name="orderNumber">Ordernummer</string>
     <string name="addOrderButton">Spara</string>
     <string name="addedOrder"></string>
-    <string name="delete">Ta Bort</string>
+    <string name="delete">Ta bort</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
+    <string name="newBlock">Skapa tidsblock</string>
 
-    <string name="addNewOrderNumber">Nytt Ordernummer</string>
+    <string name="addNewOrderNumber">Nytt ordernummer</string>
     <string name="orderName">Ordernamn</string>
-    <string name="fa_arrow_right">&#xf061;</string>
-    <string name="fa_arrow_left">&#xf060;</string>
+    <string name="fa_arrow_right">&#xf105;</string>
+    <string name="fa_arrow_left">&#xf104;</string>
     
     <string name="userName">Användarnamn</string>
   	<string name="passWord">Lösenord</string>
+  	
   	<string name="nextDay">Nästa</string>
     
     

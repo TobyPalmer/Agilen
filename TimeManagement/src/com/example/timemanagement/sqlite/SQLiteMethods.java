@@ -1,28 +1,31 @@
 package com.example.timemanagement.sqlite;
 
-import com.example.timemanagement.model.Order;
-import com.example.timemanagement.model.Block;
+import java.io.File;
+import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 import android.util.Log;
+
+import com.example.timemanagement.model.Block;
+import com.example.timemanagement.model.Order;
 
 public class SQLiteMethods extends SQLiteOpenHelper {
 	
 	// Database info
 
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 12;
     private static final String DATABASE_NAME = "TimeManagement";
  
     // Constructor
@@ -37,7 +40,8 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         	"CREATE TABLE orders (" +
             "ID INTEGER PRIMARY KEY AUTOINCREMENT, " + 
             "orderNumber TEXT, " +
-            "orderName TEXT)";
+            "orderName TEXT, " +
+            "directWork INTEGER)";
         db.execSQL(CREATE_ORDER_TABLE);
         
         // Create "blocks"-table
@@ -73,12 +77,14 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     private static final String ORDERS_TABLE_KEY_ID = "ID";
     private static final String ORDERS_TABLE_KEY_ORDERNUMBER = "orderNumber";
     private static final String ORDERS_TABLE_KEY_ORDERNAME = "orderName";
+    private static final String ORDERS_TABLE_KEY_DIRECTWORK = "directWork";
     private static final String[] ORDERS_TABLE_COLUMNS = {ORDERS_TABLE_KEY_ID, 
     														ORDERS_TABLE_KEY_ORDERNUMBER, 
-    														ORDERS_TABLE_KEY_ORDERNAME};
+    														ORDERS_TABLE_KEY_ORDERNAME,
+    														ORDERS_TABLE_KEY_DIRECTWORK};
     
     /**
-     * INSERT: Create new order 
+     * INSERT: Create new order
      * @param order
      */
     public void addOrder(Order order){
@@ -87,6 +93,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(ORDERS_TABLE_KEY_ORDERNUMBER, order.getOrderNumber());  
         values.put(ORDERS_TABLE_KEY_ORDERNAME, order.getOrderName()); 
+        values.put(ORDERS_TABLE_KEY_DIRECTWORK, order.getOrderDirectWork());
  
         order.setID((int)db.insert(ORDERS_TABLE, null, values));
         db.close(); 
@@ -117,6 +124,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
 	            order.setID(Integer.parseInt(cursor.getString(0)));
 	            order.setOrderNumber(cursor.getString(1));
 	            order.setOrderName(cursor.getString(2));
+	            order.setOrderDirectWork(cursor.getInt(3));
 	            return order;
         	}
         	else { // No rows
@@ -148,6 +156,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
                 order.setID(Integer.parseInt(cursor.getString(0)));
                 order.setOrderNumber(cursor.getString(1));
                 order.setOrderName(cursor.getString(2));
+                order.setOrderDirectWork(cursor.getInt(3));
                 orders.add(order);
             } while (cursor.moveToNext());
         }
@@ -166,6 +175,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put("orderNumber", order.getOrderNumber()); 
         values.put("orderName", order.getOrderName());
+        values.put(ORDERS_TABLE_KEY_DIRECTWORK, order.getOrderDirectWork());
      
         int i = db.update(ORDERS_TABLE, 
         					values, 
@@ -338,36 +348,55 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     
 
     /**
-     * Returns all blocks in a specific time interval.
+     * Returns getBlocksBetweenDate() without specifying orderID
      * 
      * @param start The start of the interval
      * @param stop The end of the interval
      * @return The list with the matching blocks.
      */
     public List<Block> getBlocksBetweenDate(long start, long stop) {
-    	
-    	  List<Block> blocks = new LinkedList<Block>();
-    	
-    	  SQLiteDatabase db = this.getReadableDatabase();
-    	  
-    	  Cursor cursor = db.rawQuery("SELECT * FROM blocks "
-    	  							+ "WHERE start > ? AND stop < ?",
-    			  new String[] {String.valueOf(start), String.valueOf(stop)});
-    	  
-
-          if (cursor.moveToFirst()) {
-              do {
-                  Block block = new Block();
-                  block.setID(Integer.parseInt(cursor.getString(0)));
-                  block.setStart(cursor.getLong(1));
-                  block.setStop(cursor.getLong(2));
-                  block.setOrderID(cursor.getInt(3));
-                  block.setComment(cursor.getString(4));
-                  block.setChecked(cursor.getInt(5));
-                  blocks.add(block);
-              } while (cursor.moveToNext());
-          }
-          return blocks;
+    	return this.getBlocksBetweenDate(0,  start, stop);
+    }
+    
+    /**
+     * Returns all blocks in a specific time interval.
+     * 
+     * @param orderID a specified orderID. orderID = 0 may be chosen to eliminate this constraint
+     * @param start The start of the interval
+     * @param stop The end of the interval
+     * @return The list with the matching blocks.
+     */
+    public List<Block> getBlocksBetweenDate(int orderID, long start, long stop) {
+    	// Will contain found blocks
+    	List<Block> blocks = new LinkedList<Block>();
+    	// Reference to db
+    	SQLiteDatabase db = this.getReadableDatabase();
+    	// Commits SQL
+    	Cursor cursor;
+    	// Get all blocks
+    	if(orderID == 0) {
+    		cursor = db.rawQuery("SELECT * FROM blocks "
+    							+ "WHERE start > ? AND stop < ?",
+    	  						new String[] {String.valueOf(start), String.valueOf(stop)});
+    	} // Get blocks of a certain orderID
+    	else {
+    		cursor = db.rawQuery("SELECT * FROM blocks "
+						+ "WHERE start >= ? AND stop <= ? AND orderID = ?",
+					new String[] {String.valueOf(start), String.valueOf(stop), String.valueOf(orderID)});
+    	}
+        if (cursor.moveToFirst()) {
+            do {
+                Block block = new Block();
+                block.setID(Integer.parseInt(cursor.getString(0)));
+                block.setStart(cursor.getLong(1));
+                block.setStop(cursor.getLong(2));
+                block.setOrderID(cursor.getInt(3));
+                block.setComment(cursor.getString(4));
+                block.setChecked(cursor.getInt(5));
+                blocks.add(block);
+            } while (cursor.moveToNext());
+        }
+        return blocks;
     }
     
     /**
@@ -412,35 +441,39 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     }
     
     /**
-     * Get all data as JSON string
+     * Return database data as JSON string
      * 
      * @return
      */
     public String toJSONString() {
+    	return this.toJSONString(0, 0);
+    }
+    
+    public String toJSONString(long start, long stop) {
     	// Get all orders
         List<Order> orders = new ArrayList<Order>();
         orders = this.getAllOrders();
-        
+        Log.w("timemanagement", orders.size() + "");
         // Create root node
         JSONObject userData = new JSONObject();
-        
         // Create order node
         JSONArray orderData = new JSONArray();
-        
         // Define orders node
         for(int i = 0; i < orders.size(); i++) {
         	// Create order node
         	JSONObject theOrder = new JSONObject(); 
-        	
         	// Get blocks for this order
         	try {
         		// Get blocks
         		List<Block> blocks = new ArrayList<Block>(); 
-        		blocks = this.getBlocks(orders.get(i).getID());
-
+        		if(start == 0 && stop == 0) {
+        			blocks = this.getBlocks(orders.get(i).getID());
+        		}
+        		else {
+        			blocks = this.getBlocksBetweenDate(orders.get(i).getID(), start, stop);
+        		}
         		// Will contain the block data
         		JSONArray blockData = new JSONArray();
-        		
         		// Create block nodes
         		for(int j = 0; j < blocks.size(); j++) {
         			JSONObject theBlock = new JSONObject();
@@ -449,25 +482,73 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         			theBlock.put("comment", blocks.get(j).getComment());
         			blockData.put(theBlock);
         		}
-        		
         		// Define order node
         		theOrder.put("orderNumber", orders.get(i).getOrderNumber());
         		theOrder.put("orderName", orders.get(i).getOrderName());
         		theOrder.put("blocks", blockData);
-        		
         		// Add this order to order-node
         		orderData.put(theOrder);
         	} catch(JSONException e) {
-            	Log.w("timemanagement", "JSONException: " + e.toString());
+            	Log.w("timemanagement", "SQLiteMethods.toJSONString: JSONException: " + e.toString());
             }
         }
         try {
-        	userData.put("orders", orderData.toString());
+        	userData.put("orders", orderData);
         } catch(JSONException e) {
         	Log.w("timemanagement", "JSONException: " + e.toString());
         }
-        
-        String output = userData.toString();
+        String output = "[" + userData.toString() + "]";
         return output;
+    }
+    
+    /**
+     * Export json string file
+     * 
+     * @return
+     */
+    public boolean exportJSON() {
+    	return exportJSON(0,0);
+    }
+    
+    public boolean exportJSON(long start, long stop) {
+    	String json;
+    	if(start == 0 && stop == 0) {
+    		json = this.toJSONString();
+    	}
+    	else {
+    		json = this.toJSONString(start, stop);
+    	}
+    	// Where to store the file?
+    	String path = Environment.getExternalStorageDirectory().toString();
+    	String folderName = "Chronox";
+    	String fileName = "ChronoxExport.json";    	
+    	// Find folder, or create if it does not exist
+        File folder = new File(path + "/" + folderName);
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
+        // Find file, or create if it does not exist
+        File file = new File(path + "/" + folderName + "/" + fileName);
+        if(!file.exists()) {
+        	try {
+        		file.createNewFile();
+        	} catch (Exception e) {
+        		Log.w("timemanagement", "SQLiteMethods.exportJSON(): trying to create new file, Exception: " + e.toString());
+        		return false;
+        	}
+        }
+        // Write to file
+        try {
+	    	Log.w("timemanagement", "SQLiteMethods.exportJSON(): writing file...");
+	        FileWriter fw = new FileWriter(file.toString(), false);
+	        // ************************************************** //
+	        fw.write(json);
+	        // ************************************************** //
+	        fw.close();
+	        return true;
+        } catch(Exception e) {
+        	Log.w("timemanagement", "SQLiteMethods.exportJSON(): trying to write to file, Exception: " + e.toString());
+        	return false;
+        }
     }
 }

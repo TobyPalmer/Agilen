@@ -119,7 +119,7 @@ public class Block implements Serializable, Comparable<Block>{
 	}
 	
 	public String toDateString(){
-		return new SimpleDateFormat("dd-MM-yyyy").format(start);
+		return new SimpleDateFormat("yyyy-MM-dd").format(start);
 	}
 	
 	public String toTimeString(boolean isStart){

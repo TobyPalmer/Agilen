@@ -1,16 +1,22 @@
 package com.example.timemanagement;
 
-import com.example.timemanagement.sqlite.SQLiteMethods;
-
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
+import android.graphics.Typeface;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.example.timemanagement.sqlite.SQLiteMethods;
 
 public class MainActivity extends Activity {
+	
+	private Button login;
+	private TextView user, pass;
 	
 	public static SQLiteMethods db;
 
@@ -20,6 +26,17 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
    
         db = new SQLiteMethods(this);
+        
+        //add neo sans font to button and text fields
+        Typeface font = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
+    	
+        login = (Button)findViewById(R.id.timestampButton);
+    	login.setTypeface(font);
+    	
+        user = (TextView)findViewById(R.id.userName);
+    	user.setTypeface(font);
+        pass = (TextView)findViewById(R.id.passWord);
+    	pass.setTypeface(font);
     }
 
 

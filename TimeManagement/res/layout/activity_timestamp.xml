@@ -29,7 +29,7 @@
 			android:textColor="#FFF"
 			android:textSize="20sp"
 			android:layout_alignParentLeft="true"
-			android:text="Prev"
+			android:text="@string/fa_arrow_left"
 			android:onClick="showYesterday"	 
 		/>
 		
@@ -52,14 +52,15 @@
 			android:textColor="#FFF"
 			android:textSize="20sp"
 			android:layout_alignParentRight="true"			
-			android:text="Next" 
+			android:text="@string/fa_arrow_right" 
 			android:onClick="showTomorrow"
 		/>
 	
 	</LinearLayout>
 			<ListView android:id="@android:id/list"
 	            android:layout_width="fill_parent"
-				android:layout_height="530dp"/>
+				android:layout_height="530dp"
+				android:padding="30dp"/>
 
             <ScrollView 
                 android:layout_width="fill_parent"
@@ -86,7 +87,7 @@
                      android:layout_width="fill_parent"
                      android:layout_height="wrap_content"
                      android:layout_alignParentBottom="true"
-                     android:background="#BFBFBF"
+                     android:background="#aaa9a9"
                      android:padding="30dp" >
 
 
@@ -127,8 +128,7 @@
                      android:background="@color/orange"
                      android:textColor="#FFF"
                      android:textSize="30sp"
-                     android:onClick="newOrderActivity"
-                     android:text="Rapportera"/> 
-                     <!--android:onClick="newOrderActivity"-->
+                     android:text="@string/newBlock" 
+                     android:onClick="addNewOrder" />
                      
 </RelativeLayout>

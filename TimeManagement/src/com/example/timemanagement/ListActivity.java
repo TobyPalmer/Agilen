@@ -39,11 +39,6 @@ import android.app.AlertDialog;
 import android.graphics.Color;
 import android.graphics.Typeface;
 
-
-
-
-
-
 	public class ListActivity extends MainActivity {
 		
 		
@@ -53,6 +48,7 @@ import android.graphics.Typeface;
 		private TextView day, total;
 		private CustomListAdapter1 listAdapter;
 		private Date currentDate;
+		private Button next, prev;
 
 		private ArrayList<String> blockList;
 		private ArrayList<Integer> blockStatesList;
@@ -61,10 +57,8 @@ import android.graphics.Typeface;
 		
 		private String s, dateString;
 		private Block b;
-		private int n = 0;
-
-		private int hoursDay, minutesDay;
-		private long today, day_next, timeDiff, stop, start;
+		private int minutesDay;
+		private long today, timeDiff, stop, start;
 		
 		
 		@Override
@@ -100,43 +94,44 @@ import android.graphics.Typeface;
 			
 			//Calendar cal = new GregorianCalendar();
 			today = System.currentTimeMillis();
-			currentDate = new Date(today);
-			day_next = 1000 * 60 * 60 * 24;
-			
-			dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+			currentDate = new Date(start);
+			dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			
 			d = new Date(today);
 			dateString = (dateFormat.format(d));
 			iterateBlocks(dateString);
+			
+			//Adding arrows to buttons
+	    	next = (Button)findViewById(R.id.nextDay);
+	    	Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
+	    	next.setTypeface(font);
+	    	
+	    	prev = (Button)findViewById(R.id.prevDay);
+	    	prev.setTypeface(font);
+	    	
+	        Typeface font2 = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
+	    	
+	    	day = (TextView)findViewById(R.id.day);
+	    	day.setTypeface(font2);
 
-	    	final Button nextButton = (Button) findViewById(R.id.nextDay);
-	    	nextButton.setEnabled(false);
-	    	//nextButton.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));		
-	    	nextButton.setOnClickListener(new View.OnClickListener() {
+//	    	final Button nextButton = (Button) findViewById(R.id.nextDay);		
+	    	next.setOnClickListener(new View.OnClickListener() {
 
 		        public void onClick(View v) {
-		            // TODO Auto-generated method stub
-		        	
-		        	if(d.compareTo(currentDate) == 0)
-		        	{
+		        	if(new Date(start).before(currentDate)){
 		        		nextDate();
 		        		iterateBlocks(dateString);
-		        		nextButton.setEnabled(false);
-		        	}	
+		        	}
 		        }
-		    });
+	    	});
+		        		
+		        	
 		    
-		    Button prevButton = (Button) findViewById(R.id.prevDay);
+		    prev = (Button) findViewById(R.id.prevDay);
 		    //prevButton.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));		
-		    prevButton.setOnClickListener(new View.OnClickListener() {
+		    prev.setOnClickListener(new View.OnClickListener() {
 
 		        public void onClick(View v) {
-		            // TODO Auto-generated method stub
-		        	Log.e("KOmmer in hit","Noh");		        	
-		        	if(d.compareTo(currentDate) != 0)
-		        	{		        		
-		        		nextButton.setEnabled(true);
-		        	}		        	
 		        	prevDate();
 		        	iterateBlocks(dateString);	
 		        }
@@ -166,7 +161,6 @@ import android.graphics.Typeface;
 		        public void onClick(View v) {
 		            // TODO Auto-generated method stub
 
-		        	Log.e("Button","deselectAllButton");
 		        	Iterator<Block> it = bList.iterator(); 
 			    	while(it.hasNext())
 			    	{
@@ -188,27 +182,26 @@ import android.graphics.Typeface;
 			listAdapter.setBlockStatesList(blockStatesList);
 		}
 		
-		public void nextDate()
-		{
-			today += day_next;
-			d = new Date(today);
-			Log.d("Datum", d.toString());
-			dateString = (dateFormat.format(d));
+		public void nextDate(){
+			start += 86400000;
+			stop += 86400000;
+			dateString = (dateFormat.format(start));
+			bList = MainActivity.db.getBlocksBetweenDate(start, stop);
 		}
 	
-		public void prevDate()
-		{
-			today -= day_next;
-			d = new Date(today);
-			Log.d("Datum", d.toString());
-			dateString = (dateFormat.format(d));
+		public void prevDate(){
+			start -= 86400000;
+			stop -= 86400000;
+			dateString = (dateFormat.format(start));
+			bList = MainActivity.db.getBlocksBetweenDate(start, stop);
 		}
+		
 		
 		public void iterateBlocks(String dateString)
 		{
 			blockList.clear();
 			//Iterate through the blocks
-			hoursDay =  minutesDay = 0;
+			minutesDay = 0;
 	    	
 			Iterator<Block> it = bList.iterator(); 
 	    	while(it.hasNext())
@@ -240,17 +233,12 @@ import android.graphics.Typeface;
 		    		
 		    		Date date = new java.util.Date(timeDiff);
 		    	    
-		    	    hoursDay += date.getHours();
+		    	    date.getHours();
 		    	    minutesDay += date.getMinutes();
 		    	    if(minutesDay > 60){
-		    	    	hoursDay += minutesDay/60;
 		    	    	minutesDay = minutesDay % 60;    	    	
 		    	    }
-	    	    
-	    	
-		    	    //s += "Total time: " + hoursDay + "h " + minutesDay + "m";
-		    		
-		    		
+	    	    	
 		    	    if(b.toDateString().equals(dateString))
 		    	    {
 		    	    	blockList.add(s);
@@ -317,9 +305,9 @@ import android.graphics.Typeface;
 	    				
 	    			}
 	    			catch (Exception e){
-	    				Log.e("Något blev fel! At position:",Integer.toString(position));
+	    				Log.e("Nï¿½got blev fel! At position:",Integer.toString(position));
 	    			}
-	    			Log.e("Värde i listan: ",value);
+	    			Log.e("Vï¿½rde i listan: ",value);
 	    			Log.e("Position i listan: ",Integer.toString(position));
 	    			iterateBlocks(getDateString());
 	    			
@@ -350,7 +338,7 @@ import android.graphics.Typeface;
 		@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 		private void setupActionBar() {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-				getActionBar().setDisplayHomeAsUpEnabled(true);
+				getActionBar().setDisplayHomeAsUpEnabled(false);
 			}
 		}
 

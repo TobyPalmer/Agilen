@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TableRow;
@@ -83,7 +84,8 @@ public class NewOrderActivity extends Activity implements DataPassable{
  
         s.setAdapter(adapter);
         
-        if(getIntent().getExtras()!=null){
+        if(getIntent().getExtras() != null){
+        	Log.w("Time Management", "fick från Timestamp");
         	newTask = false;
         	timeBlock = (Block) getIntent().getSerializableExtra("Block");
         	update(timeBlock);
@@ -96,13 +98,12 @@ public class NewOrderActivity extends Activity implements DataPassable{
 	       else{
 	        	d.setVisibility(View.INVISIBLE);
 	       }
-	    d.setOnClickListener(new View.OnClickListener() {
+	       d.setOnClickListener(new View.OnClickListener() {
 
 	    	
 	        public void onClick(View v) {
             	Log.w("AgilTag", timeBlock.toString());
 	        	deleteBlock(v, timeBlock);
-	        	
 	        }
 	    });
 
@@ -116,7 +117,7 @@ public class NewOrderActivity extends Activity implements DataPassable{
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private void setupActionBar() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			getActionBar().setDisplayHomeAsUpEnabled(true);
+			getActionBar().setDisplayHomeAsUpEnabled(false);
 		}
 	}
 	/**
@@ -194,11 +195,16 @@ public class NewOrderActivity extends Activity implements DataPassable{
 
 	           	EditText orderName = (EditText)d.findViewById(R.id.orderNamePop);
 	        	EditText orderNumber = (EditText)d.findViewById(R.id.orderNumberPop);
+	        	CheckBox orderDirectWork = (CheckBox)d.findViewById(R.id.orderDirectWorkPop);
 	        	String stringOrderName = orderName.getText().toString();
 	        	String stringOrderNumber = orderNumber.getText().toString();
+	        	int integerOrderDirectWork = 0; 
+	        	if(orderDirectWork.isChecked()){
+	        		integerOrderDirectWork = 1;
+	        	}	        	
 	        	
 	        	if(isInteger(stringOrderNumber)){
-	        		Order order = new Order(stringOrderNumber, stringOrderName);
+	        		Order order = new Order(stringOrderNumber, stringOrderName, integerOrderDirectWork);
 	        		if(!list.contains(order)){
 			        	list.add(order);
 			        	
@@ -264,12 +270,13 @@ public class NewOrderActivity extends Activity implements DataPassable{
 		 builder.setTitle("Uppgift sparad");
 		 builder.setMessage(message);
 		 
+		 // User clicked OK button
 		 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
-	               // User clicked OK button
-	        	   startActivity(new Intent(getApplicationContext(), TimestampActivity.class));
-
-
+	        	   
+	        	    Intent i = new Intent(getApplicationContext(), TimestampActivity.class);
+		        	i.putExtra("Block", timeBlock);  	
+		        	startActivity(i);
 	           }
 	     });
 		
@@ -323,6 +330,7 @@ public class NewOrderActivity extends Activity implements DataPassable{
 					 timeBlock.setStart(timeBlock.getStop());
 					 timeBlock.setStop(timeBlock.getStart());
 				 }
+			 }	 
 	
 			 //Refresh date and time
 			 dateButton.setText(timeBlock.toDateString());
@@ -335,11 +343,7 @@ public class NewOrderActivity extends Activity implements DataPassable{
 				 updateSpinner();
 				 updateComment();
 				 newTask = true;
-			 }
-			 
-	
-		}
-		else return;	
+			 } 	
 	}
 	
 	public void update(Block timeBlock){
@@ -405,9 +409,6 @@ public class NewOrderActivity extends Activity implements DataPassable{
 
 		        	MainActivity.db.deleteBlock(block);
 		        	startActivity(new Intent(getApplicationContext(), TimestampActivity.class));
-		        	
-	        	
-	        	
 	           }	
 	       });
 		 
@@ -423,7 +424,5 @@ public class NewOrderActivity extends Activity implements DataPassable{
 		 
 		 dialog.show(); 
 	 }
-	
-	
 
 }
