@@ -21,7 +21,6 @@ public class MainActivity extends Activity {
         db = new SQLiteMethods(this);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
