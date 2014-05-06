@@ -31,8 +31,8 @@
 
     <string name="addNewOrderNumber">Nytt ordernummer</string>
     <string name="orderName">Ordernamn</string>
-    <string name="fa_arrow_right">&#xf061;</string>
-    <string name="fa_arrow_left">&#xf060;</string>
+    <string name="fa_arrow_right">&#xf105;</string>
+    <string name="fa_arrow_left">&#xf104;</string>
     
     <string name="userName">Användarnamn</string>
   	<string name="passWord">Lösenord</string>

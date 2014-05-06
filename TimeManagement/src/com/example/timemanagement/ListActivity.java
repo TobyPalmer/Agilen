@@ -117,6 +117,11 @@ import android.graphics.Typeface;
 	    	
 	    	prev = (Button)findViewById(R.id.prevDay);
 	    	prev.setTypeface(font);
+	    	
+	        Typeface font2 = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
+	    	
+	    	day = (TextView)findViewById(R.id.day);
+	    	day.setTypeface(font2);
 
 	    	final Button nextButton = (Button) findViewById(R.id.nextDay);
 	    	nextButton.setEnabled(false);
@@ -359,7 +364,7 @@ import android.graphics.Typeface;
 		@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 		private void setupActionBar() {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-				getActionBar().setDisplayHomeAsUpEnabled(true);
+				getActionBar().setDisplayHomeAsUpEnabled(false);
 			}
 		}
 

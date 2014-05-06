@@ -42,7 +42,8 @@ public class TimestampActivity extends MainActivity {
 	private List<Block> l = new ArrayList<Block>();
 	private ArrayAdapter<String> listAdapter;
 	private ListView listView;
-	private Button next, prev;
+	private Button next, prev, startB, create;
+	private TextView day;
 	
 	// Handles current "running" block
 	Block b;
@@ -87,21 +88,32 @@ public class TimestampActivity extends MainActivity {
     	
     	prev = (Button)findViewById(R.id.prevDay);
     	prev.setTypeface(font);
+    	
+    	
+    	//use neo sans font on buttons and date
+        Typeface font2 = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
+    	
+        startB = (Button)findViewById(R.id.startButton);
+    	startB.setTypeface(font2);
+        create = (Button)findViewById(R.id.changeOrderButton);
+    	create.setTypeface(font2);
+    	day = (TextView)findViewById(R.id.day);
+    	day.setTypeface(font2);
 		
 
 		//onclick that starts and stops the time.
 		//It also changes the color and text on the button
 		final Button start = (Button)findViewById(R.id.startButton);
-		start.setBackgroundColor(Color.GREEN);
+		start.setBackgroundColor(Color.parseColor("#57bf23"));
 	    start.setOnClickListener(new View.OnClickListener() {
 	        public void onClick(View v) {
 	        	if(stopped){
-	        		start.setBackgroundColor(Color.RED);
+	        		start.setBackgroundColor(Color.parseColor("#fb3804"));
 	        		start.setText(R.string.stop);
 	        		startTime(v);	
 	        	}
 	        	else{
-	        		start.setBackgroundColor(Color.GREEN);
+	        		start.setBackgroundColor(Color.parseColor("#57bf23"));
 	        		start.setText(R.string.start);
 	        		stopTime(v);  	
 	        	}
@@ -129,7 +141,7 @@ public class TimestampActivity extends MainActivity {
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private void setupActionBar() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			getActionBar().setDisplayHomeAsUpEnabled(true);
+			getActionBar().setDisplayHomeAsUpEnabled(false);
 		}
 	}
 
