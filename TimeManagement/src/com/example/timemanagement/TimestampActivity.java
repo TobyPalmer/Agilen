@@ -37,8 +37,12 @@ public class TimestampActivity extends ListActivity {
 	// Contains all blocks in list view
 	private List<Block> l = new ArrayList<Block>();
 	
+	// Calendar that is set to the chosen day.
+	private Calendar cal;
+	
 	// Handles current "running" block
 	Block b;
+	
 	boolean started = false;
 	boolean stopped = true;
 	
@@ -51,27 +55,56 @@ public class TimestampActivity extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		// Sets the start and stop to that of the current day.
+		cal = Calendar.getInstance();
+		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
+				cal.get(Calendar.DAY_OF_MONTH), 23, 59);
+		stop = cal.getTimeInMillis();
+
+		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
+				cal.get(Calendar.DAY_OF_MONTH), 0, 0);
+		start = cal.getTimeInMillis();	
+		
+		// Use block from calling intent (if any)
+		if(savedInstanceState == null){
+			Bundle extras = getIntent().getExtras();
+			if(extras != null){
+				Block intentBlock = (Block) extras.get("Block");
+				setStartAndStop(intentBlock);
+			}
+		}
+			
 		setContentView(R.layout.activity_timestamp);
 		// Show the Up button in the action bar
 		setupActionBar();
 		
-		//Sets stop to the end of this day.
-		Calendar cal = Calendar.getInstance();
-		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
-				cal.get(Calendar.DAY_OF_MONTH), 23, 59);
-		stop = cal.getTimeInMillis();
-		
-		//Sets start to the start of this day.
-		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
-				cal.get(Calendar.DAY_OF_MONTH), 0, 0);
-		start = cal.getTimeInMillis();
-		
-		//update view
+		// update view
 		setDayText(start);
 		printBlocks();
 		
 
 	}
+	
+	/**
+	 * Sets start and stop to that from a timeBlock.
+	 * 
+	 * @param intentBlock
+	 */
+	private void setStartAndStop(Block intentBlock){
+		
+			cal.setTimeInMillis(intentBlock.getStart());
+			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
+					cal.get(Calendar.DAY_OF_MONTH), 0, 0);
+			start = cal.getTimeInMillis();
+			
+			cal.setTimeInMillis(intentBlock.getStop());
+			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
+					cal.get(Calendar.DAY_OF_MONTH), 23, 59);
+			stop = cal.getTimeInMillis();
+	}
+	
+	
 	
 	/**
 	 * Helper method that updates the day TextView.

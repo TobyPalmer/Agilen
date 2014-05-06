@@ -264,12 +264,13 @@ public class NewOrderActivity extends Activity implements DataPassable{
 		 builder.setTitle("Uppgift sparad");
 		 builder.setMessage(message);
 		 
+		 // User clicked OK button
 		 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
-	               // User clicked OK button
-	        	   startActivity(new Intent(getApplicationContext(), TimestampActivity.class));
-
-
+	        	   
+	        	    Intent i = new Intent(getApplicationContext(), TimestampActivity.class);
+		        	i.putExtra("Block", timeBlock);  	
+		        	startActivity(i);
 	           }
 	     });
 		
@@ -323,6 +324,7 @@ public class NewOrderActivity extends Activity implements DataPassable{
 					 timeBlock.setStart(timeBlock.getStop());
 					 timeBlock.setStop(timeBlock.getStart());
 				 }
+			 }	 
 	
 			 //Refresh date and time
 			 dateButton.setText(timeBlock.toDateString());
@@ -335,11 +337,7 @@ public class NewOrderActivity extends Activity implements DataPassable{
 				 updateSpinner();
 				 updateComment();
 				 newTask = true;
-			 }
-			 
-	
-		}
-		else return;	
+			 } 	
 	}
 	
 	public void update(Block timeBlock){

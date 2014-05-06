@@ -78,7 +78,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     														ORDERS_TABLE_KEY_ORDERNAME};
     
     /**
-     * INSERT: Create new order 
+     * INSERT: Create new order
      * @param order
      */
     public void addOrder(Order order){
