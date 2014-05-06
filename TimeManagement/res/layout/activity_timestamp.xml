@@ -129,7 +129,7 @@
                      android:textColor="#FFF"
                      android:textSize="30sp"
                      android:onClick="newOrderActivity"
-                     android:text="Rapportera"/> 
+                     android:text="@string/newBlock"/> 
                      <!--android:onClick="newOrderActivity"-->
                      
 </RelativeLayout>

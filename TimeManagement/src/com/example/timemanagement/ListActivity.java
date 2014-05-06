@@ -53,6 +53,7 @@ import android.graphics.Typeface;
 		private TextView day, total;
 		private CustomListAdapter1 listAdapter;
 		private Date currentDate;
+		private Button next, prev;
 
 		private ArrayList<String> blockList;
 		private ArrayList<Integer> blockStatesList;
@@ -108,6 +109,14 @@ import android.graphics.Typeface;
 			d = new Date(today);
 			dateString = (dateFormat.format(d));
 			iterateBlocks(dateString);
+			
+			//Adding arrows to buttons
+	    	next = (Button)findViewById(R.id.nextDay);
+	    	Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
+	    	next.setTypeface(font);
+	    	
+	    	prev = (Button)findViewById(R.id.prevDay);
+	    	prev.setTypeface(font);
 
 	    	final Button nextButton = (Button) findViewById(R.id.nextDay);
 	    	nextButton.setEnabled(false);

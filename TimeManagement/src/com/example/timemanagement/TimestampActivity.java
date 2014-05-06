@@ -42,8 +42,7 @@ public class TimestampActivity extends MainActivity {
 	private List<Block> l = new ArrayList<Block>();
 	private ArrayAdapter<String> listAdapter;
 	private ListView listView;
-	private Button next;
-	private Button prev;
+	private Button next, prev;
 	
 	// Handles current "running" block
 	Block b;
@@ -89,6 +88,14 @@ public class TimestampActivity extends MainActivity {
 		//update view
 		setDayText(start);
 		printBlocks();
+		
+		//adding arrows to buttons
+    	next = (Button)findViewById(R.id.nextDay);
+    	Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
+    	next.setTypeface(font);
+    	
+    	prev = (Button)findViewById(R.id.prevDay);
+    	prev.setTypeface(font);
 		
 
 		//onclick that starts and stops the time.
