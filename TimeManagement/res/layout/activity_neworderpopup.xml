@@ -15,5 +15,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/orderName" />
+
+    <CheckBox
+        android:id="@+id/orderDirectWorkPop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Direkttid" />
         
 </LinearLayout>
