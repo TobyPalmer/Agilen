@@ -6,17 +6,25 @@ public class Order {
 	
 	private String orderNumber;
 	private String orderName;
+	private int directWork;
 	
 	public Order() {
 		// Empty constructor
 		this.ID = -1;
 		this.orderNumber = "";
 		this.orderName = "";
+		this.directWork = 0;
 	}
 	
 	public Order(String number, String name) {
 		this.orderNumber = number;
 		this.orderName = name;
+	}
+	
+	public Order(String number, String name, int isDirectWork){
+		this.orderNumber = number;
+		this.orderName = name;
+		this.directWork = isDirectWork;
 	}
 	
 	public int getID() {
@@ -29,6 +37,10 @@ public class Order {
 	public String getOrderName() {
 		return orderName;
 	}
+	
+	public int getOrderDirectWork(){
+		return directWork;
+	}
 
 	public void setOrderName(String orderName) {
 		this.orderName = orderName;
@@ -38,13 +50,26 @@ public class Order {
 		this.orderNumber = orderNumber;
 	}
 
+	public void setOrderDirectWork(int workType){
+		this.directWork = workType;
+	}
+	
 	public String getOrderNumber() {
 		return this.orderNumber;
 	}
+	
+	
 
 	@Override
 	public String toString() {
-		return orderNumber + " - " + orderName;
+		String dWork;
+		if(this.directWork == 1){
+			dWork = "Direkttid";
+		}
+		else{
+			dWork = "Indirekttid";
+		}
+		return orderNumber + " - " + orderName + " - " + dWork;
 		//return "Order [ID=" + ID + ", orderNumber=" + orderNumber + ", orderName=" + orderName + "]";
 	}
 
