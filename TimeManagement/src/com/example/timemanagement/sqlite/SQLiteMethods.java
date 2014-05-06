@@ -22,7 +22,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
 	
 	// Database info
 
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 12;
     private static final String DATABASE_NAME = "TimeManagement";
  
     // Constructor
@@ -37,7 +37,8 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         	"CREATE TABLE orders (" +
             "ID INTEGER PRIMARY KEY AUTOINCREMENT, " + 
             "orderNumber TEXT, " +
-            "orderName TEXT)";
+            "orderName TEXT, " +
+            "directWork INTEGER)";
         db.execSQL(CREATE_ORDER_TABLE);
         
         // Create "blocks"-table
@@ -73,9 +74,11 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     private static final String ORDERS_TABLE_KEY_ID = "ID";
     private static final String ORDERS_TABLE_KEY_ORDERNUMBER = "orderNumber";
     private static final String ORDERS_TABLE_KEY_ORDERNAME = "orderName";
+    private static final String ORDERS_TABLE_KEY_DIRECTWORK = "directWork";
     private static final String[] ORDERS_TABLE_COLUMNS = {ORDERS_TABLE_KEY_ID, 
     														ORDERS_TABLE_KEY_ORDERNUMBER, 
-    														ORDERS_TABLE_KEY_ORDERNAME};
+    														ORDERS_TABLE_KEY_ORDERNAME,
+    														ORDERS_TABLE_KEY_DIRECTWORK};
     
     /**
      * INSERT: Create new order
@@ -87,6 +90,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(ORDERS_TABLE_KEY_ORDERNUMBER, order.getOrderNumber());  
         values.put(ORDERS_TABLE_KEY_ORDERNAME, order.getOrderName()); 
+        values.put(ORDERS_TABLE_KEY_DIRECTWORK, order.getOrderDirectWork());
  
         order.setID((int)db.insert(ORDERS_TABLE, null, values));
         db.close(); 
@@ -117,6 +121,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
 	            order.setID(Integer.parseInt(cursor.getString(0)));
 	            order.setOrderNumber(cursor.getString(1));
 	            order.setOrderName(cursor.getString(2));
+	            order.setOrderDirectWork(cursor.getInt(3));
 	            return order;
         	}
         	else { // No rows
@@ -148,6 +153,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
                 order.setID(Integer.parseInt(cursor.getString(0)));
                 order.setOrderNumber(cursor.getString(1));
                 order.setOrderName(cursor.getString(2));
+                order.setOrderDirectWork(cursor.getInt(3));
                 orders.add(order);
             } while (cursor.moveToNext());
         }
@@ -166,6 +172,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put("orderNumber", order.getOrderNumber()); 
         values.put("orderName", order.getOrderName());
+        values.put(ORDERS_TABLE_KEY_DIRECTWORK, order.getOrderDirectWork());
      
         int i = db.update(ORDERS_TABLE, 
         					values, 
@@ -453,6 +460,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         		// Define order node
         		theOrder.put("orderNumber", orders.get(i).getOrderNumber());
         		theOrder.put("orderName", orders.get(i).getOrderName());
+        		theOrder.put(ORDERS_TABLE_KEY_DIRECTWORK, orders.get(i).getOrderDirectWork());
         		theOrder.put("blocks", blockData);
         		
         		// Add this order to order-node

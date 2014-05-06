@@ -13,6 +13,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -39,6 +40,7 @@ public class TimestampActivity extends MainActivity {
 	private List<Block> l = new ArrayList<Block>();
 	private ArrayAdapter<String> listAdapter;
 	private ListView listView;
+	private Button next, prev;
 	
 	// Calendar that is set to the chosen day.
 	private Calendar cal;
@@ -89,6 +91,14 @@ public class TimestampActivity extends MainActivity {
 		// update view
 		setDayText(start);
 		printBlocks();
+		
+		//adding arrows to buttons
+    	next = (Button)findViewById(R.id.nextDay);
+    	Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
+    	next.setTypeface(font);
+    	
+    	prev = (Button)findViewById(R.id.prevDay);
+    	prev.setTypeface(font);
 		
 
 		//onclick that starts and stops the time.

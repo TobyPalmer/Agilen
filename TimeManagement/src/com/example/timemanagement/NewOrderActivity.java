@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TableRow;
@@ -194,11 +195,16 @@ public class NewOrderActivity extends Activity implements DataPassable{
 
 	           	EditText orderName = (EditText)d.findViewById(R.id.orderNamePop);
 	        	EditText orderNumber = (EditText)d.findViewById(R.id.orderNumberPop);
+	        	CheckBox orderDirectWork = (CheckBox)d.findViewById(R.id.orderDirectWorkPop);
 	        	String stringOrderName = orderName.getText().toString();
 	        	String stringOrderNumber = orderNumber.getText().toString();
+	        	int integerOrderDirectWork = 0; 
+	        	if(orderDirectWork.isChecked()){
+	        		integerOrderDirectWork = 1;
+	        	}	        	
 	        	
 	        	if(isInteger(stringOrderNumber)){
-	        		Order order = new Order(stringOrderNumber, stringOrderName);
+	        		Order order = new Order(stringOrderNumber, stringOrderName, integerOrderDirectWork);
 	        		if(!list.contains(order)){
 			        	list.add(order);
 			        	
