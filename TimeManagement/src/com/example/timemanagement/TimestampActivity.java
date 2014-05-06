@@ -14,6 +14,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -41,6 +42,8 @@ public class TimestampActivity extends MainActivity {
 	private List<Block> l = new ArrayList<Block>();
 	private ArrayAdapter<String> listAdapter;
 	private ListView listView;
+	private Button next;
+	private Button prev;
 	
 	// Handles current "running" block
 	Block b;
@@ -73,6 +76,15 @@ public class TimestampActivity extends MainActivity {
 		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
 				cal.get(Calendar.DAY_OF_MONTH), 0, 0);
 		start = cal.getTimeInMillis();
+		
+		//Adding arrows
+		next = (Button)findViewById(R.id.nextDay);
+    	Typeface font_for_right = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
+    	next.setTypeface(font_for_right);
+    	
+    	prev = (Button)findViewById(R.id.prevDay);
+    	Typeface font_for_left = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
+    	prev.setTypeface(font_for_left);
 		
 		//update view
 		setDayText(start);
@@ -123,7 +135,7 @@ public class TimestampActivity extends MainActivity {
 		}
 	}
 
-	@Override
+	/*@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.timestamp, menu);
@@ -145,7 +157,7 @@ public class TimestampActivity extends MainActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
+	}*/
 	
 	public void startTime(View view){
 		//String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTimeInMillis());

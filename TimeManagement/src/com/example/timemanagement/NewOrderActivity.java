@@ -146,7 +146,7 @@ public class NewOrderActivity extends Activity implements DataPassable{
 	    newFragment.show(getFragmentManager(), "stopPicker");
 	}
 
-	@Override
+	/*@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.new_order, menu);
@@ -168,7 +168,7 @@ public class NewOrderActivity extends Activity implements DataPassable{
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
+	}*/
 	
 	public void setBlock(Block b){
 
