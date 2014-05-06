@@ -17,6 +17,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v4.util.LogWriter;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -429,5 +430,18 @@ public class TimestampActivity extends MainActivity {
 		 dialog.show(); 
 	 }
 	
+	public void addNewOrder(View v){
+		Block intentBlock = new Block(start);
+		MainActivity.db.addBlock(intentBlock);
+		
+		intentBlock.setStop(start);
+		MainActivity.db.putBlock(intentBlock);	
+		
+		Intent i = new Intent(getApplicationContext(), NewOrderActivity.class);
+    	i.putExtra("Block", intentBlock);
+    	i.putExtra("String", "editBlock");
+    	startActivity(i);
+    	
+	}
 	
 }

@@ -358,7 +358,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     	  SQLiteDatabase db = this.getReadableDatabase();
     	  
     	  Cursor cursor = db.rawQuery("SELECT * FROM blocks "
-    	  							+ "WHERE start > ? AND stop < ?",
+    	  							+ "WHERE start >= ? AND stop <= ?",
     			  new String[] {String.valueOf(start), String.valueOf(stop)});
     	  
 

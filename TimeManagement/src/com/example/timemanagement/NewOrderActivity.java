@@ -84,7 +84,8 @@ public class NewOrderActivity extends Activity implements DataPassable{
  
         s.setAdapter(adapter);
         
-        if(getIntent().getExtras()!=null){
+        if(getIntent().getExtras() != null){
+        	Log.w("Time Management", "fick från Timestamp");
         	newTask = false;
         	timeBlock = (Block) getIntent().getSerializableExtra("Block");
         	update(timeBlock);
@@ -97,13 +98,12 @@ public class NewOrderActivity extends Activity implements DataPassable{
 	       else{
 	        	d.setVisibility(View.INVISIBLE);
 	       }
-	    d.setOnClickListener(new View.OnClickListener() {
+	       d.setOnClickListener(new View.OnClickListener() {
 
 	    	
 	        public void onClick(View v) {
             	Log.w("AgilTag", timeBlock.toString());
 	        	deleteBlock(v, timeBlock);
-	        	
 	        }
 	    });
 
@@ -424,7 +424,5 @@ public class NewOrderActivity extends Activity implements DataPassable{
 		 
 		 dialog.show(); 
 	 }
-	
-	
 
 }
