@@ -122,8 +122,7 @@ import android.graphics.Typeface;
 		        		
 		        	
 		    
-		    prev = (Button) findViewById(R.id.prevDay);
-		    //prevButton.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));		
+		    prev = (Button) findViewById(R.id.prevDay);		
 		    prev.setOnClickListener(new View.OnClickListener() {
 
 		        public void onClick(View v) {
@@ -143,6 +142,7 @@ import android.graphics.Typeface;
 			    		b = it.next();
 			    		if(b.getOrderID() != 0){
 			    			b.setChecked(1);
+			    			MainActivity.db.putBlock(b);
 			    		}			    		
 			    	}
 			    	setAllChecks(1);
@@ -162,6 +162,7 @@ import android.graphics.Typeface;
 			    		b = it.next();
 			    		if(b.getOrderID() != 0){
 			    			b.setChecked(0);
+			    			MainActivity.db.putBlock(b);
 			    		}			    		
 			    	}
 			    	setAllChecks(0);
@@ -177,18 +178,32 @@ import android.graphics.Typeface;
 			listAdapter.setBlockStatesList(blockStatesList);
 		}
 		
+		/**
+		 * Sets the day to one day in the future.
+		 * Also resets some variables to the new day.
+		 */
 		public void nextDate(){
 			start += 86400000;
 			stop += 86400000;
+			
+			// resets
 			dateString = (dateFormat.format(start));
 			bList = MainActivity.db.getBlocksBetweenDate(start, stop);
+			blockStatesList.clear();
 		}
 	
+		/**
+		 * Sets the day to one day in the past.
+		 * Also resets some variables to the new day.
+		 */
 		public void prevDate(){
 			start -= 86400000;
 			stop -= 86400000;
+			
+			// resets
 			dateString = (dateFormat.format(start));
 			bList = MainActivity.db.getBlocksBetweenDate(start, stop);
+			blockStatesList.clear();
 		}
 		
 		
@@ -213,10 +228,6 @@ import android.graphics.Typeface;
 		    		}
 		    		
 		    		s += " - " + b.printTime();
-		    		
-		    		if(b.getChecked() == 1){
-		    			s += " - Checked! ";
-		    		}
 		    		
 		    	    //adds the hours and minutes of a block to hoursDay and minutesDay
 		    		if(b.getStop()!=0)
@@ -249,7 +260,6 @@ import android.graphics.Typeface;
 	    		}
 	    	}
 	    	
-	    	//listAdapter = new ArrayAdapter<String>(this,R.layout.listrow, blockList);
 	    	listAdapter = new CustomListAdapter1(this,R.layout.listrow, blockList, blockStatesList);
 	    	l_view.setAdapter(listAdapter);	    	
 	    	l_view.setOnItemClickListener(new OnItemClickListener()
