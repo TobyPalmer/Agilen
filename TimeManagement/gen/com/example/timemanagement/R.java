@@ -96,7 +96,7 @@ public final class R {
         public static final int timestamp=0x7f080003;
     }
     public static final class string {
-        public static final int addNewOrderNumber=0x7f050015;
+        public static final int addNewOrderNumber=0x7f050016;
         public static final int addOrderButton=0x7f050010;
         public static final int addedOrder=0x7f050011;
         public static final int app_name=0x7f050000;
@@ -104,17 +104,18 @@ public final class R {
         public static final int comments=0x7f05000b;
         public static final int delete=0x7f050012;
         public static final int edit=0x7f05000d;
-        public static final int fa_arrow_left=0x7f050018;
-        public static final int fa_arrow_right=0x7f050017;
+        public static final int fa_arrow_left=0x7f050019;
+        public static final int fa_arrow_right=0x7f050018;
         public static final int menu_checkview=0x7f050001;
         public static final int menu_schedule=0x7f050004;
         public static final int menu_settings=0x7f050005;
         public static final int menu_statistics=0x7f050002;
         public static final int menu_timestamp=0x7f050003;
-        public static final int nextDay=0x7f05001b;
-        public static final int orderName=0x7f050016;
+        public static final int newBlock=0x7f050015;
+        public static final int nextDay=0x7f05001c;
+        public static final int orderName=0x7f050017;
         public static final int orderNumber=0x7f05000f;
-        public static final int passWord=0x7f05001a;
+        public static final int passWord=0x7f05001b;
         public static final int start=0x7f050013;
         public static final int stop=0x7f050014;
         public static final int taskDate=0x7f050008;
@@ -123,7 +124,7 @@ public final class R {
         public static final int title_activity_new_order=0x7f050007;
         public static final int title_activity_timestamp=0x7f050006;
         public static final int trash=0x7f05000c;
-        public static final int userName=0x7f050019;
+        public static final int userName=0x7f05001a;
     }
     public static final class style {
         /** 
