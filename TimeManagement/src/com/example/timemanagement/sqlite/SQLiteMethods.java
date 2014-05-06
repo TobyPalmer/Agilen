@@ -376,7 +376,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     	// Get all blocks
     	if(orderID == 0) {
     		cursor = db.rawQuery("SELECT * FROM blocks "
-    							+ "WHERE start > ? AND stop < ?",
+    							+ "WHERE start >= ? AND stop <= ?",
     	  						new String[] {String.valueOf(start), String.valueOf(stop)});
     	} // Get blocks of a certain orderID
     	else {
