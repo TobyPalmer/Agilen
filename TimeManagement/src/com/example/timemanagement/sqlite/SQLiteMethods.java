@@ -22,7 +22,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
 	
 	// Database info
 
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 12;
     private static final String DATABASE_NAME = "TimeManagement";
  
     // Constructor
@@ -81,7 +81,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     														ORDERS_TABLE_KEY_DIRECTWORK};
     
     /**
-     * INSERT: Create new order 
+     * INSERT: Create new order
      * @param order
      */
     public void addOrder(Order order){
@@ -358,7 +358,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     	  SQLiteDatabase db = this.getReadableDatabase();
     	  
     	  Cursor cursor = db.rawQuery("SELECT * FROM blocks "
-    	  							+ "WHERE start > ? AND stop < ?",
+    	  							+ "WHERE start >= ? AND stop <= ?",
     			  new String[] {String.valueOf(start), String.valueOf(stop)});
     	  
 

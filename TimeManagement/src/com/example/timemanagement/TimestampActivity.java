@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-import android.R.color;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -18,6 +17,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v4.util.LogWriter;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,7 +30,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.ListView;
 
 import com.example.swipetodismiss.*;
 import com.example.timemanagement.model.Block;
@@ -44,8 +43,12 @@ public class TimestampActivity extends MainActivity {
 	private ListView listView;
 	private Button next, prev;
 	
+	// Calendar that is set to the chosen day.
+	private Calendar cal;
+	
 	// Handles current "running" block
 	Block b;
+	
 	boolean started = false;
 	boolean stopped = true;
 	
@@ -64,19 +67,29 @@ public class TimestampActivity extends MainActivity {
 		listView = (ListView) findViewById(android.R.id.list);
 		// Show the Up button in the action bar
 		setupActionBar();
+
 		
-		//Sets stop to the end of this day.
-		Calendar cal = Calendar.getInstance();
+		// Sets the start and stop to that of the current day.
+		cal = Calendar.getInstance();
 		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
 				cal.get(Calendar.DAY_OF_MONTH), 23, 59);
 		stop = cal.getTimeInMillis();
-		
-		//Sets start to the start of this day.
+
 		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
 				cal.get(Calendar.DAY_OF_MONTH), 0, 0);
-		start = cal.getTimeInMillis();
+		start = cal.getTimeInMillis();	
 		
-		//update view
+		// Use block from calling intent (if any)
+		if(savedInstanceState == null){
+			Bundle extras = getIntent().getExtras();
+			if(extras != null){
+				Block intentBlock = (Block) extras.get("Block");
+				setStartAndStop(intentBlock);
+			}
+		}
+	
+		
+		// update view
 		setDayText(start);
 		printBlocks();
 		
@@ -112,6 +125,26 @@ public class TimestampActivity extends MainActivity {
 		
 
 	}
+	
+	/**
+	 * Sets start and stop to that from a timeBlock.
+	 * 
+	 * @param intentBlock
+	 */
+	private void setStartAndStop(Block intentBlock){
+		
+			cal.setTimeInMillis(intentBlock.getStart());
+			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
+					cal.get(Calendar.DAY_OF_MONTH), 0, 0);
+			start = cal.getTimeInMillis();
+			
+			cal.setTimeInMillis(intentBlock.getStop());
+			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
+					cal.get(Calendar.DAY_OF_MONTH), 23, 59);
+			stop = cal.getTimeInMillis();
+	}
+	
+	
 	
 	/**
 	 * Helper method that updates the day TextView.
@@ -397,5 +430,18 @@ public class TimestampActivity extends MainActivity {
 		 dialog.show(); 
 	 }
 	
+	public void addNewOrder(View v){
+		Block intentBlock = new Block(start);
+		MainActivity.db.addBlock(intentBlock);
+		
+		intentBlock.setStop(start);
+		MainActivity.db.putBlock(intentBlock);	
+		
+		Intent i = new Intent(getApplicationContext(), NewOrderActivity.class);
+    	i.putExtra("Block", intentBlock);
+    	i.putExtra("String", "editBlock");
+    	startActivity(i);
+    	
+	}
 	
 }
