@@ -24,7 +24,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_weight="1"
                 android:background="@color/orange"
-                android:text="Prev"
+                android:text="@string/fa_arrow_left" 
                 android:textColor="#FFF"
                 android:textSize="20sp" />
 
@@ -45,7 +45,7 @@
                 android:layout_marginBottom="100dp"
                 android:layout_weight="1"
                 android:background="@color/orange"
-                android:text="Next"
+                android:text="@string/fa_arrow_right" 
                 android:textColor="#FFF"
                 android:textSize="20sp" />
 
