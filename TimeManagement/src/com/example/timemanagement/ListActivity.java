@@ -63,23 +63,37 @@ import android.graphics.Typeface;
 		
 		@Override
 		protected void onCreate(Bundle savedInstanceState) {
-		
 			
 			super.onCreate(savedInstanceState);
 			setContentView(R.layout.activity_list);
 			// Show the Up button in the action bar.
 			setupActionBar();
 			
-			//Sets stop to the end of this day.
 			Calendar cal = Calendar.getInstance();
-			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
-					cal.get(Calendar.DAY_OF_MONTH), 23, 59);
-			stop = cal.getTimeInMillis();
-			
-			//Sets start to the start of this day.
-			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
-					cal.get(Calendar.DAY_OF_MONTH), 0, 0);
-			start = cal.getTimeInMillis();
+			today = cal.getTimeInMillis();
+			// Sets start and stop either from the calling activity or from the
+			// date of today.
+			Bundle extras = getIntent().getExtras();
+			if(extras != null){
+				Block intentBlock = (Block) extras.get("Block");
+				cal.setTimeInMillis(intentBlock.getStart());
+				cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
+						cal.get(Calendar.DAY_OF_MONTH), 0, 0);
+				start = cal.getTimeInMillis();
+				
+				cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
+						cal.get(Calendar.DAY_OF_MONTH), 23, 59);
+				stop = cal.getTimeInMillis();
+			} else{
+				
+				cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
+						cal.get(Calendar.DAY_OF_MONTH), 23, 59);
+				stop = cal.getTimeInMillis();
+				
+				cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
+						cal.get(Calendar.DAY_OF_MONTH), 0, 0);
+				start = cal.getTimeInMillis();
+			}
 			
 			//Create a list of all the blocks
 	    	//BList = MainActivity.db.getAllBlocks();
@@ -92,13 +106,14 @@ import android.graphics.Typeface;
 			blockList = new ArrayList<String>();
 			blockStatesList = new ArrayList<Integer>();
 			
-			//Calendar cal = new GregorianCalendar();
-			today = System.currentTimeMillis();
-			currentDate = new Date(start);
+			cal.setTimeInMillis(today);
+			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
+					cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+			today = cal.getTimeInMillis();
+			currentDate = new Date(today);
 			dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			
-			d = new Date(today);
-			dateString = (dateFormat.format(d));
+			dateString = (dateFormat.format(start));
 			iterateBlocks(dateString);
 			
 			//Adding arrows to buttons
@@ -290,7 +305,7 @@ import android.graphics.Typeface;
 											Intent i = new Intent(getApplicationContext(), NewOrderActivity.class);
 			            		        	
 			            		        	i.putExtra("Block", block);
-			            		        	i.putExtra("String", "editBlock");
+			            		        	i.putExtra("Caller", "Checkview");
 			            		        	        	
 			            		        	startActivity(i);											
 										}

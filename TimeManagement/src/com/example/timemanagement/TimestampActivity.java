@@ -283,7 +283,7 @@ public class TimestampActivity extends MainActivity {
             		        	Intent i = new Intent(getApplicationContext(), NewOrderActivity.class);
             		        	
             		        	i.putExtra("Block", block);
-            		        	i.putExtra("String", "editBlock");
+            		        	i.putExtra("Caller", "Timestamp");
             		        	        	
             		        	startActivity(i);
                             	
@@ -439,7 +439,7 @@ public class TimestampActivity extends MainActivity {
 		
 		Intent i = new Intent(getApplicationContext(), NewOrderActivity.class);
     	i.putExtra("Block", intentBlock);
-    	i.putExtra("String", "editBlock");
+    	i.putExtra("Caller", "Timestamp");
     	startActivity(i);
     	
 	}
