@@ -128,7 +128,6 @@
                      android:background="@color/orange"
                      android:textColor="#FFF"
                      android:textSize="30sp"
-                     android:text="@string/newBlock" 
-                     android:onClick="addNewOrder" />
+                     android:text="@string/newBlock" />
                      
 </RelativeLayout>

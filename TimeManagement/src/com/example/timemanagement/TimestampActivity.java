@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import android.annotation.SuppressLint;
+
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -17,13 +17,11 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v4.util.LogWriter;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -31,6 +29,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.example.swipetodismiss.*;
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
@@ -103,16 +102,42 @@ public class TimestampActivity extends MainActivity {
     	prev = (Button)findViewById(R.id.prevDay);
     	prev.setTypeface(font);
     	
+
     	
     	//use neo sans font on buttons and date
         Typeface font2 = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
     	
         startB = (Button)findViewById(R.id.startButton);
     	startB.setTypeface(font2);
+    	
         create = (Button)findViewById(R.id.changeOrderButton);
     	create.setTypeface(font2);
+    	enableCreateButton();
+    	
+    	create.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				create.setEnabled(false);
+				create.setBackgroundColor(getResources().getColor(R.color.darkGrey));
+				create.setTextColor(getResources().getColor(R.color.lightGrey));
+				
+				Block intentBlock = new Block(start);
+				MainActivity.db.addBlock(intentBlock);
+				
+				intentBlock.setStop(start);
+				MainActivity.db.putBlock(intentBlock);	
+				
+				Intent i = new Intent(getApplicationContext(), NewOrderActivity.class);
+		    	i.putExtra("Block", intentBlock);
+		    	i.putExtra("Caller", "Timestamp");
+		    	startActivity(i);	
+			}
+		});
+		
     	day = (TextView)findViewById(R.id.day);
     	day.setTypeface(font2);
+    	
 		
 
 		//onclick that starts and stops the time.
@@ -133,6 +158,14 @@ public class TimestampActivity extends MainActivity {
 	        	
 	        }
 	    });
+	    startB.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		});
 
 	    setStartButton();
 
@@ -344,7 +377,13 @@ public class TimestampActivity extends MainActivity {
 			startB.setTextColor(getResources().getColor(R.color.lightGrey));
 		}
 	}
-		
+	
+	
+	private void enableCreateButton(){
+    	create.setEnabled(true);
+    	create.setBackgroundColor(getResources().getColor(R.color.orange));
+		create.setTextColor(Color.WHITE);	
+	}
 	
 	
 	public void addComment(View view, final Block block){
@@ -398,6 +437,13 @@ public class TimestampActivity extends MainActivity {
 		 dialog.show(); 
 	 }
 	
+	@Override
+	public void onResume() {
+	    super.onResume();  // Always call the superclass method first
+	    enableCreateButton();
+	    printBlocks();
+	}
+	
 	public void deleteBlock(View view, final Block block){
 		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -439,19 +485,4 @@ public class TimestampActivity extends MainActivity {
 		 
 		 dialog.show(); 
 	 }
-	
-	public void addNewOrder(View v){
-		Block intentBlock = new Block(start);
-		MainActivity.db.addBlock(intentBlock);
-		
-		intentBlock.setStop(start);
-		MainActivity.db.putBlock(intentBlock);	
-		
-		Intent i = new Intent(getApplicationContext(), NewOrderActivity.class);
-    	i.putExtra("Block", intentBlock);
-    	i.putExtra("Caller", "Timestamp");
-    	startActivity(i);
-    	
-	}
-	
 }
