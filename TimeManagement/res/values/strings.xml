@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+	<!-- General -->
     <string name="app_name">Chronox</string>
+    <!-- Menu -->
     <string name="menu_checkview">Avcheckning</string>
     <string name="menu_statistics">Statistik</string>
     <string name="menu_timestamp">Tidslogg</string>
     <string name="menu_schedule">Schemavy</string>
     <string name="menu_settings">Inställningar</string>
     <string name="menu_backup">Backup (import/export)</string>
+    <!-- Activities -->
     <string name="title_activity_timestamp">Tidslogg</string>
     <string name="title_activity_new_order">Editera block</string>
     <string name="taskDate"></string>
@@ -24,8 +26,8 @@
     <string name="start">Start</string>
     <string name="stop">Stop</string>
     <string name="newBlock">Skapa tidsblock</string>
-    <string name="addNewOrderNumber">Nytt ordernummer</string>
-    <string name="orderName">Ordernamn</string>
+    <string name="addNewOrderNumber">Ny order</string>
+    <string name="orderName">Namn</string>
     <string name="fa_arrow_right">&#xf105;</string>
     <string name="fa_arrow_left">&#xf104;</string>
     <string name="userName">Användarnamn</string>
@@ -33,7 +35,7 @@
     <string name="nextDay">Nästa</string>
     <string name="title_activity_backup">BackupActivity</string>
     <string name="action_settings">Settings</string>
-    
+    <!-- Colors -->
     <color name="orange">#F88621</color>
     <color name="darkGrey">#323232</color>
     <color name="lightGrey">#999</color>
@@ -43,6 +45,4 @@
     <color name="commentColor">#88888888</color>
     <color name="green">#57bf23</color> 
     <color name="red">#fb3804</color>
-
-
 </resources>

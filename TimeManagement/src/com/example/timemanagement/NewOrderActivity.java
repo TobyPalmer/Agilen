@@ -181,7 +181,7 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 	
 	public void addNewOrderNumber(View view){
 		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		 builder.setTitle("New Task");
+		 builder.setTitle("Ny order");
 		 
 		 LayoutInflater inflater = getLayoutInflater();
 
@@ -189,7 +189,7 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 		    // Pass null as the parent view because its going in the dialog layout
 		    builder.setView(inflater.inflate(R.layout.activity_neworderpopup, null));
 		 
-		 builder.setPositiveButton("Lï¿½gg till", new DialogInterface.OnClickListener() {
+		 builder.setPositiveButton("Lägg till", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User clicked OK button
 	        	
@@ -204,28 +204,19 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 	        	if(orderDirectWork.isChecked()){
 	        		integerOrderDirectWork = 1;
 	        	}	        	
-	        	
-	        	if(isInteger(stringOrderNumber)){
-	        		Order order = new Order(stringOrderNumber, stringOrderName, integerOrderDirectWork);
-	        		if(!list.contains(order)){
-			        	list.add(order);
-			        	
-			        	String message = "You have succesfully added a new task!";
-			        	newPopUp("Task Created",message);
-			        	
-			            s.setSelection(list.size()-1);
-			            adapter.notifyDataSetChanged();
-			        	
-			        	//Save to dB
-			        	MainActivity.db.addOrder(order);
-	        		}
-	        		else{
-	        			newPopUp("Error!","'" + order + "' already exists!");
-	        		}
-	        	}
-	        	else{
-	        		newPopUp("Error!","'" + stringOrderNumber + "' is not a valid order number!");
-	        	}
+        		Order order = new Order(stringOrderNumber, stringOrderName, integerOrderDirectWork);
+        		if(!list.contains(order)){
+		        	list.add(order);
+		        	String message = "Order tillagd";
+		        	newPopUp("Ny order", message);
+		            s.setSelection(list.size()-1);
+		            adapter.notifyDataSetChanged();
+		        	//Save to dB
+		        	MainActivity.db.addOrder(order);
+        		}
+        		else{
+        			newPopUp("Fel", "'" + order + "' existerar redan.");
+        		}
 	           }
 	       });
 		 
@@ -233,10 +224,8 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User cancelled the dialog
 	           }
-	       });
-
+	     });
 		 AlertDialog dialog = builder.create();
-		 
 		 dialog.show(); 
 	 }
 	 
