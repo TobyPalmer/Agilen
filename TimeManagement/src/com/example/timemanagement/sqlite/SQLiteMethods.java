@@ -22,7 +22,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
 	
 	// Database info
 
-    private static final int DATABASE_VERSION = 15;
+    private static final int DATABASE_VERSION = 16;
     private static final String DATABASE_NAME = "TimeManagement";
  
     // Constructor
@@ -356,6 +356,10 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     	  List<Block> blocks = new LinkedList<Block>();
     	
     	  SQLiteDatabase db = this.getReadableDatabase();
+    	  
+    	  //Adjusting milliseconds.
+    	  start = start - (start % 1000);
+    	  stop = stop - (stop % 1000);
     	  
     	  Cursor cursor = db.rawQuery("SELECT * FROM blocks "
     	  							+ "WHERE start >= ? AND stop <= ?",

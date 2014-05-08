@@ -7,13 +7,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 
 import android.content.*;
 import android.annotation.TargetApi;
-import android.content.DialogInterface.OnClickListener;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -27,23 +25,18 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.timemanagement.R.color;
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
-import com.example.timemanagement.sqlite.SQLiteMethods;
 import com.example.timemanagement.R;
 import com.example.timemanagement.customadapters.*;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.graphics.Color;
 import android.graphics.Typeface;
 
 	public class ListActivity extends MainActivity {
 		
 		
 		private List<Block> bList = new ArrayList<Block>();
-		private Date d;
 		private ListView l_view;
 		private TextView day, total;
 		private CustomListAdapter1 listAdapter;
@@ -78,22 +71,23 @@ import android.graphics.Typeface;
 				Block intentBlock = (Block) extras.get("Block");
 				cal.setTimeInMillis(intentBlock.getStart());
 				cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
-						cal.get(Calendar.DAY_OF_MONTH), 0, 0);
+						cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
 				start = cal.getTimeInMillis();
 				
 				cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
-						cal.get(Calendar.DAY_OF_MONTH), 23, 59);
+						cal.get(Calendar.DAY_OF_MONTH), 23, 59, 0);
 				stop = cal.getTimeInMillis();
 			} else{
 				
 				cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
-						cal.get(Calendar.DAY_OF_MONTH), 23, 59);
+						cal.get(Calendar.DAY_OF_MONTH), 23, 59, 0);
 				stop = cal.getTimeInMillis();
 				
 				cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
-						cal.get(Calendar.DAY_OF_MONTH), 0, 0);
+						cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
 				start = cal.getTimeInMillis();
 			}
+			
 			
 			//Create a list of all the blocks
 	    	//BList = MainActivity.db.getAllBlocks();
@@ -123,8 +117,7 @@ import android.graphics.Typeface;
 	    	
 	    	prev = (Button)findViewById(R.id.prevDay);
 	    	prev.setTypeface(font);
-
-//	    	final Button nextButton = (Button) findViewById(R.id.nextDay);		
+	
 	    	next.setOnClickListener(new View.OnClickListener() {
 
 		        public void onClick(View v) {
@@ -149,7 +142,6 @@ import android.graphics.Typeface;
 		    Button selectAllButton = (Button) findViewById(R.id.selectAll);	    			
 	    	selectAllButton.setOnClickListener(new View.OnClickListener() {
 		        public void onClick(View v) {
-		            // TODO Auto-generated method stub
 		        	Log.e("Button","selectAllButton");
 		        	Iterator<Block> it = bList.iterator(); 
 			    	while(it.hasNext())
@@ -169,7 +161,6 @@ import android.graphics.Typeface;
 	    	deselectAllButton.setOnClickListener(new View.OnClickListener() {
 
 		        public void onClick(View v) {
-		            // TODO Auto-generated method stub
 
 		        	Iterator<Block> it = bList.iterator(); 
 			    	while(it.hasNext())
