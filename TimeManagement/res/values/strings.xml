@@ -42,7 +42,7 @@
     <string name="action_settings">Settings</string>
     
     <color name="orange">#F88621</color>
-    <color name="darkGrey">#323232</color>
+    <color name="darkGrey">#787878</color>
     <color name="lightGrey">#999</color>
 
     <color name="title_background">#0000FF</color>
