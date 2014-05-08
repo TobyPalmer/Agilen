@@ -126,6 +126,12 @@ public class MainActivity extends Activity {
         Intent intent = new Intent(this, SettingActivity.class);
         startActivity(intent);
     }
+    
+    public void handleOrdersActivity(){
+    	
+        Intent intent = new Intent(this, HandleOrdersActivity.class);
+        startActivity(intent);
+    }
 
     // Making Settings view
     public void backupActivity(){
