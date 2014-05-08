@@ -5,7 +5,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -20,8 +19,6 @@ import android.support.v4.util.LogWriter;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -29,10 +26,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.example.timemanagement.R.color;
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
 
@@ -45,7 +40,7 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 	private Button dateButton,
 				   startButton,
 				   stopButton;
-	private Button d;
+	private Button d, delete, save, taskdate, taskstart, taskstop, newOrder;
 	private TextView arrow;
 	private EditText comment;
 	private boolean newTask;
@@ -58,6 +53,26 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
     	
 		newTask = true;
 		
+		//Setting the font
+		Typeface font_neo = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
+		Typeface font_for_icon = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
+    	
+        delete = (Button)findViewById(R.id.deleteButton);
+        save = (Button)findViewById(R.id.button1);
+        taskdate = (Button)findViewById(R.id.taskDate);
+        taskstart = (Button)findViewById(R.id.taskStart);
+        taskstop = (Button)findViewById(R.id.taskStop);
+        newOrder = (Button)findViewById(R.id.button2);
+        arrow = (TextView)findViewById(R.id.arrow);
+        
+    	delete.setTypeface(font_neo);
+    	save.setTypeface(font_neo);
+    	taskdate.setTypeface(font_neo);
+    	taskstart.setTypeface(font_neo);
+    	taskstop.setTypeface(font_neo);
+    	newOrder.setTypeface(font_for_icon);
+    	arrow.setTypeface(font_for_icon);
+
     	//Gets the current date.
     	//ToDo: Get date from existing task instead.
     	Calendar cal = Calendar.getInstance();
@@ -69,24 +84,28 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
     	startButton.setText(timeBlock.toTimeString(true));
     	
     	comment = (EditText)findViewById(R.id.editTextComments);
-    	
-    	arrow = (TextView)findViewById(R.id.arrow);
-    	Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
-    	arrow.setTypeface(font);
+    	comment.setTypeface(font_neo);
     	
     	stopButton = (Button)findViewById(R.id.taskStop);
     	stopButton.setText(timeBlock.toTimeString(false));
     	
-    	
-    	
-    	// Get all orders
+    	Order standardOrder = new Order("0", "Ospec. Ordernr.", 0);
+
+       	// Get all orders
     	list = MainActivity.db.getAllOrders();
-    	
+    	    	
         s = (Spinner) findViewById(R.id.spinner1);
 		adapter = new ArrayAdapter(this, R.layout.spinner_item, list);
- 
+		
         s.setAdapter(adapter);
         
+   	 if(!list.contains(standardOrder)){
+      	list.add(standardOrder);
+      	s.setSelection(list.size()-1);
+         adapter.notifyDataSetChanged();
+      	MainActivity.db.addOrder(standardOrder);
+      	}
+
         if(getIntent().getExtras() != null){
         	newTask = false;
         	caller = (String) getIntent().getSerializableExtra("Caller");
@@ -105,7 +124,6 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 
 	    	
 	        public void onClick(View v) {
-            	Log.w("AgilTag", timeBlock.toString());
 	        	deleteBlock(v, timeBlock);
 	        }
 	    });
@@ -148,30 +166,6 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 	    DialogFragment newFragment = new TimePickFragment(timeBlock, false);
 	    newFragment.show(getFragmentManager(), "stopPicker");
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.new_order, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			// This ID represents the Home or Up button. In the case of this
-			// activity, the Up button is shown. Use NavUtils to allow users
-			// to navigate up one level in the application structure. For
-			// more details, see the Navigation pattern on Android Design:
-			//
-			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-			//
-			NavUtils.navigateUpFromSameTask(this);
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
 	
 	public void setBlock(Block b){
 
@@ -181,7 +175,7 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 	
 	public void addNewOrderNumber(View view){
 		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		 builder.setTitle("New Task");
+		 builder.setTitle("Ny order");
 		 
 		 LayoutInflater inflater = getLayoutInflater();
 
@@ -210,8 +204,8 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 	        		if(!list.contains(order)){
 			        	list.add(order);
 			        	
-			        	String message = "You have succesfully added a new task!";
-			        	newPopUp("Task Created",message);
+			        	String message = "Du har lagt till en order!";
+			        	newPopUp("Order tillagd",message);
 			        	
 			            s.setSelection(list.size()-1);
 			            adapter.notifyDataSetChanged();
@@ -220,11 +214,11 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 			        	MainActivity.db.addOrder(order);
 	        		}
 	        		else{
-	        			newPopUp("Error!","'" + order + "' already exists!");
+	        			newPopUp("Error!","'" + order + "' finns redan!");
 	        		}
 	        	}
 	        	else{
-	        		newPopUp("Error!","'" + stringOrderNumber + "' is not a valid order number!");
+	        		newPopUp("Error!","'" + stringOrderNumber + "' är inte ett giltigt nummer!");
 	        	}
 	           }
 	       });
@@ -257,10 +251,10 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
     
     	timeBlock.setComment(comments);
     	
-    	String message = "You have succesfully edited your task! \n\n" +
+    	String message = "Du har redigerat din order! \n\n" +
     					 orderString + "\n" + timeBlock.toStringPublic() +
     					 "\n " + comments;
-    	newPopUp("Task Edited",message);
+    	newPopUp("Redigerad!",message);
     	
     	//Save to db
     	if(getIntent().getExtras()!=null)
@@ -286,7 +280,6 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 			        	i.putExtra("Block", timeBlock);  	
 			        	startActivity(i);
 	        	   }
-	        	   
 	           }
 	     });
 		
@@ -304,8 +297,6 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 		 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User clicked OK button
-	        	   
-
 	           }
 	     });
 		

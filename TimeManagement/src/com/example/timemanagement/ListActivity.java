@@ -27,20 +27,28 @@ import android.widget.Button;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.timemanagement.customadapters.CustomListAdapter1;
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
+import com.example.timemanagement.R;
+import com.example.timemanagement.customadapters.*;
 
-	public class ListActivity extends MainActivity {
+import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.graphics.Typeface;
+
+
+	public class ListActivity extends MainActivity implements DataPassable {
 		
 		
 		private List<Block> bList = new ArrayList<Block>();
 		private ListView l_view;
-		private TextView day, total;
+		private TextView total;
 		private CustomListAdapter1 listAdapter;
 		private Date currentDate;
-		private Button next, prev;
+		private Button next, prev, day;
 
 		private ArrayList<String> blockList;
 		private ArrayList<Integer> blockStatesList;
@@ -52,6 +60,8 @@ import com.example.timemanagement.model.Order;
 		private int minutesDay, hoursDay;
 		private long today, timeDiff, stop, start;
 		int height, width;
+		private Calendar cal;
+
 		
 		
 		@Override
@@ -61,15 +71,16 @@ import com.example.timemanagement.model.Order;
 			setContentView(R.layout.activity_list);
 			// Show the Up button in the action bar.
 			setupActionBar();
-			
+
 			WindowManager wm = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
 	        height = wm.getDefaultDisplay().getHeight();
 	        width = wm.getDefaultDisplay().getWidth();
 			
 			ListView l = (ListView)findViewById(R.id.l_view);
 			l.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, (height-600)));
-			
-			Calendar cal = Calendar.getInstance();
+
+			cal = Calendar.getInstance();
+
 			today = cal.getTimeInMillis();
 			// Sets start and stop either from the calling activity or from the
 			// date of today.
@@ -106,7 +117,7 @@ import com.example.timemanagement.model.Order;
 			Typeface font2 = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
 			
 			l_view = (ListView) findViewById(R.id.l_view);
-			day = (TextView) findViewById(R.id.day);
+			day = (Button) findViewById(R.id.day);
 			total = (TextView) findViewById(R.id.total);
 			total.setTypeface(font2);
 			
@@ -129,10 +140,19 @@ import com.example.timemanagement.model.Order;
 	    	
 	    	prev = (Button)findViewById(R.id.prevDay);
 	    	prev.setTypeface(font);
-	    	   	
-	    	day = (TextView)findViewById(R.id.day);
 
 	    	day.setTypeface(font2);
+	    	
+	    	day.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Block temp = new Block(start);
+					temp.setStop(stop);
+				    DialogFragment newFragment = new DatePickFragment(temp);
+				    newFragment.show(getFragmentManager(), "datePicker");
+				}
+			});
 	   	
 
 	    	next.setOnClickListener(new View.OnClickListener() {
@@ -204,6 +224,24 @@ import com.example.timemanagement.model.Order;
 		}
 		
 		/**
+		 * Sets start and stop to that from a timeBlock.
+		 * 
+		 * @param intentBlock
+		 */
+		private void setStartAndStop(Block intentBlock){
+			
+				cal.setTimeInMillis(intentBlock.getStart());
+				cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
+						cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+				start = cal.getTimeInMillis();
+				
+				cal.setTimeInMillis(intentBlock.getStop());
+				cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
+						cal.get(Calendar.DAY_OF_MONTH), 23, 59, 0);
+				stop = cal.getTimeInMillis();
+		}
+		
+		/**
 		 * Sets the day to one day in the future.
 		 * Also resets some variables to the new day.
 		 */
@@ -213,8 +251,6 @@ import com.example.timemanagement.model.Order;
 			
 			// resets
 			dateString = (dateFormat.format(start));
-			bList = MainActivity.db.getBlocksBetweenDate(start, stop);
-			blockStatesList.clear();
 		}
 	
 		/**
@@ -227,8 +263,6 @@ import com.example.timemanagement.model.Order;
 			
 			// resets
 			dateString = (dateFormat.format(start));
-			bList = MainActivity.db.getBlocksBetweenDate(start, stop);
-			blockStatesList.clear();
 		}
 		
 		public void iterateBlocks(String dateString)
@@ -378,6 +412,33 @@ import com.example.timemanagement.model.Order;
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 				getActionBar().setDisplayHomeAsUpEnabled(false);
 			}
+		}
+		
+		/**
+		 * Updates values depending on what's chosen in the datepickerfragment. 
+		 */
+		@Override
+		public void update(PickFragment p, Object o) {
+			if(o instanceof Block){
+				Block temp = (Block) o;
+				long startOfDay = temp.getStart() - (temp.getStart() % 86400000);
+				if(startOfDay < today){
+					setStartAndStop(temp);
+					dateString = (dateFormat.format(start));
+					iterateBlocks(dateString);
+				} else
+					showWrongtimeToast(temp);
+			}
+		}
+		/**
+		 * Showing a toast when the user tried to input future dates with the picker.
+		 * @param b The timeblock
+		 */
+		private void showWrongtimeToast(Block b){
+			String text = "Invalid date! " + b.toDateString() + " is in the future!";
+			
+			Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
+			toast.show();
 		}
 		
 	}
