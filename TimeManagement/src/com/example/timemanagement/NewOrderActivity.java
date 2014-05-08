@@ -9,12 +9,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v4.util.LogWriter;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,6 +49,7 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 	private TextView arrow;
 	private EditText comment;
 	private boolean newTask;
+	private String caller;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -85,8 +88,8 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
         s.setAdapter(adapter);
         
         if(getIntent().getExtras() != null){
-        	Log.w("Time Management", "fick från Timestamp");
         	newTask = false;
+        	caller = (String) getIntent().getSerializableExtra("Caller");
         	timeBlock = (Block) getIntent().getSerializableExtra("Block");
         	update(timeBlock);
         }
@@ -106,7 +109,6 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 	        	deleteBlock(v, timeBlock);
 	        }
 	    });
-
 		// Show the Up button in the action bar.
 		setupActionBar();
 	}
@@ -274,9 +276,17 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 		 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	        	   
-	        	    Intent i = new Intent(getApplicationContext(), TimestampActivity.class);
-		        	i.putExtra("Block", timeBlock);  	
-		        	startActivity(i);
+	        	   if(caller.equals("Timestamp")){
+	        		   Intent i = new Intent(getApplicationContext(), TimestampActivity.class);
+			        	i.putExtra("Block", timeBlock);  	
+			        	startActivity(i);
+	        	   }
+	        	   else if(caller.equals("Checkview")){
+	        		   Intent i = new Intent(getApplicationContext(), ListActivity.class);
+			        	i.putExtra("Block", timeBlock);  	
+			        	startActivity(i);
+	        	   }
+	        	   
 	           }
 	     });
 		

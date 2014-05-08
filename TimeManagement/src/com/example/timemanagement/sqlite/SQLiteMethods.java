@@ -25,7 +25,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
 	
 	// Database info
 
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 16;
     private static final String DATABASE_NAME = "TimeManagement";
  
     // Constructor
@@ -373,6 +373,11 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     	SQLiteDatabase db = this.getReadableDatabase();
     	// Commits SQL
     	Cursor cursor;
+    	
+  	  	// Removing milliseconds.
+    	start = start - (start % 1000);
+  	  	stop = stop - (stop % 1000);
+    	
     	// Get all blocks
     	if(orderID == 0) {
     		cursor = db.rawQuery("SELECT * FROM blocks "
