@@ -2,6 +2,7 @@ package com.example.timemanagement.customadapters;
 
 import java.util.ArrayList;
 
+import android.R;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
@@ -25,7 +26,7 @@ public class CustomListAdapter1 extends ArrayAdapter<String>{
 		View v = super.getView(position, convertView, parent);
 		
 		if(blockStatesList.get(position)== 1){
-			((TextView)v).setBackgroundColor(Color.GREEN);
+			((TextView)v).setBackgroundColor(Color.parseColor("#57bf23"));
 		}
 		else if(blockStatesList.get(position)== 2){
 			((TextView)v).setBackgroundColor(Color.YELLOW);

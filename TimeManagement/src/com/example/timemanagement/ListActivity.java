@@ -10,28 +10,27 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import android.content.*;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.timemanagement.customadapters.CustomListAdapter1;
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
-import com.example.timemanagement.R;
-import com.example.timemanagement.customadapters.*;
-
-import android.app.AlertDialog;
-import android.graphics.Typeface;
 
 	public class ListActivity extends MainActivity {
 		
@@ -52,6 +51,7 @@ import android.graphics.Typeface;
 		private Block b;
 		private int minutesDay, hoursDay;
 		private long today, timeDiff, stop, start;
+		int height, width;
 		
 		
 		@Override
@@ -61,6 +61,13 @@ import android.graphics.Typeface;
 			setContentView(R.layout.activity_list);
 			// Show the Up button in the action bar.
 			setupActionBar();
+			
+			WindowManager wm = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
+	        height = wm.getDefaultDisplay().getHeight();
+	        width = wm.getDefaultDisplay().getWidth();
+			
+			ListView l = (ListView)findViewById(R.id.l_view);
+			l.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, (height-400)));
 			
 			Calendar cal = Calendar.getInstance();
 			today = cal.getTimeInMillis();
@@ -248,6 +255,7 @@ import android.graphics.Typeface;
 		    		}
 		    		
 		    		s += " - " + b.printTime();
+
 		    		
 		    	    //adds the hours and minutes of a block to hoursDay and minutesDay
 		    		
@@ -345,7 +353,7 @@ import android.graphics.Typeface;
 	    	});
      
 	    	day.setText(dateString);
-	    	s = "Total time: " + hoursDay + "h " + minutesDay + "m";
+	    	s = " Total time: " + hoursDay + "h " + minutesDay + "m";
 	    	total.setText(s);
 		}
 		
