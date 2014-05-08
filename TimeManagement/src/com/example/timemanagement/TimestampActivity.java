@@ -66,6 +66,8 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 		setContentView(R.layout.activity_timestamp);
 		
 		listView = (ListView) findViewById(android.R.id.list);
+		
+		
 		// Show the Up button in the action bar
 		setupActionBar();
 
@@ -107,6 +109,10 @@ public class TimestampActivity extends MainActivity implements DataPassable {
     	
     	//use neo sans font on buttons and date
         Typeface font2 = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
+        
+        //use century gothic on list
+    	Typeface font3 = Typeface.createFromAsset(getAssets(), "gothic.ttf");
+        
     	
         startB = (Button)findViewById(R.id.startButton);
     	startB.setTypeface(font2);
@@ -158,12 +164,13 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 	    startB.setOnClickListener(new View.OnClickListener() {
 	        public void onClick(View v) {
 	        	if(stopped){
-	        		startB.setBackgroundColor(Color.parseColor("#fb3804"));
+
+	        		startB.setBackgroundColor(getResources().getColor(R.color.red));
 	        		startB.setText(R.string.stop);
 	        		startTime(v);	
 	        	}
 	        	else{
-	        		startB.setBackgroundColor(Color.parseColor("#57bf23"));
+	        		startB.setBackgroundColor(getResources().getColor(R.color.green));
 	        		startB.setText(R.string.start);
 	        		stopTime(v);  	
 	        	}
