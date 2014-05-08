@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-public class BackupActivity extends Activity {
+public class BackupActivity extends MainActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
