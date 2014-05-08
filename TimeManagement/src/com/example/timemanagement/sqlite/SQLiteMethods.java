@@ -506,22 +506,26 @@ public class SQLiteMethods extends SQLiteOpenHelper {
      * 
      * @return
      */
-    public boolean exportJSON() {
+    public String exportJSON() {
     	return exportJSON(0,0);
     }
     
-    public boolean exportJSON(long start, long stop) {
+    public String exportJSON(long start, long stop) {
+    	// Where to store the file?
+    	String path = Environment.getExternalStorageDirectory().toString();
+    	String folderName = "Chronox";
+    	String fileName = "ChronoxExport.json";
+    	// Return text
+    	String success = "Exporterade data till telefonminne: " + folderName + "/" + fileName + "";
+    	String error = "Misslyckades";
     	String json;
+    	// Time constraint?
     	if(start == 0 && stop == 0) {
     		json = this.toJSONString();
     	}
     	else {
     		json = this.toJSONString(start, stop);
     	}
-    	// Where to store the file?
-    	String path = Environment.getExternalStorageDirectory().toString();
-    	String folderName = "Chronox";
-    	String fileName = "ChronoxExport.json";    	
     	// Find folder, or create if it does not exist
         File folder = new File(path + "/" + folderName);
         if (!folder.exists()) {
@@ -534,21 +538,24 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         		file.createNewFile();
         	} catch (Exception e) {
         		Log.w("timemanagement", "SQLiteMethods.exportJSON(): trying to create new file, Exception: " + e.toString());
-        		return false;
+        		return error;
         	}
+        }
+        else {
+        	success = "Exporterade och ersatte data till telefonminne: " + folderName + "/" + fileName + "";
         }
         // Write to file
         try {
-	    	Log.w("timemanagement", "SQLiteMethods.exportJSON(): writing file...");
+	    	Log.w("timemanagement", "SQLiteMethods.exportJSON(): Writing file...");
 	        FileWriter fw = new FileWriter(file.toString(), false);
 	        // ************************************************** //
 	        fw.write(json);
 	        // ************************************************** //
 	        fw.close();
-	        return true;
+	        return success;
         } catch(Exception e) {
-        	Log.w("timemanagement", "SQLiteMethods.exportJSON(): trying to write to file, Exception: " + e.toString());
-        	return false;
+        	Log.w("timemanagement", "SQLiteMethods.exportJSON(): Trying to write to file, Exception: " + e.toString());
+        	return error;
         }
     }
 }

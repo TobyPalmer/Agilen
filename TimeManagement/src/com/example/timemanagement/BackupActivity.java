@@ -1,10 +1,14 @@
 package com.example.timemanagement;
 
-import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.support.v4.app.NavUtils;
+import android.view.View;
+import android.widget.Button;
 
 public class BackupActivity extends Activity {
 
@@ -14,6 +18,18 @@ public class BackupActivity extends Activity {
 		setContentView(R.layout.activity_backup);
 		// Show the Up button in the action bar.
 		setupActionBar();
+
+		Button exportAllAsJSONButton = (Button)findViewById(R.id.exportAllAsJSONButton);
+		exportAllAsJSONButton.setOnClickListener(new View.OnClickListener() {
+	        public void onClick(View v) {
+	        	String message = MainActivity.db.exportJSON();
+	        	AlertDialog.Builder builder = new AlertDialog.Builder(BackupActivity.this);
+	        	builder.setCancelable(true);
+	        	builder.setTitle("Exportera som JSON");
+	        	builder.setMessage(message);
+	        	builder.show();
+	        }
+	    });
 	}
 
 	/**
