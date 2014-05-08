@@ -257,7 +257,7 @@ import android.graphics.Typeface;
 		    	    }
 	    	    
 	    	
-		    	    //s += "Total time: " + hoursDay + "h " + minutesDay + "m";
+		    	   
 		    		
 		    		
 		    	    if(b.toDateString().equals(dateString))
@@ -336,7 +336,7 @@ import android.graphics.Typeface;
 	    	});
      
 	    	day.setText(dateString);
-	    	
+	    	s = "Total time: " + hoursDay + "h " + minutesDay + "m";
 	    	total.setText(s);
 		}
 		

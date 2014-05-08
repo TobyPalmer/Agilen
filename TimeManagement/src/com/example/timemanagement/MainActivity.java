@@ -73,16 +73,13 @@ public class MainActivity extends Activity {
     // Making ListView
     public void listActivity(){
         Intent intent = new Intent(this, ListActivity.class);
-        
-        Log.d("In Main: void listActivity", "TEST");
+
         startActivity(intent);
     }
     
     // Making Statistics view
     public void statisticsActivity(){
         Intent intent = new Intent(this, StatisticsActivity.class);
-        
-        Log.d("In Main: void statisticsActivity", "TEST");
         
         startActivity(intent);
     }
