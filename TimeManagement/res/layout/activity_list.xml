@@ -71,19 +71,23 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:background="#aaa9a9"
             android:gravity="bottom"
-              >
+            android:orientation="vertical" >
 
             <Button
                 android:id="@+id/deselectAll"
                 android:layout_width="fill_parent"
                 android:layout_height="80dp"
+                android:layout_marginBottom="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
                 android:layout_weight="2"
                 android:background="@color/orange"
                 android:text="Avmarkera alla"
                 android:textColor="#FFF"
-                android:textSize="30sp"
-                 />
+                android:textSize="30sp" />
 
             <Button
                 android:id="@+id/selectAll"
@@ -93,6 +97,9 @@
                 android:background="@color/orange"
                 android:text="Markera alla"
                 android:textColor="#FFF"
+                android:layout_marginBottom="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
                 android:textSize="30sp" />
         </LinearLayout>
 

@@ -67,7 +67,7 @@ import com.example.timemanagement.model.Order;
 	        width = wm.getDefaultDisplay().getWidth();
 			
 			ListView l = (ListView)findViewById(R.id.l_view);
-			l.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, (height-400)));
+			l.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, (height-600)));
 			
 			Calendar cal = Calendar.getInstance();
 			today = cal.getTimeInMillis();
