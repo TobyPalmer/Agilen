@@ -93,9 +93,15 @@ import android.graphics.Typeface;
 	    	//BList = MainActivity.db.getAllBlocks();
 			bList = MainActivity.db.getBlocksBetweenDate(start, stop);
 			
+			
+			Typeface font3 = Typeface.createFromAsset(getAssets(), "gothic.ttf");
+			Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
+			Typeface font2 = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
+			
 			l_view = (ListView) findViewById(R.id.l_view);
 			day = (TextView) findViewById(R.id.day);
 			total = (TextView) findViewById(R.id.total);
+			total.setTypeface(font2);
 			
 			blockList = new ArrayList<String>();
 			blockStatesList = new ArrayList<Integer>();
@@ -111,17 +117,16 @@ import android.graphics.Typeface;
 			iterateBlocks(dateString);
 			
 			//Adding arrows to buttons
-	    	next = (Button)findViewById(R.id.nextDay);
-	    	Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
+	    	next = (Button)findViewById(R.id.nextDay); 	
 	    	next.setTypeface(font);
 	    	
 	    	prev = (Button)findViewById(R.id.prevDay);
 	    	prev.setTypeface(font);
-	    	
-	        Typeface font2 = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
-	    	
+	    	   	
 	    	day = (TextView)findViewById(R.id.day);
-	    	day.setTypeface(font2);		
+
+	    	day.setTypeface(font2);
+	   	
 
 	    	next.setOnClickListener(new View.OnClickListener() {
 
@@ -144,7 +149,8 @@ import android.graphics.Typeface;
 		        }
 		    });
 		    
-		    Button selectAllButton = (Button) findViewById(R.id.selectAll);	    			
+		    Button selectAllButton = (Button) findViewById(R.id.selectAll);	  
+		    selectAllButton.setTypeface(font2);
 	    	selectAllButton.setOnClickListener(new View.OnClickListener() {
 		        public void onClick(View v) {
 		        	Log.e("Button","selectAllButton");
@@ -163,6 +169,7 @@ import android.graphics.Typeface;
 		    });
 	    	
 	    	Button deselectAllButton = (Button) findViewById(R.id.deselectAll);
+	    	deselectAllButton.setTypeface(font2);
 	    	deselectAllButton.setOnClickListener(new View.OnClickListener() {
 
 		        public void onClick(View v) {
@@ -217,12 +224,14 @@ import android.graphics.Typeface;
 			blockStatesList.clear();
 		}
 		
-		
 		public void iterateBlocks(String dateString)
 		{
 			blockList.clear();
 			//Iterate through the blocks
-			minutesDay = 0;
+			bList = MainActivity.db.getBlocksBetweenDate(start, stop);
+			blockStatesList.clear();
+			hoursDay=0;
+			minutesDay=0;
 	    	
 			Iterator<Block> it = bList.iterator(); 
 	    	while(it.hasNext())
@@ -241,20 +250,24 @@ import android.graphics.Typeface;
 		    		s += " - " + b.printTime();
 		    		
 		    	    //adds the hours and minutes of a block to hoursDay and minutesDay
-		    		if(b.getStop()!=0)
-		    			timeDiff = b.getStop()-b.getStart();
-		    		else
-		    			timeDiff = System.currentTimeMillis() - b.getStart();
 		    		
-		    		timeDiff -= 1000*60*60;
-		    		
-		    		Date date = new java.util.Date(timeDiff);
-		    	    
-		    	    date.getHours();
-		    	    minutesDay += date.getMinutes();
-		    	    if(minutesDay > 60){
-		    	    	minutesDay = minutesDay % 60;    	    	
-		    	    }
+		    		if(b.getChecked()==1){
+			    		if(b.getStop()!=0)
+			    			timeDiff = b.getStop()-b.getStart();
+			    		else
+			    			timeDiff = System.currentTimeMillis() - b.getStart();
+			    		
+			    		timeDiff -= 1000*60*60;
+			    		
+			    		Date date = new java.util.Date(timeDiff);
+			    	    
+			    	    hoursDay += date.getHours();
+			    	    minutesDay += date.getMinutes();
+			    	    if(minutesDay > 60){
+			    	    	minutesDay = minutesDay % 60;
+			    	    	hoursDay++;
+			    	    }
+		    		}
 
 		    	    if(b.toDateString().equals(dateString))
 		    	    {
@@ -271,6 +284,7 @@ import android.graphics.Typeface;
 	    		}
 	    	}
 	    	
+
 	    	listAdapter = new CustomListAdapter1(this,R.layout.listrow, blockList, blockStatesList);
 	    	l_view.setAdapter(listAdapter);	    	
 	    	l_view.setOnItemClickListener(new OnItemClickListener()

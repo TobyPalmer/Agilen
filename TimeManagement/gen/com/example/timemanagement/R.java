@@ -18,6 +18,7 @@ public final class R {
         public static final int green=0x7f060007;
         public static final int lightGrey=0x7f060002;
         public static final int orange=0x7f060000;
+        public static final int red=0x7f060008;
         public static final int title_background=0x7f060003;
     }
     public static final class dimen {
@@ -116,7 +117,6 @@ public final class R {
         public static final int edit=0x7f05000e;
         public static final int fa_arrow_left=0x7f05001a;
         public static final int fa_arrow_right=0x7f050019;
-        public static final int hello_world=0x7f050020;
         public static final int menu_backup=0x7f050006;
         public static final int menu_checkview=0x7f050001;
         public static final int menu_schedule=0x7f050004;
