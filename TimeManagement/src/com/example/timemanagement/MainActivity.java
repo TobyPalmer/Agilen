@@ -48,27 +48,29 @@ public class MainActivity extends Activity {
     }
     
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-    	if(item.getItemId()==R.id.menu_checkview)
-    	{
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	if(item.getItemId() == R.id.menu_checkview) {
     		listActivity();
     		return true;
-    	}else if(item.getItemId()==R.id.menu_statistics)
-    	{
+    	}
+    	else if(item.getItemId() == R.id.menu_statistics) {
     		statisticsActivity();
     		return true;
-    	}else if(item.getItemId()==R.id.menu_timestamp)
-    	{
+    	}
+    	else if(item.getItemId() == R.id.menu_timestamp) {
     		timestampActivity();
     		return true;
-    	}else if(item.getItemId()==R.id.menu_schedule)
-    	{
+    	}
+    	else if(item.getItemId() == R.id.menu_schedule) {
     		scheduleActivity();
     		return true;
-    	}else if(item.getItemId()==R.id.menu_settings)
-    	{
+    	}
+    	else if(item.getItemId() == R.id.menu_settings) {
     		settingActivity();
+    		return true;
+    	}
+    	else if(item.getItemId() == R.id.menu_backup) {
+    		backupActivity();
     		return true;
     	}
     	 	
@@ -131,4 +133,11 @@ public class MainActivity extends Activity {
         startActivity(intent);
     }
 
+    // Making Settings view
+    public void backupActivity(){
+    	
+        Intent intent = new Intent(this, BackupActivity.class);
+        startActivity(intent);
+    }
+    
 }
