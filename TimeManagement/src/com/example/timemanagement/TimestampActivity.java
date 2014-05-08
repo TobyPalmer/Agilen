@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import android.annotation.TargetApi;
@@ -16,13 +17,11 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v4.util.LogWriter;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -58,7 +57,7 @@ public class TimestampActivity extends MainActivity {
 	
 
 	// longs that represents the start- and endtime of the day
-	private long start, stop;
+	private long start, stop, today;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +71,7 @@ public class TimestampActivity extends MainActivity {
 		
 		// Sets the start and stop to that of the current day.
 		cal = Calendar.getInstance();
+		today = cal.getTimeInMillis();
 		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
 				cal.get(Calendar.DAY_OF_MONTH), 23, 59);
 		stop = cal.getTimeInMillis();
@@ -102,39 +102,72 @@ public class TimestampActivity extends MainActivity {
     	prev = (Button)findViewById(R.id.prevDay);
     	prev.setTypeface(font);
     	
+
     	
     	//use neo sans font on buttons and date
         Typeface font2 = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
     	
         startB = (Button)findViewById(R.id.startButton);
     	startB.setTypeface(font2);
+    	
         create = (Button)findViewById(R.id.changeOrderButton);
     	create.setTypeface(font2);
+    	enableCreateButton();
+    	
+    	create.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				create.setEnabled(false);
+				create.setBackgroundColor(getResources().getColor(R.color.darkGrey));
+				create.setTextColor(getResources().getColor(R.color.lightGrey));
+				
+				Block intentBlock = new Block(start);
+				MainActivity.db.addBlock(intentBlock);
+				
+				intentBlock.setStop(start);
+				MainActivity.db.putBlock(intentBlock);	
+				
+				Intent i = new Intent(getApplicationContext(), NewOrderActivity.class);
+		    	i.putExtra("Block", intentBlock);
+		    	i.putExtra("Caller", "Timestamp");
+		    	startActivity(i);	
+			}
+		});
+		
     	day = (TextView)findViewById(R.id.day);
     	day.setTypeface(font2);
+    	
 		
 
 		//onclick that starts and stops the time.
 		//It also changes the color and text on the button
-		final Button start = (Button)findViewById(R.id.startButton);
-		start.setBackgroundColor(Color.parseColor("#57bf23"));
-	    start.setOnClickListener(new View.OnClickListener() {
+		startB.setBackgroundColor(Color.parseColor("#57bf23"));
+	    startB.setOnClickListener(new View.OnClickListener() {
 	        public void onClick(View v) {
 	        	if(stopped){
-	        		start.setBackgroundColor(Color.parseColor("#fb3804"));
-	        		start.setText(R.string.stop);
+	        		startB.setBackgroundColor(Color.parseColor("#fb3804"));
+	        		startB.setText(R.string.stop);
 	        		startTime(v);	
 	        	}
 	        	else{
-	        		start.setBackgroundColor(Color.parseColor("#57bf23"));
-	        		start.setText(R.string.start);
+	        		startB.setBackgroundColor(Color.parseColor("#57bf23"));
+	        		startB.setText(R.string.start);
 	        		stopTime(v);  	
 	        	}
 	        	
 	        }
 	    });
+	    startB.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		});
 
-		
+	    setStartButton();
 
 	}
 	
@@ -309,6 +342,7 @@ public class TimestampActivity extends MainActivity {
 		stop += 86400000;
 		setDayText(start);
 		printBlocks();
+		setStartButton();
 	}
 	
 	/**
@@ -321,8 +355,35 @@ public class TimestampActivity extends MainActivity {
 		stop -= 86400000;
 		setDayText(start);
 		printBlocks();
+		setStartButton();
 	}
+	
+	/**
+	 * Function that enables the startbutton if the day displayed is today
+	 * and disabling the button if another day is displayed.
+	 */
+	private void setStartButton(){
+		Date dateToday = new Date(today);
+		Date dateStart = new Date(start);
+		Date dateStop = new Date(stop);
 		
+		if ((dateToday.compareTo(dateStart) == 1) && (dateToday.compareTo(dateStop) == -1)){
+			startB.setEnabled(true);
+			startB.setBackgroundColor(getResources().getColor(R.color.green));
+			startB.setTextColor(Color.WHITE);
+		} else{
+			startB.setEnabled(false);
+			startB.setBackgroundColor(getResources().getColor(R.color.darkGrey));
+			startB.setTextColor(getResources().getColor(R.color.lightGrey));
+		}
+	}
+	
+	
+	private void enableCreateButton(){
+    	create.setEnabled(true);
+    	create.setBackgroundColor(getResources().getColor(R.color.orange));
+		create.setTextColor(Color.WHITE);	
+	}
 	
 	
 	public void addComment(View view, final Block block){
@@ -376,6 +437,13 @@ public class TimestampActivity extends MainActivity {
 		 dialog.show(); 
 	 }
 	
+	@Override
+	public void onResume() {
+	    super.onResume();  // Always call the superclass method first
+	    enableCreateButton();
+	    printBlocks();
+	}
+	
 	public void deleteBlock(View view, final Block block){
 		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -417,19 +485,4 @@ public class TimestampActivity extends MainActivity {
 		 
 		 dialog.show(); 
 	 }
-	
-	public void addNewOrder(View v){
-		Block intentBlock = new Block(start);
-		MainActivity.db.addBlock(intentBlock);
-		
-		intentBlock.setStop(start);
-		MainActivity.db.putBlock(intentBlock);	
-		
-		Intent i = new Intent(getApplicationContext(), NewOrderActivity.class);
-    	i.putExtra("Block", intentBlock);
-    	i.putExtra("Caller", "Timestamp");
-    	startActivity(i);
-    	
-	}
-	
 }
