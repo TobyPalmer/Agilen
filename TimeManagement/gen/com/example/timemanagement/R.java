@@ -130,6 +130,7 @@ public final class R {
         public static final int taskDate=0x7f050008;
         public static final int taskStart=0x7f050009;
         public static final int taskStop=0x7f05000a;
+        public static final int title_activity_backup=0x7f05001e;
         public static final int title_activity_new_order=0x7f050007;
         public static final int title_activity_timestamp=0x7f050006;
         public static final int trash=0x7f05000c;

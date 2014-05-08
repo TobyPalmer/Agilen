@@ -40,6 +40,7 @@
     <string name="userName">Användarnamn</string>
   	<string name="passWord">Lösenord</string>
   	<string name="nextDay">Nästa</string>
+  	<string name="title_activity_backup">hej</string>
   	    
     <color name="orange">#F88621</color>
     <color name="darkGrey">#323232</color>
