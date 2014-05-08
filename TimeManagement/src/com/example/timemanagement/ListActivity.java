@@ -221,7 +221,6 @@ import android.graphics.Typeface;
 		{
 			blockList.clear();
 			//Iterate through the blocks
-			minutesDay = 0;
 			bList = MainActivity.db.getBlocksBetweenDate(start, stop);
 			blockStatesList.clear();
 			hoursDay=0;
@@ -255,10 +254,11 @@ import android.graphics.Typeface;
 			    		
 			    		Date date = new java.util.Date(timeDiff);
 			    	    
-			    	    hoursDay = date.getHours();
+			    	    hoursDay += date.getHours();
 			    	    minutesDay += date.getMinutes();
 			    	    if(minutesDay > 60){
 			    	    	minutesDay = minutesDay % 60;
+			    	    	hoursDay++;
 			    	    }
 		    		}
 
