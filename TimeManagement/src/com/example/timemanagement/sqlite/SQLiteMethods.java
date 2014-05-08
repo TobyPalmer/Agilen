@@ -25,7 +25,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
 	
 	// Database info
 
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 16;
     private static final String DATABASE_NAME = "TimeManagement";
  
     // Constructor
@@ -373,6 +373,11 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     	SQLiteDatabase db = this.getReadableDatabase();
     	// Commits SQL
     	Cursor cursor;
+    	
+  	  	// Removing milliseconds.
+    	start = start - (start % 1000);
+  	  	stop = stop - (stop % 1000);
+    	
     	// Get all blocks
     	if(orderID == 0) {
     		cursor = db.rawQuery("SELECT * FROM blocks "
@@ -443,34 +448,51 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     /**
      * Return database data as JSON string
      * 
-     * @return
      */
     public String toJSONString() {
     	return this.toJSONString(0, 0);
     }
     
+    /**
+     * Return database data as JSON string
+     * 
+     */
     public String toJSONString(long start, long stop) {
     	// Get all orders
         List<Order> orders = new ArrayList<Order>();
         orders = this.getAllOrders();
-        Log.w("timemanagement", orders.size() + "");
         // Create root node
         JSONObject userData = new JSONObject();
         // Create order node
         JSONArray orderData = new JSONArray();
         // Define orders node
-        for(int i = 0; i < orders.size(); i++) {
+        for(int i = -1; i < orders.size(); i++) { // Go from -1 in order to get blocks without orderNumber
         	// Create order node
-        	JSONObject theOrder = new JSONObject(); 
+        	JSONObject theOrder = new JSONObject();
+        	// Define order
+        	int orderID = 0, directWork;
+    		String orderNumber, orderName;
+    		// If "no" order
+        	if(i == -1) {
+        		orderNumber = "0";
+        		orderName = "none";
+        		directWork = 0;
+        	}
+        	else { // Get order data
+        		orderID = orders.get(i).getID();
+        		orderNumber = orders.get(i).getOrderNumber();
+        		orderName = orders.get(i).getOrderName();
+        		directWork = orders.get(i).getOrderDirectWork();
+        	}
         	// Get blocks for this order
         	try {
         		// Get blocks
         		List<Block> blocks = new ArrayList<Block>(); 
         		if(start == 0 && stop == 0) {
-        			blocks = this.getBlocks(orders.get(i).getID());
+        			blocks = this.getBlocks(orderID);
         		}
         		else {
-        			blocks = this.getBlocksBetweenDate(orders.get(i).getID(), start, stop);
+        			blocks = this.getBlocksBetweenDate(orderID, start, stop);
         		}
         		// Will contain the block data
         		JSONArray blockData = new JSONArray();
@@ -480,11 +502,13 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         			theBlock.put("start", blocks.get(j).getStart());
         			theBlock.put("stop", blocks.get(j).getStop());
         			theBlock.put("comment", blocks.get(j).getComment());
+        			theBlock.put("checked", blocks.get(j).getChecked());
         			blockData.put(theBlock);
         		}
         		// Define order node
-        		theOrder.put("orderNumber", orders.get(i).getOrderNumber());
-        		theOrder.put("orderName", orders.get(i).getOrderName());
+        		theOrder.put("orderNumber", orderNumber);
+        		theOrder.put("orderName", orderName);
+        		theOrder.put("directWork", directWork);
         		theOrder.put("blocks", blockData);
         		// Add this order to order-node
         		orderData.put(theOrder);
@@ -506,22 +530,26 @@ public class SQLiteMethods extends SQLiteOpenHelper {
      * 
      * @return
      */
-    public boolean exportJSON() {
+    public String exportJSON() {
     	return exportJSON(0,0);
     }
     
-    public boolean exportJSON(long start, long stop) {
+    public String exportJSON(long start, long stop) {
+    	// Where to store the file?
+    	String path = Environment.getExternalStorageDirectory().toString();
+    	String folderName = "Chronox";
+    	String fileName = "ChronoxExport(" + System.currentTimeMillis() / 1000L + ").json";
+    	// Return text
+    	String success = "Exporterade data till telefonminne: " + folderName + "/" + fileName + "";
+    	String error = "Misslyckades";
     	String json;
+    	// Time constraint?
     	if(start == 0 && stop == 0) {
     		json = this.toJSONString();
     	}
     	else {
     		json = this.toJSONString(start, stop);
     	}
-    	// Where to store the file?
-    	String path = Environment.getExternalStorageDirectory().toString();
-    	String folderName = "Chronox";
-    	String fileName = "ChronoxExport.json";    	
     	// Find folder, or create if it does not exist
         File folder = new File(path + "/" + folderName);
         if (!folder.exists()) {
@@ -534,21 +562,21 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         		file.createNewFile();
         	} catch (Exception e) {
         		Log.w("timemanagement", "SQLiteMethods.exportJSON(): trying to create new file, Exception: " + e.toString());
-        		return false;
+        		return error;
         	}
         }
         // Write to file
         try {
-	    	Log.w("timemanagement", "SQLiteMethods.exportJSON(): writing file...");
+	    	Log.w("timemanagement", "SQLiteMethods.exportJSON(): Writing file...");
 	        FileWriter fw = new FileWriter(file.toString(), false);
 	        // ************************************************** //
 	        fw.write(json);
 	        // ************************************************** //
 	        fw.close();
-	        return true;
+	        return success;
         } catch(Exception e) {
-        	Log.w("timemanagement", "SQLiteMethods.exportJSON(): trying to write to file, Exception: " + e.toString());
-        	return false;
+        	Log.w("timemanagement", "SQLiteMethods.exportJSON(): Trying to write to file, Exception: " + e.toString());
+        	return error;
         }
     }
 }

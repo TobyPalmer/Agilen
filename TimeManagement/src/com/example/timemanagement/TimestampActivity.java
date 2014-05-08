@@ -66,6 +66,8 @@ public class TimestampActivity extends MainActivity {
 		setContentView(R.layout.activity_timestamp);
 		
 		listView = (ListView) findViewById(android.R.id.list);
+		
+		
 		// Show the Up button in the action bar
 		setupActionBar();
 
@@ -77,7 +79,7 @@ public class TimestampActivity extends MainActivity {
 		stop = cal.getTimeInMillis();
 
 		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
-				cal.get(Calendar.DAY_OF_MONTH), 0, 0);
+				cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
 		start = cal.getTimeInMillis();	
 		
 		// Use block from calling intent (if any)
@@ -105,6 +107,10 @@ public class TimestampActivity extends MainActivity {
     	
     	//use neo sans font on buttons and date
         Typeface font2 = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
+        
+        //use century gothic on list
+    	Typeface font3 = Typeface.createFromAsset(getAssets(), "gothic.ttf");
+        
     	
         startB = (Button)findViewById(R.id.startButton);
     	startB.setTypeface(font2);
@@ -121,12 +127,12 @@ public class TimestampActivity extends MainActivity {
 	    start.setOnClickListener(new View.OnClickListener() {
 	        public void onClick(View v) {
 	        	if(stopped){
-	        		start.setBackgroundColor(Color.parseColor("#fb3804"));
+	        		start.setBackgroundColor(getResources().getColor(R.color.red));
 	        		start.setText(R.string.stop);
 	        		startTime(v);	
 	        	}
 	        	else{
-	        		start.setBackgroundColor(Color.parseColor("#57bf23"));
+	        		start.setBackgroundColor(getResources().getColor(R.color.green));
 	        		start.setText(R.string.start);
 	        		stopTime(v);  	
 	        	}
@@ -147,12 +153,12 @@ public class TimestampActivity extends MainActivity {
 		
 			cal.setTimeInMillis(intentBlock.getStart());
 			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
-					cal.get(Calendar.DAY_OF_MONTH), 0, 0);
+					cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
 			start = cal.getTimeInMillis();
 			
 			cal.setTimeInMillis(intentBlock.getStop());
 			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
-					cal.get(Calendar.DAY_OF_MONTH), 23, 59);
+					cal.get(Calendar.DAY_OF_MONTH), 23, 59, 0);
 			stop = cal.getTimeInMillis();
 	}
 	
@@ -178,30 +184,6 @@ public class TimestampActivity extends MainActivity {
 		}
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.timestamp, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			// This ID represents the Home or Up button. In the case of this
-			// activity, the Up button is shown. Use NavUtils to allow users
-			// to navigate up one level in the application structure. For
-			// more details, see the Navigation pattern on Android Design:
-			//
-			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-			//
-			NavUtils.navigateUpFromSameTask(this);
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-	
 	public void startTime(View view){
 		//String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTimeInMillis());
 		//String startTime = mydate.substring(mydate.length()-8, mydate.length()-3);
@@ -295,7 +277,7 @@ public class TimestampActivity extends MainActivity {
             		        	Intent i = new Intent(getApplicationContext(), NewOrderActivity.class);
             		        	
             		        	i.putExtra("Block", block);
-            		        	i.putExtra("String", "editBlock");
+            		        	i.putExtra("Caller", "Timestamp");
             		        	        	
             		        	startActivity(i);
                             	
@@ -451,7 +433,7 @@ public class TimestampActivity extends MainActivity {
 		
 		Intent i = new Intent(getApplicationContext(), NewOrderActivity.class);
     	i.putExtra("Block", intentBlock);
-    	i.putExtra("String", "editBlock");
+    	i.putExtra("Caller", "Timestamp");
     	startActivity(i);
     	
 	}
