@@ -51,7 +51,9 @@
     <color name="deleteColor">#88FF0000</color>
     <color name="editColor">#88ffffff</color>
     <color name="commentColor">#88888888</color>
-    <color name="green">#00ff00</color>
+    
+    <color name="green">#57bf23</color>
+    <color name="red">#fb3804</color>
     
 
 
