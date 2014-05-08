@@ -470,17 +470,19 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         	// Create order node
         	JSONObject theOrder = new JSONObject();
         	// Define order
-        	int orderID = 0;
+        	int orderID = 0, directWork;
     		String orderNumber, orderName;
     		// If "no" order
         	if(i == -1) {
         		orderNumber = "0";
         		orderName = "none";
+        		directWork = 0;
         	}
         	else { // Get order data
         		orderID = orders.get(i).getID();
         		orderNumber = orders.get(i).getOrderNumber();
         		orderName = orders.get(i).getOrderName();
+        		directWork = orders.get(i).getOrderDirectWork();
         	}
         	// Get blocks for this order
         	try {
@@ -500,11 +502,13 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         			theBlock.put("start", blocks.get(j).getStart());
         			theBlock.put("stop", blocks.get(j).getStop());
         			theBlock.put("comment", blocks.get(j).getComment());
+        			theBlock.put("checked", blocks.get(j).getChecked());
         			blockData.put(theBlock);
         		}
         		// Define order node
         		theOrder.put("orderNumber", orderNumber);
         		theOrder.put("orderName", orderName);
+        		theOrder.put("directWork", directWork);
         		theOrder.put("blocks", blockData);
         		// Add this order to order-node
         		orderData.put(theOrder);
