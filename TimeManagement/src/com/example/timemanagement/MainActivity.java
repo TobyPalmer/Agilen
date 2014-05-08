@@ -2,6 +2,7 @@ package com.example.timemanagement;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
@@ -124,8 +125,8 @@ public class MainActivity extends Activity {
     
     // Making Settings view
     public void settingActivity(){
+    	
         Intent intent = new Intent(this, SettingActivity.class);
-        
         startActivity(intent);
     }
 
