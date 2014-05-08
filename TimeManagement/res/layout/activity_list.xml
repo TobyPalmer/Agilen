@@ -4,18 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".TimestampActivity" >
-
+   
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <LinearLayout
-            android:id="@+id/linearLayout1"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_alignParentBottom = "true" >
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+    
+    	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
+		>
 
             <Button
                 android:id="@+id/prevDay"
@@ -42,7 +41,6 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_alignParentRight="true"
-                android:layout_marginBottom="100dp"
                 android:layout_weight="1"
                 android:background="@color/orange"
                 android:text="@string/fa_arrow_right" 
@@ -50,15 +48,21 @@
                 android:textSize="50sp" />
 
         </LinearLayout>
-
+    
+    	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
+		>
         <ListView
             android:id="@+id/l_view"
             android:layout_width="fill_parent"
-            android:layout_height="400dp"
+            android:layout_height="fill_parent"
             android:layout_weight="3" 
 			android:textSize="50sp"
             >
         </ListView>
+          </LinearLayout>
 
         <TextView
             android:id="@+id/total"
@@ -73,6 +77,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:gravity="bottom"
               >
 
             <Button
@@ -83,7 +88,7 @@
                 android:background="@color/orange"
                 android:text="Avmarkera alla"
                 android:textColor="#FFF"
-                android:textSize="20sp"
+                android:textSize="30sp"
                  />
 
             <Button
@@ -94,7 +99,7 @@
                 android:background="@color/orange"
                 android:text="Markera alla"
                 android:textColor="#FFF"
-                android:textSize="20sp" />
+                android:textSize="30sp" />
         </LinearLayout>
 
     </LinearLayout>
