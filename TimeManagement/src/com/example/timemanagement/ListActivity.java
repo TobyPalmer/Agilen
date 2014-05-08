@@ -7,13 +7,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 
 import android.content.*;
 import android.annotation.TargetApi;
-import android.content.DialogInterface.OnClickListener;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -27,23 +25,18 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.timemanagement.R.color;
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
-import com.example.timemanagement.sqlite.SQLiteMethods;
 import com.example.timemanagement.R;
 import com.example.timemanagement.customadapters.*;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.graphics.Color;
 import android.graphics.Typeface;
 
 	public class ListActivity extends MainActivity {
 		
 		
 		private List<Block> bList = new ArrayList<Block>();
-		private Date d;
 		private ListView l_view;
 		private TextView day, total;
 		private CustomListAdapter1 listAdapter;
@@ -57,29 +50,44 @@ import android.graphics.Typeface;
 		
 		private String s, dateString;
 		private Block b;
-		private int minutesDay;
+		private int minutesDay, hoursDay;
 		private long today, timeDiff, stop, start;
 		
 		
 		@Override
 		protected void onCreate(Bundle savedInstanceState) {
-		
 			
 			super.onCreate(savedInstanceState);
 			setContentView(R.layout.activity_list);
 			// Show the Up button in the action bar.
 			setupActionBar();
 			
-			//Sets stop to the end of this day.
 			Calendar cal = Calendar.getInstance();
-			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
-					cal.get(Calendar.DAY_OF_MONTH), 23, 59);
-			stop = cal.getTimeInMillis();
+			today = cal.getTimeInMillis();
+			// Sets start and stop either from the calling activity or from the
+			// date of today.
+			Bundle extras = getIntent().getExtras();
+			if(extras != null){
+				Block intentBlock = (Block) extras.get("Block");
+				cal.setTimeInMillis(intentBlock.getStart());
+				cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
+						cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+				start = cal.getTimeInMillis();
+				
+				cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
+						cal.get(Calendar.DAY_OF_MONTH), 23, 59, 0);
+				stop = cal.getTimeInMillis();
+			} else{
+				
+				cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
+						cal.get(Calendar.DAY_OF_MONTH), 23, 59, 0);
+				stop = cal.getTimeInMillis();
+				
+				cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
+						cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+				start = cal.getTimeInMillis();
+			}
 			
-			//Sets start to the start of this day.
-			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
-					cal.get(Calendar.DAY_OF_MONTH), 0, 0);
-			start = cal.getTimeInMillis();
 			
 			//Create a list of all the blocks
 	    	//BList = MainActivity.db.getAllBlocks();
@@ -92,13 +100,14 @@ import android.graphics.Typeface;
 			blockList = new ArrayList<String>();
 			blockStatesList = new ArrayList<Integer>();
 			
-			//Calendar cal = new GregorianCalendar();
-			today = System.currentTimeMillis();
-			currentDate = new Date(start);
+			cal.setTimeInMillis(today);
+			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
+					cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+			today = cal.getTimeInMillis();
+			currentDate = new Date(today);
 			dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			
-			d = new Date(today);
-			dateString = (dateFormat.format(d));
+			dateString = (dateFormat.format(start));
 			iterateBlocks(dateString);
 			
 			//Adding arrows to buttons
@@ -112,9 +121,8 @@ import android.graphics.Typeface;
 	        Typeface font2 = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
 	    	
 	    	day = (TextView)findViewById(R.id.day);
-	    	day.setTypeface(font2);
+	    	day.setTypeface(font2);		
 
-//	    	final Button nextButton = (Button) findViewById(R.id.nextDay);		
 	    	next.setOnClickListener(new View.OnClickListener() {
 
 		        public void onClick(View v) {
@@ -127,8 +135,7 @@ import android.graphics.Typeface;
 		        		
 		        	
 		    
-		    prev = (Button) findViewById(R.id.prevDay);
-		    //prevButton.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));		
+		    prev = (Button) findViewById(R.id.prevDay);		
 		    prev.setOnClickListener(new View.OnClickListener() {
 
 		        public void onClick(View v) {
@@ -140,7 +147,6 @@ import android.graphics.Typeface;
 		    Button selectAllButton = (Button) findViewById(R.id.selectAll);	    			
 	    	selectAllButton.setOnClickListener(new View.OnClickListener() {
 		        public void onClick(View v) {
-		            // TODO Auto-generated method stub
 		        	Log.e("Button","selectAllButton");
 		        	Iterator<Block> it = bList.iterator(); 
 			    	while(it.hasNext())
@@ -148,6 +154,7 @@ import android.graphics.Typeface;
 			    		b = it.next();
 			    		if(b.getOrderID() != 0){
 			    			b.setChecked(1);
+			    			MainActivity.db.putBlock(b);
 			    		}			    		
 			    	}
 			    	setAllChecks(1);
@@ -159,7 +166,6 @@ import android.graphics.Typeface;
 	    	deselectAllButton.setOnClickListener(new View.OnClickListener() {
 
 		        public void onClick(View v) {
-		            // TODO Auto-generated method stub
 
 		        	Iterator<Block> it = bList.iterator(); 
 			    	while(it.hasNext())
@@ -167,6 +173,7 @@ import android.graphics.Typeface;
 			    		b = it.next();
 			    		if(b.getOrderID() != 0){
 			    			b.setChecked(0);
+			    			MainActivity.db.putBlock(b);
 			    		}			    		
 			    	}
 			    	setAllChecks(0);
@@ -182,18 +189,32 @@ import android.graphics.Typeface;
 			listAdapter.setBlockStatesList(blockStatesList);
 		}
 		
+		/**
+		 * Sets the day to one day in the future.
+		 * Also resets some variables to the new day.
+		 */
 		public void nextDate(){
 			start += 86400000;
 			stop += 86400000;
+			
+			// resets
 			dateString = (dateFormat.format(start));
 			bList = MainActivity.db.getBlocksBetweenDate(start, stop);
+			blockStatesList.clear();
 		}
 	
+		/**
+		 * Sets the day to one day in the past.
+		 * Also resets some variables to the new day.
+		 */
 		public void prevDate(){
 			start -= 86400000;
 			stop -= 86400000;
+			
+			// resets
 			dateString = (dateFormat.format(start));
 			bList = MainActivity.db.getBlocksBetweenDate(start, stop);
+			blockStatesList.clear();
 		}
 		
 		
@@ -219,10 +240,6 @@ import android.graphics.Typeface;
 		    		
 		    		s += " - " + b.printTime();
 		    		
-		    		if(b.getChecked() == 1){
-		    			s += " - Checked! ";
-		    		}
-		    		
 		    	    //adds the hours and minutes of a block to hoursDay and minutesDay
 		    		if(b.getStop()!=0)
 		    			timeDiff = b.getStop()-b.getStart();
@@ -238,7 +255,7 @@ import android.graphics.Typeface;
 		    	    if(minutesDay > 60){
 		    	    	minutesDay = minutesDay % 60;    	    	
 		    	    }
-	    	    	
+
 		    	    if(b.toDateString().equals(dateString))
 		    	    {
 		    	    	blockList.add(s);
@@ -254,7 +271,6 @@ import android.graphics.Typeface;
 	    		}
 	    	}
 	    	
-	    	//listAdapter = new ArrayAdapter<String>(this,R.layout.listrow, blockList);
 	    	listAdapter = new CustomListAdapter1(this,R.layout.listrow, blockList, blockStatesList);
 	    	l_view.setAdapter(listAdapter);	    	
 	    	l_view.setOnItemClickListener(new OnItemClickListener()
@@ -285,7 +301,7 @@ import android.graphics.Typeface;
 											Intent i = new Intent(getApplicationContext(), NewOrderActivity.class);
 			            		        	
 			            		        	i.putExtra("Block", block);
-			            		        	i.putExtra("String", "editBlock");
+			            		        	i.putExtra("Caller", "Checkview");
 			            		        	        	
 			            		        	startActivity(i);											
 										}
@@ -315,7 +331,7 @@ import android.graphics.Typeface;
 	    	});
      
 	    	day.setText(dateString);
-	    	
+	    	s = "Total time: " + hoursDay + "h " + minutesDay + "m";
 	    	total.setText(s);
 		}
 		
@@ -341,30 +357,6 @@ import android.graphics.Typeface;
 				getActionBar().setDisplayHomeAsUpEnabled(false);
 			}
 		}
-
-		@Override
-		public boolean onCreateOptionsMenu(Menu menu) {
-			// Inflate the menu; this adds items to the action bar if it is present.
-			getMenuInflater().inflate(R.menu.list, menu);
-			return true;
-		}
-
-		@Override
-		public boolean onOptionsItemSelected(MenuItem item) {
-			switch (item.getItemId()) {
-			case android.R.id.home:
-				// This ID represents the Home or Up button. In the case of this
-				// activity, the Up button is shown. Use NavUtils to allow users
-				// to navigate up one level in the application structure. For
-				// more details, see the Navigation pattern on Android Design:
-				//
-				// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-				//
-				NavUtils.navigateUpFromSameTask(this);
-				return true;
-			}
-			return super.onOptionsItemSelected(item);
-		}		
-
+		
 	}
 

@@ -8,10 +8,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import android.util.Log;
+
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.timemanagement.sqlite.SQLiteMethods;
+
 
 public class MainActivity extends Activity {
 	
@@ -73,9 +77,7 @@ public class MainActivity extends Activity {
     		backupActivity();
     		return true;
     	}
-    	 	
     	return false;
-  
     }
     
     public void timestampActivity(View view){
@@ -89,19 +91,11 @@ public class MainActivity extends Activity {
         
         startActivity(intent);
     }
-    
-    //Statistik view skapas?
-    public void newStatisticsActivity(View view){
-        Intent intent = new Intent(this, StatisticsActivity.class);
-        
-        startActivity(intent);
-    }
-    
 
     // Making ListView
     public void listActivity(){
         Intent intent = new Intent(this, ListActivity.class);
-        
+
         startActivity(intent);
     }
     
