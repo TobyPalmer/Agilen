@@ -217,12 +217,15 @@ import android.graphics.Typeface;
 			blockStatesList.clear();
 		}
 		
-		
 		public void iterateBlocks(String dateString)
 		{
 			blockList.clear();
 			//Iterate through the blocks
 			minutesDay = 0;
+			bList = MainActivity.db.getBlocksBetweenDate(start, stop);
+			blockStatesList.clear();
+			hoursDay=0;
+			minutesDay=0;
 	    	
 			Iterator<Block> it = bList.iterator(); 
 	    	while(it.hasNext())
@@ -241,20 +244,23 @@ import android.graphics.Typeface;
 		    		s += " - " + b.printTime();
 		    		
 		    	    //adds the hours and minutes of a block to hoursDay and minutesDay
-		    		if(b.getStop()!=0)
-		    			timeDiff = b.getStop()-b.getStart();
-		    		else
-		    			timeDiff = System.currentTimeMillis() - b.getStart();
 		    		
-		    		timeDiff -= 1000*60*60;
-		    		
-		    		Date date = new java.util.Date(timeDiff);
-		    	    
-		    	    date.getHours();
-		    	    minutesDay += date.getMinutes();
-		    	    if(minutesDay > 60){
-		    	    	minutesDay = minutesDay % 60;    	    	
-		    	    }
+		    		if(b.getChecked()==1){
+			    		if(b.getStop()!=0)
+			    			timeDiff = b.getStop()-b.getStart();
+			    		else
+			    			timeDiff = System.currentTimeMillis() - b.getStart();
+			    		
+			    		timeDiff -= 1000*60*60;
+			    		
+			    		Date date = new java.util.Date(timeDiff);
+			    	    
+			    	    hoursDay = date.getHours();
+			    	    minutesDay += date.getMinutes();
+			    	    if(minutesDay > 60){
+			    	    	minutesDay = minutesDay % 60;
+			    	    }
+		    		}
 
 		    	    if(b.toDateString().equals(dateString))
 		    	    {
