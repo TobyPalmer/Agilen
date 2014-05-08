@@ -16,13 +16,9 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.support.v4.util.LogWriter;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -38,8 +34,6 @@ import com.example.timemanagement.model.Order;
 public class TimestampActivity extends MainActivity {
 	
 	// Contains all blocks in list view
-	private List<Block> l = new ArrayList<Block>();
-	private ArrayAdapter<String> listAdapter;
 	private ListView listView;
 	private Button next, prev, startB, create;
 	private TextView day;

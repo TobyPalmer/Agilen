@@ -24,7 +24,7 @@
 			 android:layout_height="80dp"
 			android:layout_weight="1"
 			android:background="@color/orange"
-			android:textColor="#FFF"
+			android:textColor="@color/white"
 			android:textSize="50sp"
 			android:layout_alignParentLeft="true"
 			android:text="@string/fa_arrow_left"
@@ -78,9 +78,8 @@
                      android:layout_width="fill_parent"
                      android:layout_height="wrap_content"
                      android:layout_alignParentBottom="true"
-                     android:background="#aaa9a9"
+                     android:background="@color/lightGrey"
                      android:padding="30dp" >
-
 
                      <Button
                          android:id="@+id/startButton"
@@ -89,7 +88,7 @@
                          android:layout_height="80dp"
 	                     android:layout_marginBottom="100dp"
                          android:text="@string/start"
-                         android:textColor="#FFF"
+                         android:textColor="@color/white"
                          android:textSize="30sp" />
  
                </LinearLayout>
@@ -105,7 +104,7 @@
                      android:layout_marginRight="30dp"
                      android:layout_marginBottom="30dp"
                      android:background="@color/orange"
-                     android:textColor="#FFF"
+                     android:textColor="@color/white"
                      android:textSize="30sp"
                      android:text="@string/newBlock" 
                      android:onClick="addNewOrder" />

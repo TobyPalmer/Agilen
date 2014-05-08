@@ -7,36 +7,25 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 
 import android.content.*;
 import android.annotation.TargetApi;
-import android.content.DialogInterface.OnClickListener;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.example.timemanagement.R.color;
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
-import com.example.timemanagement.sqlite.SQLiteMethods;
 import com.example.timemanagement.R;
 import com.example.timemanagement.customadapters.*;
-
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.graphics.Color;
 import android.graphics.Typeface;
 
 	public class ListActivity extends MainActivity {
