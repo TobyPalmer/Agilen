@@ -2,7 +2,9 @@ package com.example.timemanagement;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import com.example.timemanagement.model.Order;
 
@@ -14,6 +16,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -25,15 +28,21 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-public class SettingActivity extends MainActivity{
+public class SettingActivity extends MainActivity implements OnItemClickListener{
 	
-	int nrOfNotifications=0;
+	private static final Order o = null;
+	private int nrOfNotifications=0;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,19 +52,19 @@ public class SettingActivity extends MainActivity{
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
-	
 		
-		 Button addNotification = (Button)findViewById(R.id.addNotification);
-		 
-		    addNotification.setOnClickListener(new View.OnClickListener() {
-		        public void onClick(View v) {
-				// TODO Auto-generated method stub
-		        //Calendar time = Calendar.getInstance();
-		        //setNotification(time);
-		        notificationPopup();
-
-			}
-		 });
+        ListView listView = (ListView) findViewById(R.id.listView1);
+        listView.setOnItemClickListener(this);
+        
+        
+        //Add strings in the array to get a clickable listItem
+        //If you want tomake something happen when you click the new Item
+        //Make a new funktion with what should happen and make a call to it
+        //in the onItemClick function in this class
+        String array[] = {"Lägg till notifikation", "Hantera ordrar"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1,  array);
+        listView.setAdapter(adapter);
+		
 	}
 	
 	/**
@@ -129,6 +138,7 @@ public class SettingActivity extends MainActivity{
 
 				DatePicker date = (DatePicker)d.findViewById(R.id.notificationDate);
 	           	TimePicker time = (TimePicker)d.findViewById(R.id.notificationTime);
+	           	time.setIs24HourView(true);
 
 	           	cal.set(date.getYear(), date.getMonth(), date.getDayOfMonth(), time.getCurrentHour(), time.getCurrentMinute());
 	           	
@@ -138,9 +148,12 @@ public class SettingActivity extends MainActivity{
 	           	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 	           	Date da = new Date(cal.getTimeInMillis());
 	           	String datum = sdf.format(da);
+	           	/*
 	           	TextView t = (TextView)findViewById(R.id.txtView);
 	           	t.append(datum + "\n");
-	           	
+	           	*/
+	     
+	           	newPopUp("Notifikation tillagd på följande tid:", datum);
 	           	
 	           }
 	       });
@@ -155,5 +168,36 @@ public class SettingActivity extends MainActivity{
 		 
 		 dialog.show(); 
 	 }
+	
+    public void newPopUp(String title, String message){
+   	 AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		 builder.setTitle(title);
+		 builder.setMessage(message);
+		 
+		 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	               // User clicked OK button
+	        	   
+	           }
+	     });
+		
+		 AlertDialog dialog = builder.create();
+		 
+		 dialog.show();
+   	
+   }
+
+
+	@Override
+	public void onItemClick(AdapterView<?> l, View v, int pos, long id) {
+		// TODO Auto-generated method stub
+		if(pos==0){
+			notificationPopup();
+		}
+		
+		if(pos==1){
+			handleOrdersActivity();
+		}
+	}
 
 }
