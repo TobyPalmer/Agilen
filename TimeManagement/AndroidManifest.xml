@@ -69,6 +69,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.timemanagement.MainActivity" />
         </activity>
+        
+         <!-- HandleOrdersActivity -->
+        <activity
+            android:name="com.example.timemanagement.HandleOrdersActivity"
+            android:label="Hantera Ordernummer"
+            android:parentActivityName="com.example.timemanagement.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.timemanagement.MainActivity" />
+        </activity>
 
     </application>
 

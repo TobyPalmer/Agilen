@@ -2,7 +2,9 @@ package com.example.timemanagement;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import com.example.timemanagement.model.Order;
 
@@ -14,6 +16,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -37,7 +40,9 @@ import android.widget.TimePicker;
 
 public class SettingActivity extends MainActivity implements OnItemClickListener{
 	
-	int nrOfNotifications=0;
+	private static final Order o = null;
+	private int nrOfNotifications=0;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,7 @@ public class SettingActivity extends MainActivity implements OnItemClickListener
 		
 		// Show the Up button in the action bar.
 		setupActionBar();
+		
 		
         ListView listView = (ListView) findViewById(R.id.listView1);
         listView.setOnItemClickListener(this);
@@ -172,7 +178,6 @@ public class SettingActivity extends MainActivity implements OnItemClickListener
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User clicked OK button
 	        	   
-
 	           }
 	     });
 		
@@ -182,14 +187,17 @@ public class SettingActivity extends MainActivity implements OnItemClickListener
    	
    }
 
+
 	@Override
 	public void onItemClick(AdapterView<?> l, View v, int pos, long id) {
 		// TODO Auto-generated method stub
-		if(id==0){
-			Log.w("id", "zero");
+		if(pos==0){
 			notificationPopup();
 		}
 		
+		if(pos==1){
+			handleOrdersActivity();
+		}
 	}
 
 }
