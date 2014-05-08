@@ -15,12 +15,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.timemanagement.sqlite.SQLiteMethods;
-
+import com.example.timemanagement.model.*;
 
 public class MainActivity extends Activity {
 	
 	private Button login;
 	private TextView user, pass;
+	
 	
 	public static SQLiteMethods db;
 

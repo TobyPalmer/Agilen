@@ -84,15 +84,24 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
     	
     	stopButton = (Button)findViewById(R.id.taskStop);
     	stopButton.setText(timeBlock.toTimeString(false));
-
-    	// Get all orders
-    	list = MainActivity.db.getAllOrders();
     	
+    	Order standardOrder = new Order("0", "Ospec. Ordernr.", 0);
+
+       	// Get all orders
+    	list = MainActivity.db.getAllOrders();
+    	    	
         s = (Spinner) findViewById(R.id.spinner1);
 		adapter = new ArrayAdapter(this, R.layout.spinner_item, list);
- 
+		
         s.setAdapter(adapter);
         
+   	 if(!list.contains(standardOrder)){
+      	list.add(standardOrder);
+      	s.setSelection(list.size()-1);
+         adapter.notifyDataSetChanged();
+      	MainActivity.db.addOrder(standardOrder);
+      	}
+
         if(getIntent().getExtras() != null){
         	newTask = false;
         	timeBlock = (Block) getIntent().getSerializableExtra("Block");
@@ -110,7 +119,6 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 
 	    	
 	        public void onClick(View v) {
-            	Log.w("AgilTag", timeBlock.toString());
 	        	deleteBlock(v, timeBlock);
 	        }
 	    });
@@ -163,7 +171,7 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 	
 	public void addNewOrderNumber(View view){
 		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		 builder.setTitle("New Task");
+		 builder.setTitle("Ny order");
 		 
 		 LayoutInflater inflater = getLayoutInflater();
 
@@ -192,8 +200,8 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 	        		if(!list.contains(order)){
 			        	list.add(order);
 			        	
-			        	String message = "You have succesfully added a new task!";
-			        	newPopUp("Task Created",message);
+			        	String message = "Du har lagt till en order!";
+			        	newPopUp("Order tillagd",message);
 			        	
 			            s.setSelection(list.size()-1);
 			            adapter.notifyDataSetChanged();
@@ -202,11 +210,11 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 			        	MainActivity.db.addOrder(order);
 	        		}
 	        		else{
-	        			newPopUp("Error!","'" + order + "' already exists!");
+	        			newPopUp("Error!","'" + order + "' finns redan!");
 	        		}
 	        	}
 	        	else{
-	        		newPopUp("Error!","'" + stringOrderNumber + "' is not a valid order number!");
+	        		newPopUp("Error!","'" + stringOrderNumber + "' är inte ett giltigt nummer!");
 	        	}
 	           }
 	       });
@@ -239,10 +247,10 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
     
     	timeBlock.setComment(comments);
     	
-    	String message = "You have succesfully edited your task! \n\n" +
+    	String message = "Du har redigerat din order! \n\n" +
     					 orderString + "\n" + timeBlock.toStringPublic() +
     					 "\n " + comments;
-    	newPopUp("Task Edited",message);
+    	newPopUp("Redigerad!",message);
     	
     	//Save to db
     	if(getIntent().getExtras()!=null)
@@ -278,8 +286,6 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 		 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User clicked OK button
-	        	   
-
 	           }
 	     });
 		
