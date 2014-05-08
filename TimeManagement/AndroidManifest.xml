@@ -16,6 +16,11 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        
+        <service
+            android:name="com.example.timemanagement.NotificationHandler"
+            android:exported="false"/>
+        
         <activity
             android:name="com.example.timemanagement.MainActivity"
             android:label="@string/app_name"
@@ -48,6 +53,16 @@
         <!-- ListActivity -->
         <activity
             android:name="com.example.timemanagement.ListActivity"
+            android:label="Listöversikt"
+            android:parentActivityName="com.example.timemanagement.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.timemanagement.MainActivity" />
+        </activity>
+        
+        <!-- SettingActivity -->
+        <activity
+            android:name="com.example.timemanagement.SettingActivity"
             android:label="Listöversikt"
             android:parentActivityName="com.example.timemanagement.MainActivity" >
             <meta-data

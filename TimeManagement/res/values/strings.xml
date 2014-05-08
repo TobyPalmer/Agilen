@@ -3,11 +3,13 @@
 
     <string name="app_name">Chronox</string>
     
+
     <string name="menu_checkview">Avcheckning</string>
     <string name="menu_statistics">Statistik</string>
     <string name="menu_timestamp">Tidslogg</string>
     <string name="menu_schedule">Schemavy</string>
     <string name="menu_settings">Inställningar</string>
+
     
     
     <string name="title_activity_timestamp">Tidslogg</string>
