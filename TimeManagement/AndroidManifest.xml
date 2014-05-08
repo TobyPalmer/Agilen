@@ -63,7 +63,7 @@
         <!-- SettingActivity -->
         <activity
             android:name="com.example.timemanagement.SettingActivity"
-            android:label="Listöversikt"
+            android:label="Inställningar"
             android:parentActivityName="com.example.timemanagement.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

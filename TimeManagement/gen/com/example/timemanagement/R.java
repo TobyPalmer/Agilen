@@ -42,7 +42,6 @@ public final class R {
         public static final int LinearLayout05=0x7f090018;
         public static final int TableLayout=0x7f090022;
         public static final int addCommentPop=0x7f090000;
-        public static final int addNotification=0x7f090021;
         public static final int arrow=0x7f090011;
         public static final int button1=0x7f09001a;
         public static final int button2=0x7f090016;
@@ -54,6 +53,7 @@ public final class R {
         public static final int imageView1=0x7f090009;
         public static final int l_view=0x7f090005;
         public static final int linearLayout1=0x7f090001;
+        public static final int listView1=0x7f090021;
         public static final int menu_checkview=0x7f090027;
         public static final int menu_schedule=0x7f09002a;
         public static final int menu_settings=0x7f09002b;
