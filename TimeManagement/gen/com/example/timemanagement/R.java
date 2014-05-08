@@ -41,7 +41,6 @@ public final class R {
         public static final int LinearLayout04=0x7f090014;
         public static final int LinearLayout05=0x7f090018;
         public static final int TableLayout=0x7f090022;
-        public static final int action_settings=0x7f090027;
         public static final int addCommentPop=0x7f090000;
         public static final int addNotification=0x7f090021;
         public static final int arrow=0x7f090011;
@@ -55,12 +54,12 @@ public final class R {
         public static final int imageView1=0x7f090009;
         public static final int l_view=0x7f090005;
         public static final int linearLayout1=0x7f090001;
-        public static final int menu_backup=0x7f09002d;
-        public static final int menu_checkview=0x7f090028;
-        public static final int menu_schedule=0x7f09002b;
-        public static final int menu_settings=0x7f09002c;
-        public static final int menu_statistics=0x7f090029;
-        public static final int menu_timestamp=0x7f09002a;
+        public static final int menu_backup=0x7f09002c;
+        public static final int menu_checkview=0x7f090027;
+        public static final int menu_schedule=0x7f09002a;
+        public static final int menu_settings=0x7f09002b;
+        public static final int menu_statistics=0x7f090028;
+        public static final int menu_timestamp=0x7f090029;
         public static final int nextDay=0x7f090004;
         public static final int notificationDate=0x7f09001e;
         public static final int notificationTime=0x7f09001f;
