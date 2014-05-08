@@ -56,9 +56,9 @@
             android:id="@+id/l_view"
             android:layout_width="fill_parent"
             android:layout_height="400dp"
-            android:layout_weight="3" 
-			android:textSize="50sp"
-            >
+			android:layout_weight="3" 
+			android:textSize="50sp">
+
         </ListView>
 
         <TextView

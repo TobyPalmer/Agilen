@@ -38,8 +38,6 @@ import com.example.timemanagement.model.Order;
 public class TimestampActivity extends MainActivity implements DataPassable {
 	
 	// Contains all blocks in list view
-	private List<Block> l = new ArrayList<Block>();
-	private ArrayAdapter<String> listAdapter;
 	private ListView listView;
 	private Button next, prev, startB, create;
 	private Button day;
@@ -82,7 +80,18 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
 				cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
 		start = cal.getTimeInMillis();	
+
+		//Adding arrows
+		next = (Button)findViewById(R.id.nextDay);
+    	Typeface font_for_right = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
+    	next.setTypeface(font_for_right);
+    	
+    	prev = (Button)findViewById(R.id.prevDay);
+    	Typeface font_for_left = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
+    	prev.setTypeface(font_for_left);
 		
+		//update view
+
 		// Use block from calling intent (if any)
 		if(savedInstanceState == null){
 			Bundle extras = getIntent().getExtras();
@@ -92,7 +101,6 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 			}
 		}
 	
-		
 		// update view
 		setDayText(start);
 		printBlocks();
@@ -165,6 +173,7 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 	        public void onClick(View v) {
 	        	if(stopped){
 
+
 	        		startB.setBackgroundColor(getResources().getColor(R.color.red));
 	        		startB.setText(R.string.stop);
 	        		startTime(v);	
@@ -172,6 +181,7 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 	        	else{
 	        		startB.setBackgroundColor(getResources().getColor(R.color.green));
 	        		startB.setText(R.string.start);
+
 	        		stopTime(v);  	
 	        	}
 	        	
@@ -429,7 +439,7 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 		   
 		 
 
-		 builder.setPositiveButton("Lï¿½gg till", new DialogInterface.OnClickListener() {
+		 builder.setPositiveButton("Lägg till", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User clicked OK button
 	        	

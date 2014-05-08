@@ -57,8 +57,6 @@ public class Order {
 	public String getOrderNumber() {
 		return this.orderNumber;
 	}
-	
-	
 
 	@Override
 	public String toString() {
@@ -69,10 +67,11 @@ public class Order {
 		else{
 			dWork = "Indirekttid";
 		}
-		return orderNumber + " - " + orderName + " - " + dWork;
+		//Vill inte visa Direkt-/Indirekttid i Spinner
+		return orderNumber + " - " + orderName;// + " - " + dWork;
 		//return "Order [ID=" + ID + ", orderNumber=" + orderNumber + ", orderName=" + orderName + "]";
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
