@@ -35,9 +35,10 @@ public class DatePickFragment extends PickFragment
 	@Override
 	public void onDateSet(DatePicker view, int year, int monthOfYear,
 			int dayOfMonth){
+		 Long diff = timeBlock.getStop()-timeBlock.getStart();
 		 cal.set(year, monthOfYear, dayOfMonth);
 		 timeBlock.setStart(cal.getTimeInMillis());
-		 timeBlock.setStop(cal.getTimeInMillis());
+		 timeBlock.setStop(cal.getTimeInMillis() + diff);
 		 
 		 //Update the parent activity with the new date.
 		 parentActivity.update(this, timeBlock);
