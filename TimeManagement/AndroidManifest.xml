@@ -60,10 +60,31 @@
                 android:value="com.example.timemanagement.MainActivity" />
         </activity>
         
+        <!-- StatisticsActivity -->
+        <activity
+            android:name="com.example.timemanagement.StatisticsActivity"
+            android:label="Statistik"
+            android:parentActivityName="com.example.timemanagement.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.timemanagement.MainActivity" />
+        </activity>
+        
+        <!-- ScheduleActivity -->
+        <activity
+            android:name="com.example.timemanagement.ScheduleActivity"
+            android:label="Schemavy"
+            android:parentActivityName="com.example.timemanagement.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.timemanagement.MainActivity" />
+        </activity>
+
         <!-- SettingActivity -->
         <activity
             android:name="com.example.timemanagement.SettingActivity"
             android:label="Listöversikt"
+
             android:parentActivityName="com.example.timemanagement.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

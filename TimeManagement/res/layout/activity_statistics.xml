@@ -8,6 +8,19 @@
         android:id="@+id/txtView"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:text="Statistik" />
+        android:text="Total arbetad tid:" />
+    
+     <TextView
+        android:id="@+id/txtView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:text="Direkt tid:" />
+     
+      <TextView
+        android:id="@+id/txtView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:text="Indriekt tid:" />
+    
 
 </LinearLayout>
