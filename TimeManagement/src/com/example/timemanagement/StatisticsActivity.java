@@ -80,25 +80,25 @@ public class StatisticsActivity extends MainActivity
 		
 		stop = System.currentTimeMillis();
 		
-		/*
-		Calendar cal2 = Calendar.getInstance();
-		cal2.set(cal2.get(Calendar.YEAR), cal2.get(Calendar.MONTH), 
-				cal2.get(Calendar.DAY_OF_MONTH), 23, 59);
-		stop = cal2.getTimeInMillis();
-		
-		String temp = "start: " + cal1.getTime() + "  stop: " + cal2.getTime();
-		Log.d("cal.getTime()", temp);
-		*/	
+								/*
+								Calendar cal2 = Calendar.getInstance();
+								cal2.set(cal2.get(Calendar.YEAR), cal2.get(Calendar.MONTH), 
+										cal2.get(Calendar.DAY_OF_MONTH), 23, 59);
+								stop = cal2.getTimeInMillis();
+								
+								String temp = "start: " + cal1.getTime() + "  stop: " + cal2.getTime();
+								Log.d("cal.getTime()", temp);
+								*/	
 		
 		final List<Block> blocks = MainActivity.db.getBlocksBetweenDate(start, stop);
 		
 		String[] items = new String[blocks.size()];
 		
-		/*
-		int tempi = items.length;
-		String temps = "items.length: " + tempi;
-		Log.d("TEST", temps);
-		*/
+								/*
+								int tempi = items.length;
+								String temps = "items.length: " + tempi;
+								Log.d("TEST", temps);
+								*/
 		
 		long timediff;
 		
@@ -127,6 +127,7 @@ public class StatisticsActivity extends MainActivity
     	    
     	    totalH += h;
     	    totalM += m;
+    	   
     	    
     	    if(order.getOrderDirectWork() == 1)
     	    {
@@ -139,12 +140,12 @@ public class StatisticsActivity extends MainActivity
     	    	indirectM += m;
     	    }
     	    
-    	    /*
+    	    
 			String s = "Direct: " + directH + "h " + directM + "m  Indirect: " + indirectH + "h " + indirectM + "m  ";
 			Log.d("IN loop", s);
-			*/
 			
-    	    s = "Arbetat tid: " + totalH + "h " + totalM + "m";
+			
+    	//    s = "Arbetat tid: " + totalH + "h " + totalM + "m";
     	    //total.setText(s);
 		}
 	}	    	
