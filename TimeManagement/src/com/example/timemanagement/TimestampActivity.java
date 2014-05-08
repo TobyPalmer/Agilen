@@ -5,8 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -30,7 +31,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.example.swipetodismiss.*;
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
@@ -58,7 +58,7 @@ public class TimestampActivity extends MainActivity {
 	
 
 	// longs that represents the start- and endtime of the day
-	private long start, stop;
+	private long start, stop, today;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +72,7 @@ public class TimestampActivity extends MainActivity {
 		
 		// Sets the start and stop to that of the current day.
 		cal = Calendar.getInstance();
+		today = cal.getTimeInMillis();
 		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
 				cal.get(Calendar.DAY_OF_MONTH), 23, 59);
 		stop = cal.getTimeInMillis();
@@ -116,25 +117,24 @@ public class TimestampActivity extends MainActivity {
 
 		//onclick that starts and stops the time.
 		//It also changes the color and text on the button
-		final Button start = (Button)findViewById(R.id.startButton);
-		start.setBackgroundColor(Color.parseColor("#57bf23"));
-	    start.setOnClickListener(new View.OnClickListener() {
+		startB.setBackgroundColor(Color.parseColor("#57bf23"));
+	    startB.setOnClickListener(new View.OnClickListener() {
 	        public void onClick(View v) {
 	        	if(stopped){
-	        		start.setBackgroundColor(Color.parseColor("#fb3804"));
-	        		start.setText(R.string.stop);
+	        		startB.setBackgroundColor(Color.parseColor("#fb3804"));
+	        		startB.setText(R.string.stop);
 	        		startTime(v);	
 	        	}
 	        	else{
-	        		start.setBackgroundColor(Color.parseColor("#57bf23"));
-	        		start.setText(R.string.start);
+	        		startB.setBackgroundColor(Color.parseColor("#57bf23"));
+	        		startB.setText(R.string.start);
 	        		stopTime(v);  	
 	        	}
 	        	
 	        }
 	    });
 
-		
+	    setStartButton();
 
 	}
 	
@@ -309,6 +309,7 @@ public class TimestampActivity extends MainActivity {
 		stop += 86400000;
 		setDayText(start);
 		printBlocks();
+		setStartButton();
 	}
 	
 	/**
@@ -321,6 +322,27 @@ public class TimestampActivity extends MainActivity {
 		stop -= 86400000;
 		setDayText(start);
 		printBlocks();
+		setStartButton();
+	}
+	
+	/**
+	 * Function that enables the startbutton if the day displayed is today
+	 * and disabling the button if another day is displayed.
+	 */
+	private void setStartButton(){
+		Date dateToday = new Date(today);
+		Date dateStart = new Date(start);
+		Date dateStop = new Date(stop);
+		
+		if ((dateToday.compareTo(dateStart) == 1) && (dateToday.compareTo(dateStop) == -1)){
+			startB.setEnabled(true);
+			startB.setBackgroundColor(getResources().getColor(R.color.green));
+			startB.setTextColor(Color.WHITE);
+		} else{
+			startB.setEnabled(false);
+			startB.setBackgroundColor(getResources().getColor(R.color.darkGrey));
+			startB.setTextColor(getResources().getColor(R.color.lightGrey));
+		}
 	}
 		
 	

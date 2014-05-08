@@ -43,7 +43,7 @@
     
     
     <color name="orange">#F88621</color>
-    <color name="darkGrey">#323232</color>
+    <color name="darkGrey">#787878</color>
     <color name="lightGrey">#999</color>
     
     <color name="title_background">#0000FF</color>
@@ -51,7 +51,7 @@
     <color name="deleteColor">#88FF0000</color>
     <color name="editColor">#88ffffff</color>
     <color name="commentColor">#88888888</color>
-    <color name="green">#00ff00</color>
+    <color name="green">#57bf23</color>
     
 
 
