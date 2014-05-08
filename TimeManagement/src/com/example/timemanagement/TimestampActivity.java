@@ -11,6 +11,7 @@ import java.util.List;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -34,14 +35,14 @@ import com.example.swipetodismiss.*;
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
 
-public class TimestampActivity extends MainActivity {
+public class TimestampActivity extends MainActivity implements DataPassable {
 	
 	// Contains all blocks in list view
 	private List<Block> l = new ArrayList<Block>();
 	private ArrayAdapter<String> listAdapter;
 	private ListView listView;
 	private Button next, prev, startB, create;
-	private TextView day;
+	private Button day;
 	
 	// Calendar that is set to the chosen day.
 	private Calendar cal;
@@ -135,8 +136,19 @@ public class TimestampActivity extends MainActivity {
 			}
 		});
 		
-    	day = (TextView)findViewById(R.id.day);
+    	day = (Button)findViewById(R.id.day);
     	day.setTypeface(font2);
+    	day.setOnClickListener(new View.OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				Block temp = new Block(start);
+				temp.setStop(stop);
+			    DialogFragment newFragment = new DatePickFragment(temp);
+			    newFragment.show(getFragmentManager(), "datePicker");
+			}
+    		
+    	});
     	
 		
 
@@ -485,4 +497,17 @@ public class TimestampActivity extends MainActivity {
 		 
 		 dialog.show(); 
 	 }
+
+	@Override
+	public void update(PickFragment p, Object o) {
+		if(o instanceof Block){
+			
+			setStartAndStop((Block) o);
+			
+			// update view
+			setDayText(start);
+			printBlocks();	
+			setStartButton();
+		}
+	}
 }
