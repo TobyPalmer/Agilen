@@ -77,7 +77,7 @@ public class TimestampActivity extends MainActivity {
 		stop = cal.getTimeInMillis();
 
 		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
-				cal.get(Calendar.DAY_OF_MONTH), 0, 0);
+				cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
 		start = cal.getTimeInMillis();	
 		
 		// Use block from calling intent (if any)
@@ -147,12 +147,12 @@ public class TimestampActivity extends MainActivity {
 		
 			cal.setTimeInMillis(intentBlock.getStart());
 			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
-					cal.get(Calendar.DAY_OF_MONTH), 0, 0);
+					cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
 			start = cal.getTimeInMillis();
 			
 			cal.setTimeInMillis(intentBlock.getStop());
 			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
-					cal.get(Calendar.DAY_OF_MONTH), 23, 59);
+					cal.get(Calendar.DAY_OF_MONTH), 23, 59, 0);
 			stop = cal.getTimeInMillis();
 	}
 	
@@ -271,7 +271,7 @@ public class TimestampActivity extends MainActivity {
             		        	Intent i = new Intent(getApplicationContext(), NewOrderActivity.class);
             		        	
             		        	i.putExtra("Block", block);
-            		        	i.putExtra("String", "editBlock");
+            		        	i.putExtra("Caller", "Timestamp");
             		        	        	
             		        	startActivity(i);
                             	
@@ -427,7 +427,7 @@ public class TimestampActivity extends MainActivity {
 		
 		Intent i = new Intent(getApplicationContext(), NewOrderActivity.class);
     	i.putExtra("Block", intentBlock);
-    	i.putExtra("String", "editBlock");
+    	i.putExtra("Caller", "Timestamp");
     	startActivity(i);
     	
 	}
