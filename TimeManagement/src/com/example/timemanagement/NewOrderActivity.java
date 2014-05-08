@@ -34,7 +34,7 @@ import com.example.timemanagement.R.color;
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
 
-public class NewOrderActivity extends Activity implements DataPassable{
+public class NewOrderActivity extends MainActivity implements DataPassable{
 	
 	private List<Order> list = new ArrayList<Order>();
 	private Spinner s;
