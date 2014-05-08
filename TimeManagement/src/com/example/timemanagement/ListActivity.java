@@ -85,9 +85,15 @@ import android.graphics.Typeface;
 	    	//BList = MainActivity.db.getAllBlocks();
 			bList = MainActivity.db.getBlocksBetweenDate(start, stop);
 			
+			
+			Typeface font3 = Typeface.createFromAsset(getAssets(), "gothic.ttf");
+			Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
+			Typeface font2 = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
+			
 			l_view = (ListView) findViewById(R.id.l_view);
 			day = (TextView) findViewById(R.id.day);
 			total = (TextView) findViewById(R.id.total);
+			total.setTypeface(font2);
 			
 			blockList = new ArrayList<String>();
 			blockStatesList = new ArrayList<Integer>();
@@ -102,17 +108,15 @@ import android.graphics.Typeface;
 			iterateBlocks(dateString);
 			
 			//Adding arrows to buttons
-	    	next = (Button)findViewById(R.id.nextDay);
-	    	Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
+	    	next = (Button)findViewById(R.id.nextDay); 	
 	    	next.setTypeface(font);
 	    	
 	    	prev = (Button)findViewById(R.id.prevDay);
 	    	prev.setTypeface(font);
-	    	
-	        Typeface font2 = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
-	    	
+	    	   	
 	    	day = (TextView)findViewById(R.id.day);
 	    	day.setTypeface(font2);
+	   	
 
 //	    	final Button nextButton = (Button) findViewById(R.id.nextDay);		
 	    	next.setOnClickListener(new View.OnClickListener() {
@@ -137,7 +141,8 @@ import android.graphics.Typeface;
 		        }
 		    });
 		    
-		    Button selectAllButton = (Button) findViewById(R.id.selectAll);	    			
+		    Button selectAllButton = (Button) findViewById(R.id.selectAll);	  
+		    selectAllButton.setTypeface(font2);
 	    	selectAllButton.setOnClickListener(new View.OnClickListener() {
 		        public void onClick(View v) {
 		            // TODO Auto-generated method stub
@@ -156,6 +161,7 @@ import android.graphics.Typeface;
 		    });
 	    	
 	    	Button deselectAllButton = (Button) findViewById(R.id.deselectAll);
+	    	deselectAllButton.setTypeface(font2);
 	    	deselectAllButton.setOnClickListener(new View.OnClickListener() {
 
 		        public void onClick(View v) {
@@ -255,6 +261,8 @@ import android.graphics.Typeface;
 	    	}
 	    	
 	    	//listAdapter = new ArrayAdapter<String>(this,R.layout.listrow, blockList);
+	    	//listAdapter = new CustomAdapter(this, R.layout.custom_list_text, R.array.abra_hotel, "name_of_font.ttf");
+
 	    	listAdapter = new CustomListAdapter1(this,R.layout.listrow, blockList, blockStatesList);
 	    	l_view.setAdapter(listAdapter);	    	
 	    	l_view.setOnItemClickListener(new OnItemClickListener()

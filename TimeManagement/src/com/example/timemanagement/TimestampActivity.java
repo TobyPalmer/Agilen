@@ -127,13 +127,11 @@ public class TimestampActivity extends MainActivity {
 	    start.setOnClickListener(new View.OnClickListener() {
 	        public void onClick(View v) {
 	        	if(stopped){
-	        		//start.setBackgroundColor(Color.parseColor("#fb3804"));
 	        		start.setBackgroundColor(getResources().getColor(R.color.red));
 	        		start.setText(R.string.stop);
 	        		startTime(v);	
 	        	}
 	        	else{
-	        		//start.setBackgroundColor(Color.parseColor("#57bf23"));
 	        		start.setBackgroundColor(getResources().getColor(R.color.green));
 	        		start.setText(R.string.start);
 	        		stopTime(v);  	
