@@ -1,26 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+     >
+	
+	<RelativeLayout
+	    android:id="@+id/relativeLayoutDatePick"
+	    android:layout_width="match_parent"
+	    android:layout_height ="wrap_content"
+	    android:layout_marginBottom = "30dp">	    
+	<TextView 
+	    android:id="@+id/startDateText"
+	    android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+	    android:text="Från: "
+	    android:textStyle="bold"	    
+	    android:textSize="30sp"
+	    />
+	<TextView
+	    android:id="@+id/stopDateText"
+	    android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:textStyle="bold" 
+	    android:text="Till: "
+	    android:textSize="30sp"
+	    /> 
+	</RelativeLayout>
+	<RelativeLayout
+	    android:id="@+id/relativeLayoutDatePick"
+	    android:layout_width="match_parent"
+	    android:layout_height ="wrap_content"
+	    android:layout_marginBottom = "30dp">
+	<Button
+        android:id="@+id/startDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"      
+        android:background="@android:color/transparent"        
+        android:onClick="changeStartDate"        
+        android:textSize="50sp" />      
+	   
+	<Button
+        android:id="@+id/stopDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"        
+        android:background="@android:color/transparent"        
+        android:onClick="changeStopDate"        
+        android:textSize="50sp" />
+	 </RelativeLayout>
     
-    <TextView
-        android:id="@+id/txtView"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:text="Total arbetad tid:" />
-    
-     <TextView
-        android:id="@+id/txtView"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:text="Direkt tid:" />
-     
-      <TextView
-        android:id="@+id/txtView"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:text="Indriekt tid:" />
-    
-
+	<LinearLayout
+	    android:id="@+id/linearLayoutDatePick"
+	    android:layout_width="match_parent"
+	    android:layout_height ="400dp"
+	    android:orientation = "horizontal">
+		<LinearLayout
+	        android:id="@+id/pie_container"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true" 
+	        android:layout_marginLeft="20dp"       
+	        android:orientation="vertical" >
+	    </LinearLayout>
+	    <LinearLayout
+        android:id="@+id/linear_layout2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_alignParentLeft="true"        
+        android:orientation="vertical" >
+    	
+	    	<TextView
+		        android:id="@+id/totalTime"
+		        android:layout_width="wrap_content"
+		        android:layout_height="60dp"		                
+		        android:padding="10dp"
+		        android:text="Flextid: "
+		        android:textStyle="bold"
+		        android:textSize = "30dp" />	    
+		    <TextView
+		        android:id="@+id/directTime"
+		        android:layout_width="wrap_content"
+		        android:layout_height="60dp"                
+		        android:padding="10dp"
+		        android:text="Direkttid: "
+		        android:textStyle="bold"
+		        android:textSize = "30dp" />
+		    		
+		    <TextView
+		        android:id="@+id/indirectTime"
+		        android:layout_width="wrap_content"
+		        android:layout_height="60dp"		                
+		        android:padding="10dp"        
+		        android:text="Indirekttid: "
+		        android:textStyle="bold"
+		        android:textSize = "30dp" />	
+		    <TextView
+		        android:id="@+id/flexTime"
+		        android:layout_width="wrap_content"
+		        android:layout_height="60dp"		                
+		        android:padding="10dp"
+		        android:text="Flextid: "
+		        android:textStyle="bold"
+		        android:textSize = "30dp" />
+    	</LinearLayout>	
+	</LinearLayout>
 </LinearLayout>
