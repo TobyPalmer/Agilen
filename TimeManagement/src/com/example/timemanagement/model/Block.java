@@ -94,6 +94,7 @@ public class Block implements Serializable, Comparable<Block>{
 		this.comment = comment;
 	}
 
+	@Override
 	public String toString() {
 		Date start = new java.util.Date(this.start);
 		String startString = new SimpleDateFormat("HH:mm").format(start);

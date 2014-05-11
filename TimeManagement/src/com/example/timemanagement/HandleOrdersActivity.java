@@ -105,7 +105,8 @@ public class HandleOrdersActivity extends MainActivity implements OnItemClickLis
 		    // Pass null as the parent view because its going in the dialog layout
 		 
 		 builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
-	           public void onClick(DialogInterface dialog, int id) {
+	           @Override
+			public void onClick(DialogInterface dialog, int id) {
 	               // User clicked OK button
 		    		for(int index = 0; index<list.size(); index++){
 		    			if(clicked[index]==true){
@@ -118,7 +119,8 @@ public class HandleOrdersActivity extends MainActivity implements OnItemClickLis
 	       });
 		 
 		 builder.setNegativeButton("Nej", new DialogInterface.OnClickListener() {
-	           public void onClick(DialogInterface dialog, int id) {
+	           @Override
+			public void onClick(DialogInterface dialog, int id) {
 	               // User cancelled the dialog
 
 	           }

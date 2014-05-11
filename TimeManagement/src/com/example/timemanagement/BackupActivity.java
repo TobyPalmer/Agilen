@@ -21,7 +21,8 @@ public class BackupActivity extends MainActivity {
 
 		Button exportAllAsJSONButton = (Button)findViewById(R.id.exportAllAsJSONButton);
 		exportAllAsJSONButton.setOnClickListener(new View.OnClickListener() {
-	        public void onClick(View v) {
+	        @Override
+			public void onClick(View v) {
 	        	String message = MainActivity.db.exportJSON();
 	        	AlertDialog.Builder builder = new AlertDialog.Builder(BackupActivity.this);
 	        	builder.setCancelable(true);

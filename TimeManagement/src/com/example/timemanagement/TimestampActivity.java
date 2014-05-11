@@ -5,24 +5,24 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v4.util.LogWriter;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -35,12 +35,14 @@ import com.example.swipetodismiss.*;
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
 
-public class TimestampActivity extends MainActivity implements DataPassable {
+public class TimestampActivity extends MainActivity {
 	
 	// Contains all blocks in list view
+	private List<Block> l = new ArrayList<Block>();
+	private ArrayAdapter<String> listAdapter;
 	private ListView listView;
 	private Button next, prev, startB, create;
-	private Button day;
+	private TextView day;
 	
 	// Calendar that is set to the chosen day.
 	private Calendar cal;
@@ -56,7 +58,7 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 	
 
 	// longs that represents the start- and endtime of the day
-	private long start, stop, today;
+	private long start, stop;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,34 +66,20 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 		setContentView(R.layout.activity_timestamp);
 		
 		listView = (ListView) findViewById(android.R.id.list);
-		
-		
 		// Show the Up button in the action bar
 		setupActionBar();
 
 		
 		// Sets the start and stop to that of the current day.
 		cal = Calendar.getInstance();
-		today = cal.getTimeInMillis();
 		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
 				cal.get(Calendar.DAY_OF_MONTH), 23, 59);
 		stop = cal.getTimeInMillis();
 
 		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
-				cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+				cal.get(Calendar.DAY_OF_MONTH), 0, 0);
 		start = cal.getTimeInMillis();	
-
-		//Adding arrows
-		next = (Button)findViewById(R.id.nextDay);
-    	Typeface font_for_right = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
-    	next.setTypeface(font_for_right);
-    	
-    	prev = (Button)findViewById(R.id.prevDay);
-    	Typeface font_for_left = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
-    	prev.setTypeface(font_for_left);
 		
-		//update view
-
 		// Use block from calling intent (if any)
 		if(savedInstanceState == null){
 			Bundle extras = getIntent().getExtras();
@@ -101,6 +89,7 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 			}
 		}
 	
+		
 		// update view
 		setDayText(start);
 		printBlocks();
@@ -113,90 +102,40 @@ public class TimestampActivity extends MainActivity implements DataPassable {
     	prev = (Button)findViewById(R.id.prevDay);
     	prev.setTypeface(font);
     	
-
     	
     	//use neo sans font on buttons and date
         Typeface font2 = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
-        
-        //use century gothic on list
-    	Typeface font3 = Typeface.createFromAsset(getAssets(), "gothic.ttf");
-        
     	
         startB = (Button)findViewById(R.id.startButton);
     	startB.setTypeface(font2);
-    	
         create = (Button)findViewById(R.id.changeOrderButton);
     	create.setTypeface(font2);
-    	enableCreateButton();
-    	
-    	create.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				create.setEnabled(false);
-				create.setBackgroundColor(getResources().getColor(R.color.darkGrey));
-				create.setTextColor(getResources().getColor(R.color.lightGrey));
-				
-				Block intentBlock = new Block(start);
-				MainActivity.db.addBlock(intentBlock);
-				
-				intentBlock.setStop(start);
-				MainActivity.db.putBlock(intentBlock);	
-				
-				Intent i = new Intent(getApplicationContext(), NewOrderActivity.class);
-		    	i.putExtra("Block", intentBlock);
-		    	i.putExtra("Caller", "Timestamp");
-		    	startActivity(i);	
-			}
-		});
-		
-    	day = (Button)findViewById(R.id.day);
+    	day = (TextView)findViewById(R.id.day);
     	day.setTypeface(font2);
-    	day.setOnClickListener(new View.OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				Block temp = new Block(start);
-				temp.setStop(stop);
-			    DialogFragment newFragment = new DatePickFragment(temp);
-			    newFragment.show(getFragmentManager(), "datePicker");
-			}
-    		
-    	});
-    	
 		
 
 		//onclick that starts and stops the time.
 		//It also changes the color and text on the button
-		startB.setBackgroundColor(Color.parseColor("#57bf23"));
-	    startB.setOnClickListener(new View.OnClickListener() {
-	        public void onClick(View v) {
+		final Button start = (Button)findViewById(R.id.startButton);
+		start.setBackgroundColor(Color.parseColor("#57bf23"));
+	    start.setOnClickListener(new View.OnClickListener() {
+	        @Override
+			public void onClick(View v) {
 	        	if(stopped){
-
-
-	        		startB.setBackgroundColor(getResources().getColor(R.color.red));
-	        		startB.setText(R.string.stop);
+	        		start.setBackgroundColor(Color.parseColor("#fb3804"));
+	        		start.setText(R.string.stop);
 	        		startTime(v);	
 	        	}
 	        	else{
-	        		startB.setBackgroundColor(getResources().getColor(R.color.green));
-	        		startB.setText(R.string.start);
-
+	        		start.setBackgroundColor(Color.parseColor("#57bf23"));
+	        		start.setText(R.string.start);
 	        		stopTime(v);  	
 	        	}
 	        	
 	        }
 	    });
-	    startB.setOnTouchListener(new View.OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-		});
 
-	    setStartButton();
+		
 
 	}
 	
@@ -209,12 +148,12 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 		
 			cal.setTimeInMillis(intentBlock.getStart());
 			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
-					cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+					cal.get(Calendar.DAY_OF_MONTH), 0, 0);
 			start = cal.getTimeInMillis();
 			
 			cal.setTimeInMillis(intentBlock.getStop());
 			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
-					cal.get(Calendar.DAY_OF_MONTH), 23, 59, 0);
+					cal.get(Calendar.DAY_OF_MONTH), 23, 59);
 			stop = cal.getTimeInMillis();
 	}
 	
@@ -326,14 +265,15 @@ public class TimestampActivity extends MainActivity implements DataPassable {
                                 return true;
                             }
 
-                            public void onClick(ListView listView, int position) {
+                            @Override
+							public void onClick(ListView listView, int position) {
                             	Block block = blocksOfToday.get(position);
                             	Log.w("timemanagement", "GUI: Clicked block:" + block.getID());
             		        	
             		        	Intent i = new Intent(getApplicationContext(), NewOrderActivity.class);
             		        	
             		        	i.putExtra("Block", block);
-            		        	i.putExtra("Caller", "Timestamp");
+            		        	i.putExtra("String", "editBlock");
             		        	        	
             		        	startActivity(i);
                             	
@@ -371,7 +311,6 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 		stop += 86400000;
 		setDayText(start);
 		printBlocks();
-		setStartButton();
 	}
 	
 	/**
@@ -384,35 +323,8 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 		stop -= 86400000;
 		setDayText(start);
 		printBlocks();
-		setStartButton();
 	}
-	
-	/**
-	 * Function that enables the startbutton if the day displayed is today
-	 * and disabling the button if another day is displayed.
-	 */
-	private void setStartButton(){
-		Date dateToday = new Date(today);
-		Date dateStart = new Date(start);
-		Date dateStop = new Date(stop);
 		
-		if ((dateToday.compareTo(dateStart) == 1) && (dateToday.compareTo(dateStop) == -1)){
-			startB.setEnabled(true);
-			startB.setBackgroundColor(getResources().getColor(R.color.green));
-			startB.setTextColor(Color.WHITE);
-		} else{
-			startB.setEnabled(false);
-			startB.setBackgroundColor(getResources().getColor(R.color.darkGrey));
-			startB.setTextColor(getResources().getColor(R.color.lightGrey));
-		}
-	}
-	
-	
-	private void enableCreateButton(){
-    	create.setEnabled(true);
-    	create.setBackgroundColor(getResources().getColor(R.color.orange));
-		create.setTextColor(Color.WHITE);	
-	}
 	
 	
 	public void addComment(View view, final Block block){
@@ -439,8 +351,9 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 		   
 		 
 
-		 builder.setPositiveButton("Lägg till", new DialogInterface.OnClickListener() {
-	           public void onClick(DialogInterface dialog, int id) {
+		 builder.setPositiveButton("Lï¿½gg till", new DialogInterface.OnClickListener() {
+	           @Override
+			public void onClick(DialogInterface dialog, int id) {
 	               // User clicked OK button
 	        	
 	        	Dialog d = (Dialog) dialog;
@@ -456,7 +369,8 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 	       });
 		 
 		 builder.setNegativeButton("Avbryt", new DialogInterface.OnClickListener() {
-	           public void onClick(DialogInterface dialog, int id) {
+	           @Override
+			public void onClick(DialogInterface dialog, int id) {
 	               // User cancelled the dialog
 	           }
 	       });
@@ -465,13 +379,6 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 		 
 		 dialog.show(); 
 	 }
-	
-	@Override
-	public void onResume() {
-	    super.onResume();  // Always call the superclass method first
-	    enableCreateButton();
-	    printBlocks();
-	}
 	
 	public void deleteBlock(View view, final Block block){
 		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -493,7 +400,8 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 		    // Pass null as the parent view because its going in the dialog layout
 		 
 		 builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
-	           public void onClick(DialogInterface dialog, int id) {
+	           @Override
+			public void onClick(DialogInterface dialog, int id) {
 	               // User clicked OK button
 
 		        	MainActivity.db.deleteBlock(block);
@@ -502,7 +410,8 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 	       });
 		 
 		 builder.setNegativeButton("Nej", new DialogInterface.OnClickListener() {
-	           public void onClick(DialogInterface dialog, int id) {
+	           @Override
+			public void onClick(DialogInterface dialog, int id) {
 	               // User cancelled the dialog
 	        	   getWindow().setSoftInputMode(
 	        			      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -514,17 +423,19 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 		 
 		 dialog.show(); 
 	 }
-
-	@Override
-	public void update(PickFragment p, Object o) {
-		if(o instanceof Block){
-			
-			setStartAndStop((Block) o);
-			
-			// update view
-			setDayText(start);
-			printBlocks();	
-			setStartButton();
-		}
+	
+	public void addNewOrder(View v){
+		Block intentBlock = new Block(start);
+		MainActivity.db.addBlock(intentBlock);
+		
+		intentBlock.setStop(start);
+		MainActivity.db.putBlock(intentBlock);	
+		
+		Intent i = new Intent(getApplicationContext(), NewOrderActivity.class);
+    	i.putExtra("Block", intentBlock);
+    	i.putExtra("String", "editBlock");
+    	startActivity(i);
+    	
 	}
+	
 }
