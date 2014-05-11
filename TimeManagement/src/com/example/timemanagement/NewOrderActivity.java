@@ -5,20 +5,21 @@ import java.util.Calendar;
 import java.util.List;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.support.v4.util.LogWriter;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -26,12 +27,13 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
 
-public class NewOrderActivity extends MainActivity implements DataPassable{
+public class NewOrderActivity extends Activity implements DataPassable{
 	
 	private List<Order> list = new ArrayList<Order>();
 	private Spinner s;
@@ -40,11 +42,10 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 	private Button dateButton,
 				   startButton,
 				   stopButton;
-	private Button d, delete, save, taskdate, taskstart, taskstop, newOrder;
+	private Button d;
 	private TextView arrow;
 	private EditText comment;
 	private boolean newTask;
-	private String caller;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,26 +54,6 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
     	
 		newTask = true;
 		
-		//Setting the font
-		Typeface font_neo = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
-		Typeface font_for_icon = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
-    	
-        delete = (Button)findViewById(R.id.deleteButton);
-        save = (Button)findViewById(R.id.button1);
-        taskdate = (Button)findViewById(R.id.taskDate);
-        taskstart = (Button)findViewById(R.id.taskStart);
-        taskstop = (Button)findViewById(R.id.taskStop);
-        newOrder = (Button)findViewById(R.id.button2);
-        arrow = (TextView)findViewById(R.id.arrow);
-        
-    	delete.setTypeface(font_neo);
-    	save.setTypeface(font_neo);
-    	taskdate.setTypeface(font_neo);
-    	taskstart.setTypeface(font_neo);
-    	taskstop.setTypeface(font_neo);
-    	newOrder.setTypeface(font_for_icon);
-    	arrow.setTypeface(font_for_icon);
-
     	//Gets the current date.
     	//ToDo: Get date from existing task instead.
     	Calendar cal = Calendar.getInstance();
@@ -84,31 +65,27 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
     	startButton.setText(timeBlock.toTimeString(true));
     	
     	comment = (EditText)findViewById(R.id.editTextComments);
-    	comment.setTypeface(font_neo);
+    	
+    	arrow = (TextView)findViewById(R.id.arrow);
+    	Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
+    	arrow.setTypeface(font);
     	
     	stopButton = (Button)findViewById(R.id.taskStop);
     	stopButton.setText(timeBlock.toTimeString(false));
     	
-    	Order standardOrder = new Order("0", "Ospec. Ordernr.", 0);
-
-       	// Get all orders
+    	
+    	
+    	// Get all orders
     	list = MainActivity.db.getAllOrders();
-    	    	
+    	
         s = (Spinner) findViewById(R.id.spinner1);
 		adapter = new ArrayAdapter(this, R.layout.spinner_item, list);
-		
+ 
         s.setAdapter(adapter);
         
-   	 if(!list.contains(standardOrder)){
-      	list.add(standardOrder);
-      	s.setSelection(list.size()-1);
-         adapter.notifyDataSetChanged();
-      	MainActivity.db.addOrder(standardOrder);
-      	}
-
         if(getIntent().getExtras() != null){
+        	Log.w("Time Management", "fick frÃ¥n Timestamp");
         	newTask = false;
-        	caller = (String) getIntent().getSerializableExtra("Caller");
         	timeBlock = (Block) getIntent().getSerializableExtra("Block");
         	update(timeBlock);
         }
@@ -123,10 +100,13 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 	       d.setOnClickListener(new View.OnClickListener() {
 
 	    	
-	        public void onClick(View v) {
+	        @Override
+			public void onClick(View v) {
+            	Log.w("AgilTag", timeBlock.toString());
 	        	deleteBlock(v, timeBlock);
 	        }
 	    });
+
 		// Show the Up button in the action bar.
 		setupActionBar();
 	}
@@ -166,6 +146,30 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 	    DialogFragment newFragment = new TimePickFragment(timeBlock, false);
 	    newFragment.show(getFragmentManager(), "stopPicker");
 	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.new_order, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			// This ID represents the Home or Up button. In the case of this
+			// activity, the Up button is shown. Use NavUtils to allow users
+			// to navigate up one level in the application structure. For
+			// more details, see the Navigation pattern on Android Design:
+			//
+			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
+			//
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 	
 	public void setBlock(Block b){
 
@@ -175,7 +179,7 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 	
 	public void addNewOrderNumber(View view){
 		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		 builder.setTitle("Ny order");
+		 builder.setTitle("New Task");
 		 
 		 LayoutInflater inflater = getLayoutInflater();
 
@@ -184,7 +188,8 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 		    builder.setView(inflater.inflate(R.layout.activity_neworderpopup, null));
 		 
 		 builder.setPositiveButton("Lï¿½gg till", new DialogInterface.OnClickListener() {
-	           public void onClick(DialogInterface dialog, int id) {
+	           @Override
+			public void onClick(DialogInterface dialog, int id) {
 	               // User clicked OK button
 	        	
 	        	Dialog d = (Dialog) dialog;
@@ -204,8 +209,8 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 	        		if(!list.contains(order)){
 			        	list.add(order);
 			        	
-			        	String message = "Du har lagt till en order!";
-			        	newPopUp("Order tillagd",message);
+			        	String message = "You have succesfully added a new task!";
+			        	newPopUp("Task Created",message);
 			        	
 			            s.setSelection(list.size()-1);
 			            adapter.notifyDataSetChanged();
@@ -214,17 +219,18 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 			        	MainActivity.db.addOrder(order);
 	        		}
 	        		else{
-	        			newPopUp("Error!","'" + order + "' finns redan!");
+	        			newPopUp("Error!","'" + order + "' already exists!");
 	        		}
 	        	}
 	        	else{
-	        		newPopUp("Error!","'" + stringOrderNumber + "' är inte ett giltigt nummer!");
+	        		newPopUp("Error!","'" + stringOrderNumber + "' is not a valid order number!");
 	        	}
 	           }
 	       });
 		 
 		 builder.setNegativeButton("Avbryt", new DialogInterface.OnClickListener() {
-	           public void onClick(DialogInterface dialog, int id) {
+	           @Override
+			public void onClick(DialogInterface dialog, int id) {
 	               // User cancelled the dialog
 	           }
 	       });
@@ -251,10 +257,10 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
     
     	timeBlock.setComment(comments);
     	
-    	String message = "Du har redigerat din order! \n\n" +
+    	String message = "You have succesfully edited your task! \n\n" +
     					 orderString + "\n" + timeBlock.toStringPublic() +
     					 "\n " + comments;
-    	newPopUp("Redigerad!",message);
+    	newPopUp("Task Edited",message);
     	
     	//Save to db
     	if(getIntent().getExtras()!=null)
@@ -268,18 +274,12 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 		 
 		 // User clicked OK button
 		 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-	           public void onClick(DialogInterface dialog, int id) {
+	           @Override
+			public void onClick(DialogInterface dialog, int id) {
 	        	   
-	        	   if(caller.equals("Timestamp")){
-	        		   Intent i = new Intent(getApplicationContext(), TimestampActivity.class);
-			        	i.putExtra("Block", timeBlock);  	
-			        	startActivity(i);
-	        	   }
-	        	   else if(caller.equals("Checkview")){
-	        		   Intent i = new Intent(getApplicationContext(), ListActivity.class);
-			        	i.putExtra("Block", timeBlock);  	
-			        	startActivity(i);
-	        	   }
+	        	    Intent i = new Intent(getApplicationContext(), TimestampActivity.class);
+		        	i.putExtra("Block", timeBlock);  	
+		        	startActivity(i);
 	           }
 	     });
 		
@@ -295,8 +295,11 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 		 builder.setMessage(message);
 		 
 		 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-	           public void onClick(DialogInterface dialog, int id) {
+	           @Override
+			public void onClick(DialogInterface dialog, int id) {
 	               // User clicked OK button
+	        	   
+
 	           }
 	     });
 		
@@ -405,7 +408,8 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 		    // Pass null as the parent view because its going in the dialog layout
 		 
 		 builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
-	           public void onClick(DialogInterface dialog, int id) {
+	           @Override
+			public void onClick(DialogInterface dialog, int id) {
 	               // User clicked OK button
 
 		        	MainActivity.db.deleteBlock(block);
@@ -414,7 +418,8 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 	       });
 		 
 		 builder.setNegativeButton("Nej", new DialogInterface.OnClickListener() {
-	           public void onClick(DialogInterface dialog, int id) {
+	           @Override
+			public void onClick(DialogInterface dialog, int id) {
 	               // User cancelled the dialog
 	        	   getWindow().setSoftInputMode(
 	        			      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);

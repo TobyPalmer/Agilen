@@ -130,7 +130,8 @@ public class SettingActivity extends MainActivity implements OnItemClickListener
 		   
 		 
 		 builder.setPositiveButton("Lägg till", new DialogInterface.OnClickListener() {
-	           public void onClick(DialogInterface dialog, int id) {
+	           @Override
+			public void onClick(DialogInterface dialog, int id) {
 	               // User clicked OK button
 	        	Calendar cal = Calendar.getInstance();
 	        	   
@@ -159,7 +160,8 @@ public class SettingActivity extends MainActivity implements OnItemClickListener
 	       });
 		 
 		 builder.setNegativeButton("Avbryt", new DialogInterface.OnClickListener() {
-	           public void onClick(DialogInterface dialog, int id) {
+	           @Override
+			public void onClick(DialogInterface dialog, int id) {
 	               // User cancelled the dialog
 	           }
 	       });
@@ -175,7 +177,8 @@ public class SettingActivity extends MainActivity implements OnItemClickListener
 		 builder.setMessage(message);
 		 
 		 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-	           public void onClick(DialogInterface dialog, int id) {
+	           @Override
+			public void onClick(DialogInterface dialog, int id) {
 	               // User clicked OK button
 	        	   
 	           }
@@ -195,7 +198,7 @@ public class SettingActivity extends MainActivity implements OnItemClickListener
 			notificationPopup();
 		}
 		
-		if(pos==1){
+		if(pos==1){						
 			handleOrdersActivity();
 		}
 	}

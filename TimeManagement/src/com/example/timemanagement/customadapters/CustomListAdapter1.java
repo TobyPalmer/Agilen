@@ -2,7 +2,6 @@ package com.example.timemanagement.customadapters;
 
 import java.util.ArrayList;
 
-import android.R;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.View;

@@ -32,12 +32,9 @@ import android.widget.Toast;
 import com.example.timemanagement.customadapters.CustomListAdapter1;
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
-import com.example.timemanagement.R;
 import com.example.timemanagement.customadapters.*;
 
-import android.app.AlertDialog;
 import android.app.DialogFragment;
-import android.graphics.Typeface;
 
 
 	public class ListActivity extends MainActivity implements DataPassable {
@@ -77,7 +74,7 @@ import android.graphics.Typeface;
 	        width = wm.getDefaultDisplay().getWidth();
 			
 			ListView l = (ListView)findViewById(R.id.l_view);
-			l.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, (height-600)));
+			l.setLayoutParams(new LayoutParams(android.view.ViewGroup.LayoutParams.FILL_PARENT, (height-600)));
 
 			cal = Calendar.getInstance();
 
@@ -157,7 +154,8 @@ import android.graphics.Typeface;
 
 	    	next.setOnClickListener(new View.OnClickListener() {
 
-		        public void onClick(View v) {
+		        @Override
+				public void onClick(View v) {
 		        	if(new Date(start).before(currentDate)){
 		        		nextDate();
 		        		iterateBlocks(dateString);
@@ -170,7 +168,8 @@ import android.graphics.Typeface;
 		    prev = (Button) findViewById(R.id.prevDay);		
 		    prev.setOnClickListener(new View.OnClickListener() {
 
-		        public void onClick(View v) {
+		        @Override
+				public void onClick(View v) {
 		        	prevDate();
 		        	iterateBlocks(dateString);	
 		        }
@@ -179,7 +178,8 @@ import android.graphics.Typeface;
 		    Button selectAllButton = (Button) findViewById(R.id.selectAll);	  
 		    selectAllButton.setTypeface(font2);
 	    	selectAllButton.setOnClickListener(new View.OnClickListener() {
-		        public void onClick(View v) {
+		        @Override
+				public void onClick(View v) {
 		        	Log.e("Button","selectAllButton");
 		        	Iterator<Block> it = bList.iterator(); 
 			    	while(it.hasNext())
@@ -199,7 +199,8 @@ import android.graphics.Typeface;
 	    	deselectAllButton.setTypeface(font2);
 	    	deselectAllButton.setOnClickListener(new View.OnClickListener() {
 
-		        public void onClick(View v) {
+		        @Override
+				public void onClick(View v) {
 
 		        	Iterator<Block> it = bList.iterator(); 
 			    	while(it.hasNext())

@@ -47,6 +47,7 @@ public class TimePickFragment extends PickFragment
 	/**
 	 * Updates the timeBlock with the new time and informs the parent activity.
 	 */
+	@Override
 	public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 		
 		 cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH),
