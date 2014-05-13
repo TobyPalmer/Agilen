@@ -541,7 +541,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     	String fileName = "ChronoxExport(" + System.currentTimeMillis() / 1000L + ").json";
     	// Return text
     	String success = "Exporterade data till telefonminne: " + folderName + "/" + fileName + "";
-    	String error = "Misslyckades";
+    	String error = "Exportering misslyckades";
     	String json;
     	// Time constraint?
     	if(start == 0 && stop == 0) {
