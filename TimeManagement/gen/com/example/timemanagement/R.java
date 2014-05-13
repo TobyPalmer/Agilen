@@ -17,6 +17,8 @@ public final class R {
         public static final int editColor=0x7f060008;
         public static final int green=0x7f060000;
         public static final int lightGrey=0x7f060005;
+        /**  Colors 
+         */
         public static final int orange=0x7f060003;
         public static final int red=0x7f060001;
         public static final int title_background=0x7f060006;
@@ -127,6 +129,8 @@ public final class R {
         public static final int addNewOrderNumber=0x7f050017;
         public static final int addOrderButton=0x7f050011;
         public static final int addedOrder=0x7f050012;
+        /**  General 
+         */
         public static final int app_name=0x7f050000;
         public static final int comment=0x7f05000f;
         public static final int comments=0x7f05000c;
@@ -136,6 +140,8 @@ public final class R {
         public static final int fa_arrow_right=0x7f050019;
         public static final int fa_plus=0x7f05001b;
         public static final int menu_backup=0x7f050006;
+        /**  Menu 
+         */
         public static final int menu_checkview=0x7f050001;
         public static final int menu_schedule=0x7f050004;
         public static final int menu_settings=0x7f050005;
@@ -153,6 +159,8 @@ public final class R {
         public static final int taskStop=0x7f05000b;
         public static final int title_activity_backup=0x7f05001f;
         public static final int title_activity_new_order=0x7f050008;
+        /**  Activities 
+         */
         public static final int title_activity_timestamp=0x7f050007;
         public static final int trash=0x7f05000d;
         public static final int userName=0x7f05001c;

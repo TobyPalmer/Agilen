@@ -346,7 +346,7 @@ import android.graphics.Typeface;
 	    				}
 	    				else{
 	    					AlertDialog.Builder noOrderNrDialogBuilder = new AlertDialog.Builder(l_view.getContext());
-	    					noOrderNrDialogBuilder.setMessage("Denna posten saknar order nr!\nVill du redigera detta?");
+	    					noOrderNrDialogBuilder.setMessage("Denna post saknar ordernummer, vill du åtgärda detta?");
 	    					noOrderNrDialogBuilder.setCancelable(true);
 	    					noOrderNrDialogBuilder.setPositiveButton("Ja", 
 	    							new DialogInterface.OnClickListener() {

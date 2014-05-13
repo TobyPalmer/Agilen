@@ -167,70 +167,64 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 	    newFragment.show(getFragmentManager(), "stopPicker");
 	}
 	
-	public void setBlock(Block b){
-
+	public void setBlock(Block b) {
     	timeBlock = b;
-
 	}
 	
-	public void addNewOrderNumber(View view){
+	public void addNewOrderNumber(View view) {
 		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		 builder.setTitle("Ny order");
 		 
 		 LayoutInflater inflater = getLayoutInflater();
 
-		    // Inflate and set the layout for the dialog
-		    // Pass null as the parent view because its going in the dialog layout
-		    builder.setView(inflater.inflate(R.layout.activity_neworderpopup, null));
+		 // Inflate and set the layout for the dialog
+		 // Pass null as the parent view because its going in the dialog layout
+		 builder.setView(inflater.inflate(R.layout.activity_neworderpopup, null));
 		 
-		 builder.setPositiveButton("Lï¿½gg till", new DialogInterface.OnClickListener() {
-	           public void onClick(DialogInterface dialog, int id) {
-	               // User clicked OK button
-	        	
-	        	Dialog d = (Dialog) dialog;
+		 builder.setPositiveButton("Lägg till", new DialogInterface.OnClickListener() {
+			 public void onClick(DialogInterface dialog, int id) {
+				 // User clicked OK button
+	        	 Dialog d = (Dialog) dialog;
 
-	           	EditText orderName = (EditText)d.findViewById(R.id.orderNamePop);
-	        	EditText orderNumber = (EditText)d.findViewById(R.id.orderNumberPop);
-	        	CheckBox orderDirectWork = (CheckBox)d.findViewById(R.id.orderDirectWorkPop);
-	        	String stringOrderName = orderName.getText().toString();
-	        	String stringOrderNumber = orderNumber.getText().toString();
-	        	int integerOrderDirectWork = 0; 
-	        	if(orderDirectWork.isChecked()){
+	        	 EditText orderName = (EditText)d.findViewById(R.id.orderNamePop);
+	        	 EditText orderNumber = (EditText)d.findViewById(R.id.orderNumberPop);
+	        	 CheckBox orderDirectWork = (CheckBox)d.findViewById(R.id.orderDirectWorkPop);
+	        	 String stringOrderName = orderName.getText().toString();
+	        	 String stringOrderNumber = orderNumber.getText().toString();
+	        	 int integerOrderDirectWork = 0; 
+	        	 if(orderDirectWork.isChecked()){
 	        		integerOrderDirectWork = 1;
-	        	}	        	
-	        	
-	        	if(isInteger(stringOrderNumber)){
-	        		Order order = new Order(stringOrderNumber, stringOrderName, integerOrderDirectWork);
-	        		if(!list.contains(order)){
-			        	list.add(order);
+	        	 }	        	
+	        	 if(isInteger(stringOrderNumber)) {
+	        		 Order order = new Order(stringOrderNumber, stringOrderName, integerOrderDirectWork);
+	        		 if(!list.contains(order)){
+	        			 list.add(order);
 			        	
-			        	String message = "Du har lagt till en order!";
-			        	newPopUp("Order tillagd",message);
+	        			 String message = "Du har lagt till en order!";
+	        			 newPopUp("Order tillagd", message);
 			        	
-			            s.setSelection(list.size()-1);
-			            adapter.notifyDataSetChanged();
+	        			 s.setSelection(list.size()-1);
+	        			 adapter.notifyDataSetChanged();
 			        	
-			        	//Save to dB
-			        	MainActivity.db.addOrder(order);
-	        		}
-	        		else{
-	        			newPopUp("Error!","'" + order + "' finns redan!");
-	        		}
-	        	}
-	        	else{
-	        		newPopUp("Error!","'" + stringOrderNumber + "' är inte ett giltigt nummer!");
-	        	}
-	           }
-	       });
+	        			 //Save to dB
+	        			 MainActivity.db.addOrder(order);
+	        		 }
+	        		 else{
+	        			 newPopUp("Error!","'" + order + "' finns redan!");
+	        		 }
+	        	 }
+	        	 else{
+	        		 newPopUp("Error!","'" + stringOrderNumber + "' är inte ett giltigt nummer!");
+	        	 }
+			 }
+		 });
 		 
 		 builder.setNegativeButton("Avbryt", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User cancelled the dialog
 	           }
-	       });
-
+	     });
 		 AlertDialog dialog = builder.create();
-		 
 		 dialog.show(); 
 	 }
 	 
