@@ -57,7 +57,7 @@
         <!-- ListActivity -->
         <activity
             android:name="com.example.timemanagement.ListActivity"
-            android:label="Listöversikt"
+            android:label="@string/title_activity_list"
             android:parentActivityName="com.example.timemanagement.MainActivity" 
             android:windowSoftInputMode="stateHidden" >
             <meta-data

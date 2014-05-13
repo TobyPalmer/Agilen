@@ -12,6 +12,9 @@
     <!-- Activities -->
     <string name="title_activity_timestamp">Tidslogg</string>
     <string name="title_activity_new_order">Editera block</string>
+    <string name="title_activity_list">Avcheckning</string>
+    <string name="title_activity_backup">Backup (import/export)</string>
+    
     <string name="taskDate"></string>
     <string name="taskStart"></string>
     <string name="taskStop"></string>
@@ -39,7 +42,6 @@
     <string name="userName">Användarnamn</string>
     <string name="passWord">Lösenord</string>
     <string name="nextDay">Nästa</string>
-    <string name="title_activity_backup">BackupActivity</string>
     <string name="action_settings">Settings</string>
     <!-- Colors -->
     <color name="orange">#F88621</color>

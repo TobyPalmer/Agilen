@@ -48,7 +48,7 @@ import android.widget.LinearLayout;
 
 public class StatisticsActivity extends MainActivity implements DatePassable 
 {	
-	private TextView total;
+	private TextView total, arrow;
 	private Block startBlock;
 	private Block stopBlock;
 	
@@ -81,6 +81,8 @@ public class StatisticsActivity extends MainActivity implements DatePassable
     	stop = getEndOfToday();   
     	
     	Typeface font2 = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
+    	Typeface font_for_icon = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
+    	
 		
     	dateStartButton = (Button)findViewById(R.id.startDate);
     	dateStartButton.setText(dateAsString(start));
@@ -90,6 +92,8 @@ public class StatisticsActivity extends MainActivity implements DatePassable
     	
     	dateStartButton.setTypeface(font2);
     	dateStopButton.setTypeface(font2);
+    	arrow = (TextView)findViewById(R.id.arrow);
+    	arrow.setTypeface(font_for_icon);
 		
     	
     	
@@ -251,7 +255,7 @@ public class StatisticsActivity extends MainActivity implements DatePassable
 	{
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) 
 		{
-			getActionBar().setDisplayHomeAsUpEnabled(true);
+			getActionBar().setDisplayHomeAsUpEnabled(false);
 		}
 	}
 	
