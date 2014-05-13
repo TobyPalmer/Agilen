@@ -129,7 +129,7 @@ public class SettingActivity extends MainActivity implements OnItemClickListener
 
 		   
 		 
-		 builder.setPositiveButton("Lägg till", new DialogInterface.OnClickListener() {
+		 builder.setPositiveButton("LŠgg till", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User clicked OK button
 	        	Calendar cal = Calendar.getInstance();
