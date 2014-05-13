@@ -15,14 +15,17 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
@@ -214,22 +217,6 @@ import android.graphics.Typeface;
 			    	iterateBlocks(dateString);
 		        }
 		    });
-	    	
-	    	// Button for going to Timestamp with the current date.
-	    	Button goToBtn = (Button) findViewById(R.id.goTo);
-	    	goToBtn.setTypeface(font2);
-	    	goToBtn.setOnClickListener(new View.OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					Log.w("Time Management", "now");
-					Block intentBlock = new Block(start);
-					intentBlock.setStop(stop);
-					Intent i = new Intent(getApplicationContext(), TimestampActivity.class);
-		        	i.putExtra("Block", intentBlock);
-		        	startActivity(i);
-				}
-			});
 		}
 		
 		private void setAllChecks(int value){
@@ -347,7 +334,6 @@ import android.graphics.Typeface;
 	    	l_view.setAdapter(listAdapter);	    	
 	    	l_view.setOnItemClickListener(new OnItemClickListener()
 	    	{
-	    		
 	    		@Override 
 	    		public void onItemClick(AdapterView<?> adapter, View v, final int position, long arg3)
 	    		{
@@ -401,6 +387,22 @@ import android.graphics.Typeface;
 	    			
 	    		}
 	    	});
+	    	l_view.setLongClickable(true);
+	    	l_view.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+				@Override
+				public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+						int pos, long id) {
+					Block block = bList.get(pos);
+					Intent i = new Intent(getApplicationContext(), NewOrderActivity.class);
+		        	
+		        	i.putExtra("Block", block);
+		        	i.putExtra("Caller", "Checkview");
+		        	        	
+		        	startActivity(i);
+					return false;
+				}
+	        }); 
      
 	    	day.setText(dateString);
 	    	s = " Total time: " + hoursDay + "h " + minutesDay + "m";
