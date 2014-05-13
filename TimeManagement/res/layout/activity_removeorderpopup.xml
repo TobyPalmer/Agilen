@@ -21,7 +21,7 @@
     
 			    <Button
 			    android:id="@+id/deleteButton"
-			    android:background="#ff0000"
+			    android:background="@color/red"
 			    android:textColor="#ffffff"
 			    android:layout_height="80sp"
 			    android:layout_weight="1"
