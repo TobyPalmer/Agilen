@@ -12,6 +12,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
@@ -60,6 +61,7 @@ public class BackupActivity extends MainActivity implements DataPassable{
 	        }
 	    });
 		
+
 		
 		// ANNA TESTAR LITE
 		cal = Calendar.getInstance();
@@ -102,6 +104,9 @@ public class BackupActivity extends MainActivity implements DataPassable{
 			}
     		
     	});
+		
+		Typeface font2 = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
+		exportAllAsJSONButton.setTypeface(font2);
 	}
 	
 	private void setExportStartText(long time){
@@ -120,9 +125,21 @@ public class BackupActivity extends MainActivity implements DataPassable{
 	 */
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private void setupActionBar() {
+
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			getActionBar().setDisplayHomeAsUpEnabled(false);
 		}
+
+
+		getActionBar().setDisplayHomeAsUpEnabled(false);
+
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
 	}
 	
 	private void setStartAndStop(Block intentBlock){
