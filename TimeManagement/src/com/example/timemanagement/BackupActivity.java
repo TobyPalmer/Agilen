@@ -2,6 +2,7 @@ package com.example.timemanagement;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
@@ -30,6 +31,9 @@ public class BackupActivity extends MainActivity {
 	        	builder.show();
 	        }
 	    });
+		
+		Typeface font2 = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
+		exportAllAsJSONButton.setTypeface(font2);
 	}
 
 	/**
@@ -37,14 +41,14 @@ public class BackupActivity extends MainActivity {
 	 */
 	private void setupActionBar() {
 
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setDisplayHomeAsUpEnabled(false);
 
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.backup, menu);
+		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
 
