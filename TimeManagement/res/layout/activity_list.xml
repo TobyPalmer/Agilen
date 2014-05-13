@@ -18,7 +18,7 @@
 
             <Button
                 android:id="@+id/prevDay"
-                android:layout_width="80dp"
+                android:layout_width="0dp"
                 android:layout_height="80dp"
                 android:layout_alignParentLeft="true"
                 android:layout_weight="1"
@@ -30,7 +30,7 @@
             <Button
                 android:id="@+id/day"
                 android:background="#0000"
-                android:layout_width="80dp"
+                android:layout_width="0dp"
                 android:layout_height="80dp"
                 android:layout_weight="2"
                 android:gravity="center"
@@ -71,7 +71,6 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
             android:background="#aaa9a9"
             android:gravity="bottom"
             android:orientation="vertical" >
@@ -97,6 +96,18 @@
                 android:layout_weight="2"
                 android:background="@color/orange"
                 android:text="Markera alla"
+                android:textColor="#FFF"
+                android:layout_marginBottom="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:textSize="30sp" />
+            <Button
+                android:id="@+id/goTo"
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:layout_weight="2"
+                android:background="@color/orange"
+                android:text="Ändra rapportering"
                 android:textColor="#FFF"
                 android:layout_marginBottom="30dp"
                 android:layout_marginLeft="30dp"

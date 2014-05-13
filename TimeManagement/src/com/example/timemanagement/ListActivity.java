@@ -146,7 +146,7 @@ import android.graphics.Typeface;
 	    	day.setOnClickListener(new View.OnClickListener() {
 				
 				@Override
-				public void onClick(View v) {
+			public void onClick(View v) {
 					Block temp = new Block(start);
 					temp.setStop(stop);
 				    DialogFragment newFragment = new DatePickFragment(temp);
@@ -214,6 +214,21 @@ import android.graphics.Typeface;
 			    	iterateBlocks(dateString);
 		        }
 		    });
+	    	
+	    	Button goToBtn = (Button) findViewById(R.id.goTo);
+	    	goToBtn.setTypeface(font2);
+	    	goToBtn.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Log.w("Time Management", "now");
+					Block intentBlock = new Block(start);
+					intentBlock.setStop(stop);
+					Intent i = new Intent(getApplicationContext(), TimestampActivity.class);
+		        	i.putExtra("Block", intentBlock);
+		        	startActivity(i);
+				}
+			});
 		}
 		
 		private void setAllChecks(int value){

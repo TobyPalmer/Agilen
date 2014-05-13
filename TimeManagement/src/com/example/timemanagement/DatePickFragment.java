@@ -43,5 +43,4 @@ public class DatePickFragment extends PickFragment
 		 //Update the parent activity with the new date.
 		 parentActivity.update(this, timeBlock);
 	}
-
 }
