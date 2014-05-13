@@ -25,11 +25,17 @@
     <string name="delete">Ta bort</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
-    <string name="newBlock">Skapa tidsblock</string>
+    <string name="newBlock">Manuell rapportering</string>
     <string name="addNewOrderNumber">Ny order</string>
     <string name="orderName">Namn</string>
     <string name="fa_arrow_right">&#xf105;</string>
     <string name="fa_arrow_left">&#xf104;</string>
+    <string name="fa_plus">&#xf067;</string>
+     
+    <color name="green">#57BF23</color>
+    <color name="red">#FB3804</color>
+    <color name="white">#FFFFFF</color>
+    
     <string name="userName">Användarnamn</string>
     <string name="passWord">Lösenord</string>
     <string name="nextDay">Nästa</string>
@@ -37,12 +43,11 @@
     <string name="action_settings">Settings</string>
     <!-- Colors -->
     <color name="orange">#F88621</color>
-    <color name="darkGrey">#323232</color>
+    <color name="darkGrey">#787878</color>
     <color name="lightGrey">#999</color>
+
     <color name="title_background">#0000FF</color>
     <color name="deleteColor">#88FF0000</color>
     <color name="editColor">#88ffffff</color>
     <color name="commentColor">#88888888</color>
-    <color name="green">#57bf23</color> 
-    <color name="red">#fb3804</color>
 </resources>

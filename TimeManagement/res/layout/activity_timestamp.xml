@@ -16,41 +16,40 @@
     	<LinearLayout
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:layout_alignParentTop="true"
-		>
+		android:layout_alignParentTop="true">
 
-	
 		<Button
 			android:id="@+id/prevDay"
 			android:layout_width="0dp"
-			android:layout_height="fill_parent"
+			android:layout_height="80dp"
 			android:layout_weight="1"
 			android:background="@color/orange"
-			android:textColor="#FFF"
-			android:textSize="20sp"
+			android:textColor="@color/white"
+			android:textSize="50sp"
 			android:layout_alignParentLeft="true"
 			android:text="@string/fa_arrow_left"
 			android:onClick="showYesterday"	 
 		/>
 		
-		<TextView
+		<Button
 		    android:id="@+id/day"
-			android:layout_width="0dp"
-			android:layout_height="fill_parent"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
 			android:layout_weight="2"
-			android:textSize="25sp"
+			android:textSize="30sp"
+			android:background="#0000"
 			android:gravity="center"
 			android:text=""
 		/>  
 	                
 		<Button
 			android:id="@+id/nextDay"
-			android:layout_width="0dp"
-			android:layout_height="fill_parent"
+            android:layout_width="80dp"
+            android:layout_height="80dp"	
 			android:layout_weight="1"
 			android:background="@color/orange"
 			android:textColor="#FFF"
-			android:textSize="20sp"
+			android:textSize="50sp"
 			android:layout_alignParentRight="true"			
 			android:text="@string/fa_arrow_right" 
 			android:onClick="showTomorrow"
@@ -68,28 +67,20 @@
             <TableLayout
                 android:id="@+id/TableLayout"
                 android:layout_width="fill_parent"
-   				android:layout_height="fill_parent"
-   				
+   				android:layout_height="fill_parent"	
     		>
             </TableLayout>
             </ScrollView>
             
             </LinearLayout>
-            
-            <!--  <TextView
-                android:id="@+id/timestampText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"/>-->
                  
                  <LinearLayout
                      android:id="@+id/LinearLayout02"
                      android:layout_width="fill_parent"
                      android:layout_height="wrap_content"
                      android:layout_alignParentBottom="true"
-                     android:background="#aaa9a9"
+                     android:background="@color/lightGrey"
                      android:padding="30dp" >
-
 
                      <Button
                          android:id="@+id/startButton"
@@ -98,21 +89,9 @@
                          android:layout_height="80dp"
 	                     android:layout_marginBottom="100dp"
                          android:text="@string/start"
-                         android:textColor="#FFF"
+                         android:textColor="@color/white"
                          android:textSize="30sp" />
-                     
-                    <!--  <Button
-                         android:id="@+id/stopButton"
-                         android:layout_width="0dp"
-                         android:layout_height="80dp"
-                         android:background="@color/orange"
-                         android:textSize="30sp"
-                         android:layout_weight="1"
-                         android:layout_marginLeft="20dp"
-                         android:layout_marginBottom="100dp"
-                         android:textColor="#FFF"
-                         android:onClick="stopTime"
-                         android:text="Stopp" />--> 
+ 
                </LinearLayout>
 
                  <Button
@@ -126,9 +105,8 @@
                      android:layout_marginRight="30dp"
                      android:layout_marginBottom="30dp"
                      android:background="@color/orange"
-                     android:textColor="#FFF"
+                     android:textColor="@color/white"
                      android:textSize="30sp"
-                     android:text="@string/newBlock" 
-                     android:onClick="addNewOrder" />
+                     android:text="@string/newBlock" />
                      
 </RelativeLayout>
