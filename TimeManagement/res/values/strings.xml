@@ -34,6 +34,7 @@
     <string name="fa_arrow_right">&#xf105;</string>
     <string name="fa_arrow_left">&#xf104;</string>
     <string name="fa_plus">&#xf067;</string>
+    <string name="fa_square">&#xf0c8;</string>
      
     <color name="green">#57BF23</color>
     <color name="red">#FB3804</color>
