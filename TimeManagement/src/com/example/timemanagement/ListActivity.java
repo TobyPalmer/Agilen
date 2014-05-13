@@ -215,6 +215,7 @@ import android.graphics.Typeface;
 		        }
 		    });
 	    	
+	    	// Button for going to Timestamp with the current date.
 	    	Button goToBtn = (Button) findViewById(R.id.goTo);
 	    	goToBtn.setTypeface(font2);
 	    	goToBtn.setOnClickListener(new View.OnClickListener() {
