@@ -140,4 +140,10 @@ public class MainActivity extends Activity {
         startActivity(intent);
     }
     
+    public void notificationActivity(){
+    	
+        Intent intent = new Intent(this, NotificationActivity.class);
+        startActivity(intent);
+    }
+    
 }

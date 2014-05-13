@@ -12,8 +12,48 @@
     <TimePicker
         android:id="@+id/notificationTime"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"  />
-    
-    
+        android:layout_height="wrap_content" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <RadioButton
+            android:id="@+id/noRepeat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Upprepa inte"
+            android:onClick="onRadioButtonClicked" />        
+        
+        <RadioButton
+            android:id="@+id/everyDay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Varje dag"
+            android:onClick="onRadioButtonClicked" />
+
+        <RadioButton
+            android:id="@+id/everyWeek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Varje vecka" 
+            android:onClick="onRadioButtonClicked"/>
+
+        <RadioButton
+            android:id="@+id/everyMonth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Varje månad"
+            android:onClick="onRadioButtonClicked" />
+    </RadioGroup>
+
+    <CheckBox
+        android:id="@+id/spareTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Vill kunna få notifikation på fritiden" />
 
 </LinearLayout>
