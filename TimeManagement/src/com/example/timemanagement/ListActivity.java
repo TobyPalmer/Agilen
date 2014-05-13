@@ -387,7 +387,7 @@ import android.graphics.Typeface;
 	    	});
      
 	    	day.setText(dateString);
-	    	s = " Total time: " + hoursDay + "h " + minutesDay + "m";
+	    	s = " Sammanlagd tid: " + hoursDay + "h " + minutesDay + "m";
 	    	total.setText(s);
 		}
 		

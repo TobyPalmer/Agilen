@@ -136,7 +136,7 @@ public class HandleOrdersActivity extends MainActivity implements OnItemClickLis
 		for(int i = 0; i<orderList.length; i++){
 			if(id==i){
 				if(clicked[i]==false){
-					v.setBackgroundColor(Color.RED);
+					v.setBackgroundColor(getResources().getColor(R.color.red));
 					clicked[i]=true;
 				}
 				else{

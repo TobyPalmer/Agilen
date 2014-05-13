@@ -78,13 +78,18 @@ public class StatisticsActivity extends MainActivity implements DatePassable
     	
 		start = getStartOfToday();
 		
-    	stop = getEndOfToday();    	
+    	stop = getEndOfToday();   
+    	
+    	Typeface font2 = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
 		
     	dateStartButton = (Button)findViewById(R.id.startDate);
     	dateStartButton.setText(dateAsString(start));
     	
     	dateStopButton = (Button)findViewById(R.id.stopDate);
     	dateStopButton.setText(dateAsString(stop));
+    	
+    	dateStartButton.setTypeface(font2);
+    	dateStopButton.setTypeface(font2);
 		
     	
     	
@@ -114,6 +119,12 @@ public class StatisticsActivity extends MainActivity implements DatePassable
 		direct.setText(d);
 		indirect.setText(i);
 		flex.setText(f);
+		
+		Typeface font2 = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
+		total.setTypeface(font2);
+		direct.setTypeface(font2);
+		indirect.setTypeface(font2);
+		flex.setTypeface(font2);
 	}
 	
 	
@@ -127,7 +138,7 @@ public class StatisticsActivity extends MainActivity implements DatePassable
 			  dT = new timeHM(directTime);
 			  iT = new timeHM(indirectTime);
 			  int items[] = { dT.getHours(), iT.getHours() };
-			  int colors[] = { Color.BLUE, Color.GREEN };
+			  int colors[] = { getResources().getColor(R.color.orange), getResources().getColor(R.color.green) };
 			  
 			  String itemslabel[] = { " Direkttid", " Indirekttid" };
 			  for (int i = 0; i < items.length; i++) {
@@ -168,7 +179,7 @@ public class StatisticsActivity extends MainActivity implements DatePassable
 		  dT = new timeHM(directTime);
 		  iT = new timeHM(indirectTime);
 		  int items[] = { dT.getHours(), iT.getHours() };
-		  int colors[] = { Color.BLUE, Color.GREEN };		  
+		  int colors[] = { getResources().getColor(R.color.orange), getResources().getColor(R.color.green) };	  
 		  String itemslabel[] = { " Direkttid", " Indirekttid" };
 		  for (int i = 0; i < items.length; i++) {
 			   itemCount = items[i];
