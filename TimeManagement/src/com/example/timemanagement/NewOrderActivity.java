@@ -197,24 +197,41 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 	        	 }	        	
 	        	 if(isInteger(stringOrderNumber)) {
 	        		 Order order = new Order(stringOrderNumber, stringOrderName, integerOrderDirectWork);
-	        		 if(!list.contains(order)){
-	        			 list.add(order);
-			        	
-	        			 String message = "Du har lagt till en order!";
-	        			 newPopUp("Order tillagd", message);
-			        	
-	        			 s.setSelection(list.size()-1);
-	        			 adapter.notifyDataSetChanged();
-			        	
-	        			 //Save to dB
-	        			 MainActivity.db.addOrder(order);
+	        		 if(!list.contains(order)) {
+	        			 // Is this order number taken?
+	        			 Boolean exists = false;
+		        		 // Get all orders
+	        			 List<Order> orders = db.getAllOrders();
+		        		 // ...and check all orders
+	        			 for(int i = 0; i < orders.size(); i++) {
+	        				 Log.w("timemanagement", "orders.get(i).getOrderNumber() = " + orders.get(i).getOrderNumber());
+        					 Log.w("timemanagement", "stringOrderNumber = " + stringOrderNumber);
+	        				 if(orders.get(i).getOrderNumber().equals(stringOrderNumber)) {
+	        					 exists = true;	// This order number already exists
+	        				 }
+	        			 }
+	        			 if(exists == false) {
+	        				 // Add order to list
+		        			 list.add(order);
+		        			 // Notify user
+		        			 String message = "Order tillagd";
+		        			 newPopUp("Ny order", message);
+		        			 // Update list
+		        			 s.setSelection(list.size()-1);
+		        			 adapter.notifyDataSetChanged();
+		        			 //Save to db
+		        			 MainActivity.db.addOrder(order);
+	        			 }
+	        			 else {
+	        				 newPopUp("Error", "Detta ordernummer är redan registerat.");
+	        			 }
 	        		 }
 	        		 else{
-	        			 newPopUp("Error!","'" + order + "' finns redan!");
+	        			 newPopUp("Error", "Detta ordernummer är redan registerat.");
 	        		 }
 	        	 }
 	        	 else{
-	        		 newPopUp("Error!","'" + stringOrderNumber + "' är inte ett giltigt nummer!");
+	        		 newPopUp("Error","'" + stringOrderNumber + "' är inte ett giltigt ordernummer.");
 	        	 }
 			 }
 		 });
