@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import com.example.timemanagement.model.Block;
+import com.example.timemanagement.statistics.DatePassable;
+import com.example.timemanagement.statistics.DatePickerFragment;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -25,20 +27,43 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class BackupActivity extends MainActivity implements DataPassable{
+public class BackupActivity extends MainActivity implements DatePassable{
 	
 	// ANNA TESTAR LITE
+	private TextView arrow;
 	private Button exportStart, exportStop;
 	private long start, stop, today;
 	private Calendar cal;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_backup);
-		// Show the Up button in the action bar.
 		setupActionBar();
-
+		
+		/***** SÄTTA DET HÄR I FUNKTION KANSKE ******/
+		cal = Calendar.getInstance();
+		cal.set(Calendar.getInstance().get(Calendar.YEAR), 
+					Calendar.getInstance().get(Calendar.MONTH)-1, 
+						Calendar.getInstance().get(Calendar.DAY_OF_MONTH), 0, 0);
+		start = cal.getTimeInMillis(); 
+		
+		cal = Calendar.getInstance();
+		cal.set(Calendar.getInstance().get(Calendar.YEAR), 
+					Calendar.getInstance().get(Calendar.MONTH), 
+						Calendar.getInstance().get(Calendar.DAY_OF_MONTH), 23, 59);
+		stop = cal.getTimeInMillis(); 
+		
+		arrow = (TextView)findViewById(R.id.arrow);
+		
+		exportStart = (Button)findViewById(R.id.dateStartButton);
+		exportStart.setText(dateAsString(start));
+		
+		exportStop = (Button)findViewById(R.id.dateStopButton);
+		exportStop.setText(dateAsString(stop));
+		
+		// EXPORTERAR BACKUP DATA SOM JSON //
 		Button exportAllAsJSONButton = (Button)findViewById(R.id.exportAllAsJSONButton);
 		exportAllAsJSONButton.setOnClickListener(new View.OnClickListener() {
 	        public void onClick(View v) {
@@ -48,135 +73,141 @@ public class BackupActivity extends MainActivity implements DataPassable{
 	        	builder.setTitle("Exportera som JSON");
 	        	builder.setMessage(message);
 	        	
+	        	// User clicked OK button
+	   		 	builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+	   	           public void onClick(DialogInterface dialog, int id) {	   	        	   
+	   	           }
+	   		 	});
+	        
+	   		 	builder.show();
+	        }
+	    });
+	
+		// EXPORTERAR TIDSRAPPORT MELLAN SPECIFIKA DATUM SOM CSV //
+		Button exportTimeReportCSVButton = (Button)findViewById(R.id.exportTimeReportCSVButton);
+		exportTimeReportCSVButton.setOnClickListener(new View.OnClickListener() {
+	        public void onClick(View v) {
+	        	String message = MainActivity.db.exportCSV(start, stop);
+	        	AlertDialog.Builder builder = new AlertDialog.Builder(BackupActivity.this);
+	        	builder.setCancelable(true);
+	        	builder.setTitle("Exportera som CSV");
+	        	builder.setMessage(message);
 	        	
 	        	// User clicked OK button
-	   		 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-	   	           public void onClick(DialogInterface dialog, int id) {
-	   	        	   
+	   		 	builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+	   	           public void onClick(DialogInterface dialog, int id) {	   	        	   
 	   	           }
-	   	     });
-	        	
-	        	
-	        	builder.show();
+	   		 	});
+	        
+	   		 	builder.show();
 	        }
 	    });
 		
-
-		
-		// ANNA TESTAR LITE
-		cal = Calendar.getInstance();
-		today = cal.getTimeInMillis();
-		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
-				cal.get(Calendar.DAY_OF_MONTH), 23, 59);
-		stop = cal.getTimeInMillis();
-
-		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
-				cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
-		start = cal.getTimeInMillis();	
-		
-		setExportStartText(start);
-		setExportStopText(start);
-		
-		exportStart = (Button)findViewById(R.id.exportStart);
-		exportStart.setOnClickListener(new View.OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				Block temp = new Block(start);
-				temp.setStop(stop);
-				
-			    DialogFragment newFragment = new DatePickFragment(temp);
-			    newFragment.show(getFragmentManager(), "datePicker");
-			}
-    		
-    	});
-		
-		exportStop = (Button)findViewById(R.id.exportStop);
-		exportStop.setOnClickListener(new View.OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				Block temp = new Block(start);
-				temp.setStop(stop);
-				
-			    DialogFragment newFragment = new DatePickFragment(temp);
-			    newFragment.show(getFragmentManager(), "datePicker");
-			}
-    		
-    	});
-		
 		Typeface font2 = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
+		Typeface font_for_icon = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
+		
+		arrow.setTypeface(font_for_icon);
+		exportStart.setTypeface(font2);
+		exportStop.setTypeface(font2);
 		exportAllAsJSONButton.setTypeface(font2);
-	}
-	
-	private void setExportStartText(long time){
-		TextView exportStart = (TextView) findViewById(R.id.exportStart);
-		Log.d("Start", "Start");
-		exportStart.setText(new SimpleDateFormat("yyyy-MM-dd").format(time));
-	}
-	private void setExportStopText(long time){
-		TextView exportStop = (TextView) findViewById(R.id.exportStop);
-		Log.e("Stop", "Stop");
-		exportStop.setText(new SimpleDateFormat("yyyy-MM-dd").format(time));
+		exportTimeReportCSVButton.setTypeface(font2);
+			
 	}
 
+	
 	/**
 	 * Set up the {@link android.app.ActionBar}.
 	 */
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	private void setupActionBar() {
-
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+	private void setupActionBar() 
+	{
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) 
+		{
 			getActionBar().setDisplayHomeAsUpEnabled(false);
 		}
-
-
-		getActionBar().setDisplayHomeAsUpEnabled(false);
-
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
 	}
 	
-	private void setStartAndStop(Block intentBlock){
+	public String dateAsString(long time)
+	{
+		return new SimpleDateFormat("yyyy-MM-dd").format(time);
+	}
+	
+	public void changeStartDate(View view){
+	    DialogFragment newFragment = new DatePickerFragment(start, 0);
+	    newFragment.show(getFragmentManager(), "datePicker");	    
+	}
+	public void changeStopDate(View view){
+	    DialogFragment newFragment = new DatePickerFragment(stop, 1);
+	    newFragment.show(getFragmentManager(), "datePicker");	    
+	}
+	
+	public long getCurrentMillis(){
+		return Calendar.getInstance().getTimeInMillis();
+	}
+	
+	public int compareDates(long b1, long b2){
+		Calendar d1 = Calendar.getInstance();
+		d1.setTimeInMillis(b1);
+		Calendar d2 = Calendar.getInstance();
+		d2.setTimeInMillis(b2);
 		
-		cal.setTimeInMillis(intentBlock.getStart());
-		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
-				cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
-		start = cal.getTimeInMillis();
+		return d1.compareTo(d2);
+	}
+	
+	public int compareToFutureDate(long b1){
+		Calendar currentDate = Calendar.getInstance();
+		Calendar d1 = Calendar.getInstance();
+		d1.setTimeInMillis(b1);
 		
-		cal.setTimeInMillis(intentBlock.getStop());
-		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 
-				cal.get(Calendar.DAY_OF_MONTH), 23, 59, 0);
-		stop = cal.getTimeInMillis();
-}
+		return d1.compareTo(currentDate);		
+	}
 
 	@Override
-	public void update(PickFragment p, Object o) {
-		// TODO Auto-generated method stub
-		Block timeBlock = (Block)o;
-		 
-		 if(p instanceof TimePickFragment){
-			 
-			 //Changes the time if the user used invalid values.
-			 if(((TimePickFragment) p).isStart() && (timeBlock.getStart() > timeBlock.getStop())){
-				 timeBlock.setStop(timeBlock.getStart());
-				 timeBlock.setStart(timeBlock.getStop());
-			 }
-			 else if((timeBlock.getStart() > timeBlock.getStop())){
-				 timeBlock.setStart(timeBlock.getStop());
-				 timeBlock.setStop(timeBlock.getStart());
-			 }
-		 }	 
-		 
-		 setExportStartText(timeBlock.getStart());
-		 setExportStopText(timeBlock.getStop());
+	public void update(DatePickerFragment p, long o, int ID) 
+	{		
+		  long changedDate = o;		  
+		  if(ID == 1)
+		  {	
+			  
+			  stop = changedDate;
+			 		  
+			  if((compareDates(stop, start)  >= 0) && compareToFutureDate(stop) < 1)
+			  {				  
+				  exportStop.setText(dateAsString(stop));
+			  }
+			  else
+			  {
+				  if(compareToFutureDate(stop) < 1)
+				  {
+					  stop = start;					  
+				  }
+				  else
+				  {					  
+					  stop = getCurrentMillis();					  
+				  }
+				  exportStop.setText(dateAsString(stop));
+			  }			 
+		  }			  
+		  else
+		  {
+			  start = changedDate;			  
+			  		  
+			  if((compareDates(start, stop) < 1) && compareToFutureDate(start) < 1)
+			  {				  
+				  exportStart.setText(dateAsString(start));
+			  }
+			  else
+			  {
+				  if(compareToFutureDate(start) < 1)
+				  {
+					  start = stop;					  
+				  }
+				  else
+				  {					  
+					  start = getCurrentMillis();					  
+				  }
+				  exportStart.setText(dateAsString(start));
+			  }
+		  }	
 	}
-			
-		
-
 }
