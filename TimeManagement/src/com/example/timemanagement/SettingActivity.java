@@ -39,10 +39,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 public class SettingActivity extends MainActivity implements OnItemClickListener{
-	
 
-	
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,8 +50,7 @@ public class SettingActivity extends MainActivity implements OnItemClickListener
 		
 		
         ListView listView = (ListView) findViewById(R.id.listView1);
-        listView.setOnItemClickListener(this);
-        
+        listView.setOnItemClickListener(this); 
         
         //Add strings in the array to get a clickable listItem
         //If you want tomake something happen when you click the new Item
@@ -62,8 +58,7 @@ public class SettingActivity extends MainActivity implements OnItemClickListener
         //in the onItemClick function in this class
         String array[] = {"Hantera notifikationer", "Hantera ordrar"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1,  array);
-        listView.setAdapter(adapter);
-		
+        listView.setAdapter(adapter);	
 	}
 	
 	/**
