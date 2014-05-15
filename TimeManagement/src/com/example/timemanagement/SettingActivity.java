@@ -39,10 +39,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 public class SettingActivity extends MainActivity implements OnItemClickListener{
-	
 
-	
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,17 +50,15 @@ public class SettingActivity extends MainActivity implements OnItemClickListener
 		
 		
         ListView listView = (ListView) findViewById(R.id.listView1);
-        listView.setOnItemClickListener(this);
-        
+        listView.setOnItemClickListener(this); 
         
         //Add strings in the array to get a clickable listItem
         //If you want tomake something happen when you click the new Item
         //Make a new funktion with what should happen and make a call to it
         //in the onItemClick function in this class
-        String array[] = {"Hantera notifikationer", "Hantera ordrar"};
+        String array[] = {"Hantera notifikationer", "Hantera ordernummer"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1,  array);
-        listView.setAdapter(adapter);
-		
+        listView.setAdapter(adapter);	
 	}
 	
 	/**
@@ -76,33 +71,6 @@ public class SettingActivity extends MainActivity implements OnItemClickListener
 		}
 	}
 	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			// This ID represents the Home or Up button. In the case of this
-			// activity, the Up button is shown. Use NavUtils to allow users
-			// to navigate up one level in the application structure. For
-			// more details, see the Navigation pattern on Android Design:
-			//
-			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-			//
-			NavUtils.navigateUpFromSameTask(this);
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-	
-
-
-
 	@Override
 	public void onItemClick(AdapterView<?> l, View v, int pos, long id) {
 		// TODO Auto-generated method stub
