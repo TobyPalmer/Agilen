@@ -16,15 +16,18 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
@@ -142,22 +145,21 @@ import com.example.timemanagement.model.Order;
 	    	day.setOnClickListener(new View.OnClickListener() {
 				
 				@Override
-				public void onClick(View v) {
+			public void onClick(View v) {
 					Block temp = new Block(start);
 					temp.setStop(stop);
 				    DialogFragment newFragment = new DatePickFragment(temp);
 				    newFragment.show(getFragmentManager(), "datePicker");
 				}
 			});
-	   	
-
+	    		   
 	    	next.setOnClickListener(new View.OnClickListener() {
 
 		        public void onClick(View v) {
 		        	if(new Date(start).before(currentDate)){
 		        		nextDate();
 		        		iterateBlocks(dateString);
-		        	}
+		        	};
 		        }
 	    	});
 		        		
@@ -334,7 +336,6 @@ import com.example.timemanagement.model.Order;
 	    	l_view.setAdapter(listAdapter);	    	
 	    	l_view.setOnItemClickListener(new OnItemClickListener()
 	    	{
-	    		
 	    		@Override 
 	    		public void onItemClick(AdapterView<?> adapter, View v, final int position, long arg3)
 	    		{
@@ -349,7 +350,7 @@ import com.example.timemanagement.model.Order;
 	    				}
 	    				else{
 	    					AlertDialog.Builder noOrderNrDialogBuilder = new AlertDialog.Builder(l_view.getContext());
-	    					noOrderNrDialogBuilder.setMessage("Denna post saknar ordernummer, vill du �tg�rda detta?");
+	    					noOrderNrDialogBuilder.setMessage("Denna post saknar ordernummer, vill du åtgärda detta?");
 	    					noOrderNrDialogBuilder.setCancelable(true);
 	    					noOrderNrDialogBuilder.setPositiveButton("Ja", 
 	    							new DialogInterface.OnClickListener() {
@@ -380,14 +381,32 @@ import com.example.timemanagement.model.Order;
 	    				
 	    			}
 	    			catch (Exception e){
-	    				Log.e("N�got blev fel! At position:",Integer.toString(position));
+	    				Log.e("Något blev fel! At position:",Integer.toString(position));
 	    			}
-	    			Log.e("V�rde i listan: ",value);
+	    			Log.e("Värde i listan: ",value);
 	    			Log.e("Position i listan: ",Integer.toString(position));
 	    			iterateBlocks(getDateString());
 	    			
 	    		}
 	    	});
+	    	
+	    	// Send the user to NewOrderActivity on longclick.
+	    	l_view.setLongClickable(true);
+	    	l_view.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+				@Override
+				public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+						int pos, long id) {
+					Block block = bList.get(pos);
+					Intent i = new Intent(getApplicationContext(), NewOrderActivity.class);
+		        	
+		        	i.putExtra("Block", block);
+		        	i.putExtra("Caller", "Checkview");
+		        	        	
+		        	startActivity(i);
+					return false;
+				}
+	        }); 
      
 	    	day.setText(dateString);
 	    	s = " Sammanlagd tid: " + hoursDay + "h " + minutesDay + "m";
