@@ -62,10 +62,10 @@ public class Order {
 	public String toString() {
 		String dWork;
 		if(this.directWork == 1){
-			dWork = "Direkt tid";
+			dWork = "Direkttid";
 		}
 		else{
-			dWork = "Intern tid";
+			dWork = "Interntid";
 		}
 		//Vill inte visa Direkt-/Indirekttid i Spinner
 		return orderNumber + " - " + orderName;// + " - " + dWork;
