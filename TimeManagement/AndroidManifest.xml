@@ -100,7 +100,7 @@
          <!-- HandleOrdersActivity -->
         <activity
             android:name="com.example.timemanagement.HandleOrdersActivity"
-            android:label="Hantera Ordernummer"
+            android:label="Hantera Ordernummer  öfådöaåwöeåaöwä"
             android:parentActivityName="com.example.timemanagement.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

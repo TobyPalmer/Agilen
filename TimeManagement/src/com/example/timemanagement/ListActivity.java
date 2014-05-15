@@ -24,6 +24,9 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnLongClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Animation.AnimationListener;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -160,7 +163,6 @@ import android.app.DialogFragment;
 		        public void onClick(View v) {
 		        	if(new Date(start).before(currentDate)){
 		        		nextDate();
-		        		iterateBlocks(dateString);
 		        	};
 		        }
 	    	});
@@ -172,7 +174,6 @@ import android.app.DialogFragment;
 
 		        public void onClick(View v) {
 		        	prevDate();
-		        	iterateBlocks(dateString);	
 		        }
 		    });
 		    
@@ -253,24 +254,54 @@ import android.app.DialogFragment;
 		 * Sets the day to one day in the future.
 		 * Also resets some variables to the new day.
 		 */
-		public void nextDate(){
-			start += 86400000;
-			stop += 86400000;
-			
-			// resets
-			dateString = (dateFormat.format(start));
+		public void nextDate() {
+			// Define UI-element to be animated
+			final View view = (View)findViewById(R.id.checkList);
+			// Define animation
+			final Animation anim = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+			// Define animation listener
+			AnimationListener animListener = new AnimationListener() {
+				// onAnimationEnd callback
+				public void onAnimationStart(Animation animation) {}
+			    public void onAnimationRepeat(Animation animation) {}
+			    public void onAnimationEnd(Animation animation) {
+					start += 86400000;
+					stop += 86400000;
+					dateString = (dateFormat.format(start));
+	        		iterateBlocks(dateString);
+			    }
+			};
+			// Set animation listener
+			anim.setAnimationListener(animListener);
+			// Start animation
+			view.startAnimation(anim);
 		}
 	
 		/**
 		 * Sets the day to one day in the past.
 		 * Also resets some variables to the new day.
 		 */
-		public void prevDate(){
-			start -= 86400000;
-			stop -= 86400000;
-			
-			// resets
-			dateString = (dateFormat.format(start));
+		public void prevDate() {
+			// Define UI-element to be animated
+			final View view = (View)findViewById(R.id.checkList);
+			// Define animation
+			final Animation anim = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+			// Define animation listener
+			AnimationListener animListener = new AnimationListener() {
+				// onAnimationEnd callback
+				public void onAnimationStart(Animation animation) {}
+			    public void onAnimationRepeat(Animation animation) {}
+			    public void onAnimationEnd(Animation animation) {
+					start -= 86400000;
+					stop -= 86400000;
+					dateString = (dateFormat.format(start));
+	        		iterateBlocks(dateString);
+			    }
+			};
+			// Set animation listener
+			anim.setAnimationListener(animListener);
+			// Start animation
+			view.startAnimation(anim);
 		}
 		
 		public void iterateBlocks(String dateString)
@@ -359,8 +390,7 @@ import android.app.DialogFragment;
 	    				}
 	    				else{
 	    					AlertDialog.Builder noOrderNrDialogBuilder = new AlertDialog.Builder(l_view.getContext());
-	    					noOrderNrDialogBuilder.setMessage("Denna post saknar ordernummer, vill du åtgärda detta?");
-
+	    					noOrderNrDialogBuilder.setMessage("Denna post saknar ordernummer, vill du Âtg‰rda detta?");
 	    					noOrderNrDialogBuilder.setCancelable(true);
 	    					noOrderNrDialogBuilder.setPositiveButton("Ja", 
 	    							new DialogInterface.OnClickListener() {
@@ -393,7 +423,7 @@ import android.app.DialogFragment;
 	    			catch (Exception e){
 	    				Log.e("NÂgot blev fel! At position:",Integer.toString(position));
 	    			}
-	    			Log.e("V√§rde i listan: ",value);
+	    			Log.e("V‰rde i listan: ",value);
 	    			Log.e("Position i listan: ",Integer.toString(position));
 	    			iterateBlocks(getDateString());
 	    			
