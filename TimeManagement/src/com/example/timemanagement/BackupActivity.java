@@ -29,7 +29,6 @@ import java.util.Date;
 
 public class BackupActivity extends MainActivity implements DatePassable{
 	
-	// ANNA TESTAR LITE
 	private TextView arrow;
 	private Button exportStart, exportStop;
 	private long start, stop, today;
