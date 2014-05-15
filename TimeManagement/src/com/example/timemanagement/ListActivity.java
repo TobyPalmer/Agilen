@@ -163,7 +163,6 @@ import android.app.DialogFragment;
 		        public void onClick(View v) {
 		        	if(new Date(start).before(currentDate)){
 		        		nextDate();
-		        		iterateBlocks(dateString);
 		        	};
 		        }
 	    	});
@@ -175,7 +174,6 @@ import android.app.DialogFragment;
 
 		        public void onClick(View v) {
 		        	prevDate();
-		        	iterateBlocks(dateString);	
 		        }
 		    });
 		    
@@ -270,6 +268,7 @@ import android.app.DialogFragment;
 					start += 86400000;
 					stop += 86400000;
 					dateString = (dateFormat.format(start));
+	        		iterateBlocks(dateString);
 			    }
 			};
 			// Set animation listener
@@ -296,6 +295,7 @@ import android.app.DialogFragment;
 					start -= 86400000;
 					stop -= 86400000;
 					dateString = (dateFormat.format(start));
+	        		iterateBlocks(dateString);
 			    }
 			};
 			// Set animation listener
