@@ -127,7 +127,7 @@ public class NotificationActivity extends MainActivity implements OnItemClickLis
 		Intent mServiceIntent = new Intent(NotificationActivity.this, NotificationHandler.class);
 		
 		mServiceIntent.putExtra("title", "Chronox");
-		mServiceIntent.putExtra("text", "Glöm inte att tidsrapportera!");
+		mServiceIntent.putExtra("text", "GlÃ¶m inte att tidsrapportera!");
 		
 		PendingIntent pendingIntent = PendingIntent.getService(NotificationActivity.this, notification.getID(), mServiceIntent, 0);
 		
@@ -150,7 +150,7 @@ public class NotificationActivity extends MainActivity implements OnItemClickLis
 
 		   
 		 
-		 builder.setPositiveButton("Lägg till", new DialogInterface.OnClickListener() {
+		 builder.setPositiveButton("LÃ¤gg till", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User clicked OK button
 	        	Calendar cal = Calendar.getInstance();
@@ -176,7 +176,7 @@ public class NotificationActivity extends MainActivity implements OnItemClickLis
 	           	t.append(datum + "\n");
 	           	*/
 	     
-	           	newPopUp("Notifikation tillagd på följande tid:", datum);
+	           	newPopUp("Notifikation tillagd pÃ¥ fÃ¶ljande tid:", datum);
 	           	
 	           	printList();
 	           	
@@ -268,7 +268,7 @@ public class NotificationActivity extends MainActivity implements OnItemClickLis
 		
 		if(nothingClicked()){
 			
-			newPopUp("Fel","Du måste markera de notifikationer du vill ta bort.");
+			newPopUp("Fel","Du mÃ¥ste markera de notifikationer du vill ta bort.");
 			
 			return;
 		}
