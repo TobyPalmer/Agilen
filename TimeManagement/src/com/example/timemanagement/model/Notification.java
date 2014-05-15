@@ -1,6 +1,7 @@
 package com.example.timemanagement.model;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import android.text.format.DateFormat;
@@ -76,21 +77,46 @@ public class Notification {
 	
 	public String toString(){
 		Date date = new Date(time);
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd - HH:mm");
+		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
 		String dateFormatted = formatter.format(date);
-		
+		SimpleDateFormat form = new SimpleDateFormat("dd");
+		String datef = form.format(date);
+		Calendar c = Calendar.getInstance();
+		c.setTimeInMillis(time);
+		int d = c.DAY_OF_WEEK;
 		String s;
 		
 		if(this.everyDay)
 			s = "Varje dag";
 		else if(this.everyWeek)
-			s = "Varje vecka";
+			s = getWeekDay(d) + "ar varje vecka";
 		else if(this.everyMonth)
-			s = "Varje månad";
+			s = "Den " + datef + ":e varje månad";
 		else
 			s="Repeteras inte";
 		
-		return dateFormatted + " \t " + s;
+		return s + " - " + dateFormatted;
+	}
+	
+	public String getWeekDay(int i){
+		if(i==1)
+			return "Söndag";
+		if(i==2)
+			return "Måndag";
+		if(i==3)
+			return "Tisdag";
+		if(i==4)
+			return "Onsdag";
+		if(i==5)
+			return "Torsdag";
+		if(i==6)
+			return "Fredag";
+		if(i==7)
+			return "Lördag";
+
+		return "nåt gick fel";
+		
+		
 	}
 
 }

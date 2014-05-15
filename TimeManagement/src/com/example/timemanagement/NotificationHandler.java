@@ -41,7 +41,6 @@ public class NotificationHandler extends IntentService
 		
 		if(bool){
 			
-			Log.w("bug", "motherfucker");
 			// TODO Auto-generated method stub
 			NotificationCompat.Builder mBuilder =  new NotificationCompat.Builder(this);
 			mBuilder.setSmallIcon(R.drawable.ic_launcher);
