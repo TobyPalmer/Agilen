@@ -23,7 +23,6 @@ import android.os.Message;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -36,6 +35,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.swipetodismiss.SwipeDismissListViewTouchListener;
+import com.example.swipetodismiss.*;
+import com.example.timemanagement.customadapters.CustomListAdapter2;
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
 
@@ -45,6 +46,7 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 	private ListView listView;
 	private Button next, prev, startB, create;
 	private Button day;
+	private CustomListAdapter2 mAdapter;
 	
 	// Calendar that is set to the chosen day.
 	private Calendar cal;
@@ -53,11 +55,6 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 	Block b;
 	
 	boolean started = false;
-	boolean stopped = true;
-	
-	// Contains strings representing all blocks
-	ArrayAdapter<String> mAdapter;
-	
 
 	// longs that represents the start- and endtime of the day
 	private long start, stop, today;
@@ -72,7 +69,7 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 		
 		// Show the Up button in the action bar
 		setupActionBar();
-
+	
 		
 		// Sets the start and stop to that of the current day.
 		cal = Calendar.getInstance();
@@ -105,9 +102,7 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 			}
 		}
 	
-		// update view
-		setDayText(start);
-		printBlocks();
+
 		
 		//adding arrows to buttons
     	next = (Button)findViewById(R.id.nextDay);
@@ -128,6 +123,10 @@ public class TimestampActivity extends MainActivity implements DataPassable {
     	
         startB = (Button)findViewById(R.id.startButton);
     	startB.setTypeface(font2);
+    	
+		// update view
+		setDayText(start);
+		printBlocks();
     	
         create = (Button)findViewById(R.id.changeOrderButton);
     	create.setTypeface(font2);
@@ -175,31 +174,19 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 		startB.setBackgroundColor(Color.parseColor("#57bf23"));
 	    startB.setOnClickListener(new View.OnClickListener() {
 	        public void onClick(View v) {
-	        	if(stopped){
-
-
+	        	if(!started){
 	        		startB.setBackgroundColor(getResources().getColor(R.color.red));
 	        		startB.setText(R.string.stop);
-	        		startTime(v);	
+	        		startTime();	
 	        	}
 	        	else{
 	        		startB.setBackgroundColor(getResources().getColor(R.color.green));
 	        		startB.setText(R.string.start);
-
-	        		stopTime(v);  	
+	        		stopTime();  	
 	        	}
 	        	
 	        }
 	    });
-	    startB.setOnTouchListener(new View.OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-		});
-
 	    setStartButton();
 	}
 	
@@ -243,49 +230,42 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 		}
 	}
 
-	public void startTime(View view){
-		//String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTimeInMillis());
-		//String startTime = mydate.substring(mydate.length()-8, mydate.length()-3);
-		
-		if(stopped){
-			
+	public void startTime(){
+			started = true;
 			long startTime = System.currentTimeMillis();
+
 			
-			b = new Block(startTime);
-			
+			b = new Block(1,startTime);
+			String s = b.toString();
+			Log.v("orderID", s);
 			MainActivity.db.addBlock(b);
 			
-			stopped = false;
-			started = true;
-			
 			printBlocks();
-		}
 	}
 	
 
 	
-	public void stopTime(View view){
-		//String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTimeInMillis());
-		//String stopTime = mydate.substring(mydate.length()-8, mydate.length()-3);
-		
-		if(started){
-		
+	public void stopTime(){
+			started = false;
 			long stopTime = System.currentTimeMillis();		
 			
 			b.setStop(stopTime);
 			
 			MainActivity.db.putBlock(b);			
 			
-			started = false;
-			stopped = true;
-			
 			printBlocks();
-		}
 	}
 	
 	public void printBlocks(){
 		 
 		final List<Block> blocksOfToday = MainActivity.db.getBlocksBetweenDate(start, stop);
+		
+		// Running blocks should only show on today
+		for(Block temp : blocksOfToday){
+			if(!temp.isStopped() &! startB.isEnabled()){
+				blocksOfToday.remove(temp);
+			}
+		}
 		
 		// Fetch blocks from database
 		//blocksOfToday = MainActivity.db.getAllBlocks();
@@ -305,13 +285,12 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 			if(MainActivity.db.getOrder(orderId)==null)
 				s = blocksOfToday.get(i).toStringPublic() + " - " + block.getComment();
 			else
-				s = block.toStringPublic() + " - " + order.getOrderName() + " " + block.getComment();
-//				
+				s = block.toStringPublic() + " - " + order.getOrderName() + " " + block.getComment();		
 			items[i] = s;
         }
         
-        // Define the data structure for the list strings
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, new ArrayList<String>(Arrays.asList(items)));        
+        // Define the data structure for the list strings    
+        mAdapter = new CustomListAdapter2(this,R.layout.listrow2, new ArrayList<String>(Arrays.asList(items)));
         listView.setAdapter(mAdapter);
         
         
@@ -331,12 +310,19 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 
                             public void onClick(ListView listView, int position) {
                             	Block block = blocksOfToday.get(position);
+                            	if(!block.isStopped()){
+                	    			startB.setBackgroundColor(getResources().getColor(R.color.green));
+                	        		startB.setText(R.string.start);
+                	        		started = false;
+                            	}
                             	Log.w("timemanagement", "GUI: Clicked block:" + block.getID());
             		        	
             		        	Intent i = new Intent(getApplicationContext(), NewOrderActivity.class);
             		        	
             		        	i.putExtra("Block", block);
             		        	i.putExtra("Caller", "Timestamp");
+            	    			
+            	    			printBlocks();
             		        	        	
             		        	startActivity(i);
                             	
@@ -383,8 +369,8 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 		    	start += 86400000;
 				stop += 86400000;
 		    	setDayText(start);
-				printBlocks();
-				setStartButton();
+		    	setStartButton();
+		    	printBlocks();
 		    }
 		};
 		// Set animation listener
@@ -412,8 +398,8 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 		    	start -= 86400000;
 				stop -= 86400000;
 		    	setDayText(start);
-				printBlocks();
 				setStartButton();
+				printBlocks();
 		    }
 		};
 		// Set animation listener
@@ -433,8 +419,14 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 		
 		if ((dateToday.compareTo(dateStart) == 1) && (dateToday.compareTo(dateStop) == -1)){
 			startB.setEnabled(true);
-			startB.setBackgroundColor(getResources().getColor(R.color.green));
-			startB.setTextColor(Color.WHITE);
+			if(started){
+				startB.setBackgroundColor(getResources().getColor(R.color.red));
+				startB.setTextColor(Color.WHITE);
+			} else{
+				startB.setBackgroundColor(getResources().getColor(R.color.green));
+				startB.setTextColor(Color.WHITE);
+			}
+			
 		} else{
 			startB.setEnabled(false);
 			startB.setBackgroundColor(getResources().getColor(R.color.darkGrey));
@@ -508,10 +500,9 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 	    printBlocks();
 	}
 	
+	
 	public void deleteBlock(View view, final Block block){
 		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-
 		 builder.setTitle("Ta bort");
 		 
 		 String s = "";
@@ -530,8 +521,14 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 		 builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User clicked OK button
-
 		        	MainActivity.db.deleteBlock(block);
+		        	
+		        	// Resets the startbutton if the deleted block was "running"
+                  	if(!block.isStopped()){
+                		startB.setBackgroundColor(getResources().getColor(R.color.green));
+    	        		startB.setText(R.string.start);
+    	        		started = false;
+                	}
 		        	//printBlocks();
 	           }	
 	       });

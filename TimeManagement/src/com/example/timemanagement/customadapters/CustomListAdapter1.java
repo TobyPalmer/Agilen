@@ -29,10 +29,10 @@ public class CustomListAdapter1 extends ArrayAdapter<String>{
 			((TextView)v).setBackgroundColor(Color.parseColor("#57bf23"));
 		}
 		else if(blockStatesList.get(position)== 2){
-			((TextView)v).setBackgroundColor(Color.YELLOW);
+			((TextView)v).setBackgroundColor(Color.parseColor("#fcfdb4"));
 		}	
 		else{
-			((TextView)v).setBackgroundColor(Color.WHITE);
+			((TextView)v).setBackgroundColor(Color.parseColor("#cff9b9"));
 		}
 		return v;
 	}

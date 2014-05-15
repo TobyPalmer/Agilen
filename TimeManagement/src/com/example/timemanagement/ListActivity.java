@@ -12,6 +12,7 @@ import java.util.List;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,6 +20,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnLongClickListener;
@@ -39,11 +41,8 @@ import com.example.timemanagement.customadapters.CustomListAdapter1;
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
 import com.example.timemanagement.R;
-import com.example.timemanagement.customadapters.*;
-
-import android.app.AlertDialog;
 import android.app.DialogFragment;
-import android.graphics.Typeface;
+
 
 
 	public class ListActivity extends MainActivity implements DataPassable {
@@ -83,7 +82,7 @@ import android.graphics.Typeface;
 	        width = wm.getDefaultDisplay().getWidth();
 			
 			ListView l = (ListView)findViewById(R.id.l_view);
-			l.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, (height-600)));
+			l.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, (height-480)));
 
 			cal = Calendar.getInstance();
 
@@ -116,7 +115,6 @@ import android.graphics.Typeface;
 			//Create a list of all the blocks
 	    	//BList = MainActivity.db.getAllBlocks();
 			bList = MainActivity.db.getBlocksBetweenDate(start, stop);
-			
 			
 			Typeface font3 = Typeface.createFromAsset(getAssets(), "gothic.ttf");
 			Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
@@ -159,15 +157,14 @@ import android.graphics.Typeface;
 				    newFragment.show(getFragmentManager(), "datePicker");
 				}
 			});
-	   	
-
+	    		   
 	    	next.setOnClickListener(new View.OnClickListener() {
 
 		        public void onClick(View v) {
 		        	if(new Date(start).before(currentDate)){
 		        		nextDate();
 		        		iterateBlocks(dateString);
-		        	}
+		        	};
 		        }
 	    	});
 		        		
@@ -191,7 +188,7 @@ import android.graphics.Typeface;
 			    	while(it.hasNext())
 			    	{
 			    		b = it.next();
-			    		if(b.getOrderID() != 0){
+			    		if(b.getOrderID() > 1 ){
 			    			b.setChecked(1);
 			    			MainActivity.db.putBlock(b);
 			    		}			    		
@@ -211,7 +208,7 @@ import android.graphics.Typeface;
 			    	while(it.hasNext())
 			    	{
 			    		b = it.next();
-			    		if(b.getOrderID() != 0){
+			    		if(b.getOrderID() > 1){
 			    			b.setChecked(0);
 			    			MainActivity.db.putBlock(b);
 			    		}			    		
@@ -224,8 +221,16 @@ import android.graphics.Typeface;
 		
 		private void setAllChecks(int value){
 			for(int i = 0; i < blockStatesList.size();i++){
-				blockStatesList.set(i, value);				
+				
+				if(!(bList.get(i).getOrderID() <= 1)){
+					blockStatesList.set(i, value);
+					bList.get(i).setChecked(value);
+				}
+				else
+					bList.get(i).setChecked(0);
+									
 			}
+			
 			listAdapter.setBlockStatesList(blockStatesList);
 		}
 		
@@ -311,10 +316,17 @@ import android.graphics.Typeface;
 			Iterator<Block> it = bList.iterator(); 
 	    	while(it.hasNext())
 	    	{
+	    			
 	    		b = it.next();
 	    		if(b.getStop()!=0)
 	    		{
-		    		s = new SimpleDateFormat("HH:mm").format(b.getStart());
+	    			s="";
+	    			if(b.getChecked() == 1) {
+	    				s += Html.fromHtml((String)"&#10003;").toString();
+	    				s += " ";
+	    			}
+	    			
+		    		s += new SimpleDateFormat("HH:mm").format(b.getStart());
 		    		s += " - ";
 		    		s += new SimpleDateFormat("HH:mm").format(b.getStop());	    			
 		    		if(b.getOrderID()!=0){
@@ -349,7 +361,7 @@ import android.graphics.Typeface;
 		    	    {
 		    	    	blockList.add(s);
 	
-		    	    	if(!(b.getOrderID() == 0)){
+		    	    	if(!(b.getOrderID() <= 1)){
 		    	    		blockStatesList.add(b.getChecked());
 		    	    	}
 		    	    	else{
@@ -358,8 +370,7 @@ import android.graphics.Typeface;
 		    	    	
 		    	    }
 	    		}
-	    	}
-	    	
+	    	}	    	
 
 	    	listAdapter = new CustomListAdapter1(this,R.layout.listrow, blockList, blockStatesList);
 	    	l_view.setAdapter(listAdapter);	    	
@@ -370,7 +381,7 @@ import android.graphics.Typeface;
 	    		{
 	    			String value = (String)adapter.getItemAtPosition(position);
 	    			try{
-	    				if(!(bList.get(position).getOrderID() == 0)){
+	    				if(!(bList.get(position).getOrderID() <= 1)){
 	    					bList.get(position).setChecked(switchChecked(bList.get(position).getChecked()));	    				
 		    				blockStatesList.set(position, bList.get(position).getChecked());
 		    				listAdapter.setBlockStatesList(blockStatesList);
@@ -379,7 +390,7 @@ import android.graphics.Typeface;
 	    				}
 	    				else{
 	    					AlertDialog.Builder noOrderNrDialogBuilder = new AlertDialog.Builder(l_view.getContext());
-	    					noOrderNrDialogBuilder.setMessage("Denna post saknar ordernummer, vill du Ã¥tgÃ¤rda detta?");
+	    					noOrderNrDialogBuilder.setMessage("Denna post saknar ordernummer, vill du åtgärda detta?");
 	    					noOrderNrDialogBuilder.setCancelable(true);
 	    					noOrderNrDialogBuilder.setPositiveButton("Ja", 
 	    							new DialogInterface.OnClickListener() {
@@ -410,9 +421,9 @@ import android.graphics.Typeface;
 	    				
 	    			}
 	    			catch (Exception e){
-	    				Log.e("NÃ¥got blev fel! At position:",Integer.toString(position));
+	    				Log.e("Något blev fel! At position:",Integer.toString(position));
 	    			}
-	    			Log.e("VÃ¤rde i listan: ",value);
+	    			Log.e("Värde i listan: ",value);
 	    			Log.e("Position i listan: ",Integer.toString(position));
 	    			iterateBlocks(getDateString());
 	    			

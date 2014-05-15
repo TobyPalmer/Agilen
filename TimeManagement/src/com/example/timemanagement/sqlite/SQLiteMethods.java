@@ -22,13 +22,14 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.example.timemanagement.model.Block;
+import com.example.timemanagement.model.Notification;
 import com.example.timemanagement.model.Order;
 
 public class SQLiteMethods extends SQLiteOpenHelper {
 	
 	// Database info
 
-    private static final int DATABASE_VERSION = 16;
+    private static final int DATABASE_VERSION = 21;
     private static final String DATABASE_NAME = "TimeManagement";
  
     // Constructor
@@ -57,6 +58,17 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         	"comment TEXT, "
         	+"checked INTEGER)";
         db.execSQL(CREATE_BLOCKS_TABLE);
+        
+     // Create "notifications"-table
+        String CREATE_NOTIFICATIONS_TABLE =
+        	"CREATE TABLE notifications(" +
+        	"ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        	"time LONG, " +
+        	"everyDay INTEGER, " +
+        	"everyWeek INTEGER, " +
+        	"everyMonth INTEGER, " +
+        	"spareTime INTEGER)";
+        db.execSQL(CREATE_NOTIFICATIONS_TABLE);
     }
     
     // *********************************************** //
@@ -66,6 +78,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS orders");
         db.execSQL("DROP TABLE IF EXISTS blocks");
+        db.execSQL("DROP TABLE IF EXISTS notifications");
         this.onCreate(db);
     }
     
@@ -447,6 +460,188 @@ public class SQLiteMethods extends SQLiteOpenHelper {
 
         db.close();
     }
+    
+    
+    // *********************************************** //
+    // NOTIFICATIONS
+    // *********************************************** //
+    
+    // *********************************************** //
+    // Define Notification table
+    // *********************************************** //
+    private static final String NOTIFICATIONS_TABLE = "notifications"; // Name
+    private static final String NOTIFICATIONS_TABLE_KEY_ID = "ID";
+    private static final String NOTIFICATIONS_TABLE_KEY_TIME = "time";
+    private static final String NOTIFICATIONS_TABLE_KEY_EVERYDAY = "everyDay";
+    private static final String NOTIFICATIONS_TABLE_KEY_EVERYWEEK = "everyWeek";
+    private static final String NOTIFICATIONS_TABLE_KEY_EVERYMONTH = "everyMonth";
+    private static final String NOTIFICATIONS_TABLE_KEY_SPARETIME = "spareTime";
+    private static final String[] NOTIFICATIONS_TABLE_COLUMNS = {NOTIFICATIONS_TABLE_KEY_ID, 
+														    	NOTIFICATIONS_TABLE_KEY_TIME, 
+														    	NOTIFICATIONS_TABLE_KEY_EVERYDAY, 
+														    	NOTIFICATIONS_TABLE_KEY_EVERYWEEK,
+														    	NOTIFICATIONS_TABLE_KEY_EVERYMONTH,
+														    	NOTIFICATIONS_TABLE_KEY_SPARETIME};
+    
+    
+    /**
+     * INSERT: Create new notification
+     * @param notification
+     */
+    public void addNotification(Notification notification){
+        SQLiteDatabase db = this.getWritableDatabase();
+ 
+        ContentValues values = new ContentValues();
+        
+        int d,w,m,s;
+        d = (notification.everyDay())?1:0;
+        w = (notification.everyWeek())?1:0;
+        m = (notification.everyMonth())?1:0;
+        s = (notification.spareTime())?1:0;
+        
+        values.put(NOTIFICATIONS_TABLE_KEY_TIME, notification.getTime());  
+        values.put(NOTIFICATIONS_TABLE_KEY_EVERYDAY, d); 
+        values.put(NOTIFICATIONS_TABLE_KEY_EVERYWEEK, w);
+        values.put(NOTIFICATIONS_TABLE_KEY_EVERYMONTH, m);
+        values.put(NOTIFICATIONS_TABLE_KEY_SPARETIME, s);
+ 
+        notification.setID((int)db.insert(NOTIFICATIONS_TABLE, null, values));
+        
+        db.close(); 
+    }
+    
+    /**
+     * GET: Return a notification
+     * 
+     * @param ID
+     * @return
+     */
+    public Notification getNotification(int ID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(NOTIFICATIONS_TABLE, NOTIFICATIONS_TABLE_COLUMNS, 
+        							" id = ?", 
+        							new String[] { String.valueOf(ID) }, 
+        							null, 
+        							null, 
+        							null, 
+        							"1");
+        
+        if (cursor != null) {
+        	// If there are any rows
+        	if(!cursor.isAfterLast()) { // Return Notification
+        		cursor.moveToFirst();
+        		
+                boolean d,w,m,s;
+                d = (cursor.getInt(2)==1)?true:false;
+                w = (cursor.getInt(3)==1)?true:false;
+                m = (cursor.getInt(4)==1)?true:false;
+                s = (cursor.getInt(5)==1)?true:false;
+                
+            	Notification notification = new Notification();
+        		notification.setID(cursor.getInt(0));
+        		notification.setTime(cursor.getLong(1));
+        		notification.setEveryDay(d);
+        		notification.setEveryWeek(w);
+        		notification.setEveryMonth(m);
+        		notification.setSpareTime(s);
+        		
+	            return notification;
+        	}
+        	else { // No rows
+        		return null;
+        	}
+        } // No rows
+        else {
+        	return null;
+        }
+    }
+    
+    /**
+     * GET: Return all notifications
+     * 
+     * @return 
+     */
+	public List<Notification> getAllNotifications() {
+    	SQLiteDatabase db = this.getReadableDatabase();
+    	
+    	String query = "SELECT  * FROM " + NOTIFICATIONS_TABLE;
+    	Cursor cursor = db.rawQuery(query, null);
+        
+    	List<Notification> notifications = new LinkedList<Notification>();
+    	
+        if (cursor.moveToFirst()) {
+            do {
+            	
+                boolean d,w,m,s;
+                d = (cursor.getInt(2)==1)?true:false;
+                w = (cursor.getInt(3)==1)?true:false;
+                m = (cursor.getInt(4)==1)?true:false;
+                s = (cursor.getInt(5)==1)?true:false;
+                
+            	Notification notification = new Notification();
+        		notification.setID(cursor.getInt(0));
+        		notification.setTime(cursor.getLong(1));
+        		notification.setEveryDay(d);
+        		notification.setEveryWeek(w);
+        		notification.setEveryMonth(m);
+        		notification.setSpareTime(s);
+        		notifications.add(notification);
+
+            } while (cursor.moveToNext());
+        }
+        
+        return notifications;
+    }
+    
+    
+    /**
+     * PUT: Update a notification
+     * 
+     * @param notification
+     * @return
+     */
+    public int putNotification(Notification notification) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        
+        int d,w,m,s;
+        d = (notification.everyDay())?1:0;
+        w = (notification.everyWeek())?1:0;
+        m = (notification.everyMonth())?1:0;
+        s = (notification.spareTime())?1:0;
+     
+        ContentValues values = new ContentValues();
+        values.put(NOTIFICATIONS_TABLE_KEY_TIME, notification.getTime()); 
+        values.put(NOTIFICATIONS_TABLE_KEY_EVERYDAY, d);
+        values.put(NOTIFICATIONS_TABLE_KEY_EVERYWEEK, w);
+        values.put(NOTIFICATIONS_TABLE_KEY_EVERYMONTH, m);
+        values.put(NOTIFICATIONS_TABLE_KEY_SPARETIME, s);
+     
+        int i = db.update(NOTIFICATIONS_TABLE, 
+        					values, 
+        					NOTIFICATIONS_TABLE_KEY_ID+" = ?", 
+        					new String[] { String.valueOf(notification.getID()) }); 
+        
+        db.close();
+     
+        return i;
+    }
+    
+    /**
+     * DELETE: Remove a notification
+     * 
+     * @param notification
+     */
+    public void deleteNotification(Notification notification) {
+        SQLiteDatabase db = this.getWritableDatabase();
+ 
+        db.delete(NOTIFICATIONS_TABLE, 
+        			NOTIFICATIONS_TABLE_KEY_ID + " = ?", 
+        			new String[] { String.valueOf(notification.getID()) });
+
+        db.close();
+    }
+    
+    
     
     // *********************************************** //
     // EXPORT METHODS

@@ -53,29 +53,25 @@
             android:id="@+id/LinearTotal"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:layout_marginTop="150dp"
-	        android:layout_marginLeft="30dp"       
-	        android:orientation="horizontal" > 
+	        android:layout_marginTop="120dp"
+	        android:layout_marginLeft="30dp"      
+	        android:orientation="vertical" > 
 		
             	<TextView
 			        android:id="@+id/totalTime"
-			        android:layout_width="0dp"
-			        android:layout_weight="2"
+			        android:layout_width="wrap_content"
 			        android:layout_height="60dp"		                
 			        android:padding="10dp"
 			        android:text="Totaltid: "
-			        android:textSize = "30sp" 
-			        android:width="0dp"/>
+			        android:textSize = "30sp"/>
             	
             	<TextView
 			        android:id="@+id/flexTime"
-			        android:layout_width="0dp"
-			        android:layout_weight="2"
+			        android:layout_width="wrap_content"
 			        android:layout_height="60dp"		                
 			        android:padding="10dp"
 			        android:text="Flextid: "
-			        android:textSize = "30sp" 
-			        android:width="0dp"/>        	
+			        android:textSize = "30sp"/>       	
 		</LinearLayout>
     
    	<LinearLayout
@@ -83,7 +79,7 @@
 	    android:layout_width="match_parent"
 	    android:layout_height ="wrap_content"
 	    android:orientation = "horizontal"
-	    android:layout_marginTop="250dp"
+	    android:layout_marginTop="280dp"
 	    android:layout_marginLeft="30dp">
 		
 		<LinearLayout
@@ -164,4 +160,3 @@
     
   
 </RelativeLayout>
-     

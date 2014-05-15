@@ -1,5 +1,8 @@
 package com.example.timemanagement;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
@@ -8,9 +11,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import android.util.Log;
-
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ public class MainActivity extends Activity {
 	
 	private Button login;
 	private TextView user, pass;
+	private List<Order> orderList = new ArrayList<Order>();
 	
 	
 	public static SQLiteMethods db;
@@ -42,6 +44,16 @@ public class MainActivity extends Activity {
     	user.setTypeface(font);
         pass = (TextView)findViewById(R.id.passWord);
     	pass.setTypeface(font);
+    	
+    	Order standardOrder = new Order("0", "Saknar ordernr.", 0);
+
+       	// Get all orders
+    	orderList = db.getAllOrders();
+    	
+    	if(!orderList.contains(standardOrder)){
+          	orderList.add(standardOrder);
+          	db.addOrder(standardOrder);
+      	}
     }
 
     @Override
@@ -65,10 +77,10 @@ public class MainActivity extends Activity {
     		timestampActivity();
     		return true;
     	}
-    	else if(item.getItemId() == R.id.menu_schedule) {
+    	/*else if(item.getItemId() == R.id.menu_schedule) {
     		scheduleActivity();
     		return true;
-    	}
+    	}*/
     	else if(item.getItemId() == R.id.menu_settings) {
     		settingActivity();
     		return true;
@@ -137,6 +149,12 @@ public class MainActivity extends Activity {
     public void backupActivity(){
     	
         Intent intent = new Intent(this, BackupActivity.class);
+        startActivity(intent);
+    }
+    
+    public void notificationActivity(){
+    	
+        Intent intent = new Intent(this, NotificationActivity.class);
         startActivity(intent);
     }
     
