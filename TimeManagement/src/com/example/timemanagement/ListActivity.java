@@ -15,13 +15,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnLongClickListener;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -36,11 +34,7 @@ import com.example.timemanagement.customadapters.CustomListAdapter1;
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
 import com.example.timemanagement.R;
-import com.example.timemanagement.customadapters.*;
-
-import android.app.AlertDialog;
 import android.app.DialogFragment;
-import android.graphics.Typeface;
 
 
 	public class ListActivity extends MainActivity implements DataPassable {
