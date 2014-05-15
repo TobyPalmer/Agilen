@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+import com.example.timemanagement.customadapters.CustomListAdapter2;
 import com.example.timemanagement.model.Notification;
 
 import android.annotation.TargetApi;
@@ -43,6 +44,7 @@ public class NotificationActivity extends MainActivity implements OnItemClickLis
 	private List<Notification> notificationList;
 	private Boolean[] clicked;
 	private Button delete, save;
+	private CustomListAdapter2 mAdapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +90,7 @@ public class NotificationActivity extends MainActivity implements OnItemClickLis
 		if(!notificationList.isEmpty()){
 						
 	        ArrayAdapter<Notification> adapter = new ArrayAdapter<Notification>(this, android.R.layout.simple_list_item_1, android.R.id.text1,  notificationList);
+	        //mAdapter = new CustomListAdapter2(this,R.layout.listrow2, orderList, "neosanslight.ttf");
 	        listView.setAdapter(adapter);
 			
 		}
