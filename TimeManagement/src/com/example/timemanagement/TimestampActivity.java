@@ -18,18 +18,23 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.util.LogWriter;
+import android.os.Handler.Callback;
+import android.os.Message;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.swipetodismiss.SwipeDismissListViewTouchListener;
 import com.example.swipetodismiss.*;
 import com.example.timemanagement.customadapters.CustomListAdapter2;
 import com.example.timemanagement.model.Block;
@@ -351,11 +356,27 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 	 * @param v
 	 */
 	public void showTomorrow(View v){
-		start += 86400000;
-		stop += 86400000;
-		setDayText(start);
-		setStartButton();
-		printBlocks();
+		// Define UI-element to be animated
+		final View view = (View)findViewById(R.id.timestampList);
+		// Define animation
+		final Animation anim = AnimationUtils.loadAnimation(this, R.anim.slide_right);
+		// Define animation listener
+		AnimationListener animListener = new AnimationListener() {
+			// onAnimationEnd callback
+			public void onAnimationStart(Animation animation) {}
+		    public void onAnimationRepeat(Animation animation) {}
+		    public void onAnimationEnd(Animation animation) {
+		    	start += 86400000;
+				stop += 86400000;
+		    	setDayText(start);
+		    	setStartButton();
+		    	printBlocks();
+		    }
+		};
+		// Set animation listener
+		anim.setAnimationListener(animListener);
+		// Start animation
+		view.startAnimation(anim);
 	}
 	
 	/**
@@ -364,11 +385,27 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 	 * @param v
 	 */
 	public void showYesterday(View v){
-		start -= 86400000;
-		stop -= 86400000;
-		setDayText(start);
-		setStartButton();
-		printBlocks();
+		// Define UI-element to be animated
+		final View view = (View)findViewById(R.id.timestampList);
+		// Define animation
+		final Animation anim = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+		// Define animation listener
+		AnimationListener animListener = new AnimationListener() {
+			// onAnimationEnd callback
+			public void onAnimationStart(Animation animation) {}
+		    public void onAnimationRepeat(Animation animation) {}
+		    public void onAnimationEnd(Animation animation) {
+		    	start -= 86400000;
+				stop -= 86400000;
+		    	setDayText(start);
+				setStartButton();
+				printBlocks();
+		    }
+		};
+		// Set animation listener
+		anim.setAnimationListener(animListener);
+		// Start animation
+		view.startAnimation(anim);
 	}
 	
 	/**
