@@ -12,14 +12,18 @@ import java.util.List;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -35,6 +39,7 @@ import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
 import com.example.timemanagement.R;
 import android.app.DialogFragment;
+
 
 
 	public class ListActivity extends MainActivity implements DataPassable {
@@ -74,7 +79,7 @@ import android.app.DialogFragment;
 	        width = wm.getDefaultDisplay().getWidth();
 			
 			ListView l = (ListView)findViewById(R.id.l_view);
-			l.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, (height-600)));
+			l.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, (height-480)));
 
 			cal = Calendar.getInstance();
 
@@ -149,15 +154,14 @@ import android.app.DialogFragment;
 				    newFragment.show(getFragmentManager(), "datePicker");
 				}
 			});
-	   	
-
+	    		   
 	    	next.setOnClickListener(new View.OnClickListener() {
 
 		        public void onClick(View v) {
 		        	if(new Date(start).before(currentDate)){
 		        		nextDate();
 		        		iterateBlocks(dateString);
-		        	}
+		        	};
 		        }
 	    	});
 		        		
@@ -273,10 +277,17 @@ import android.app.DialogFragment;
 			Iterator<Block> it = bList.iterator(); 
 	    	while(it.hasNext())
 	    	{
+	    			
 	    		b = it.next();
 	    		if(b.getStop()!=0)
 	    		{
-		    		s = new SimpleDateFormat("HH:mm").format(b.getStart());
+	    			s="";
+	    			if(b.getChecked() == 1) {
+	    				s += Html.fromHtml((String)"&#10003;").toString();
+	    				s += " ";
+	    			}
+	    			
+		    		s += new SimpleDateFormat("HH:mm").format(b.getStart());
 		    		s += " - ";
 		    		s += new SimpleDateFormat("HH:mm").format(b.getStop());	    			
 		    		if(b.getOrderID()!=0){

@@ -115,10 +115,10 @@ public class StatisticsActivity extends MainActivity implements DatePassable
 		flex = (TextView)findViewById(R.id.flexTime);
 		
 		String t,d,i,f;
-		t = "Totaltid: " + new timeHM(directTime+indirectTime).toString();
+		t = "Totalt arbetad tid: " + new timeHM(directTime+indirectTime).toString();
+		f = "Tid i flexbank: " + new timeHM(flexTime).toString();
 		d = "Direkttid: " + new timeHM(directTime).toString();
 		i = "Interntid: " + new timeHM(indirectTime).toString();
-		f = "Flextid: " + new timeHM(flexTime).toString();
 		
 		total.setText(t);
 		direct.setText(d);
