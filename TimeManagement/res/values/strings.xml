@@ -35,6 +35,9 @@
     <string name="fa_arrow_left">&#xf104;</string>
     <string name="fa_plus">&#xf067;</string>
     <string name="fa_square">&#xf0c8;</string>
+    
+    <string name="deselectAll">Börja om</string>
+     <string name="selectAll">Bekräfta alla</string>
      
     <color name="green">#57BF23</color>
     <color name="red">#FB3804</color>
@@ -46,6 +49,8 @@
     <string name="action_settings">Settings</string>
     <!-- Colors -->
     <color name="orange">#F88621</color>
+    <color name="lightOrange">#f9bb85</color>
+    <color name="lightGreen">#a3d987</color>
     <color name="darkGrey">#787878</color>
     <color name="lightGrey">#999</color>
 
