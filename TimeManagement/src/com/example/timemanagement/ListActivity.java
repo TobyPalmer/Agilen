@@ -108,7 +108,6 @@ import android.app.DialogFragment;
 	    	//BList = MainActivity.db.getAllBlocks();
 			bList = MainActivity.db.getBlocksBetweenDate(start, stop);
 			
-			
 			Typeface font3 = Typeface.createFromAsset(getAssets(), "gothic.ttf");
 			Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
 			Typeface font2 = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
@@ -312,7 +311,7 @@ import android.app.DialogFragment;
 		    	    {
 		    	    	blockList.add(s);
 	
-		    	    	if(!(b.getOrderID() == 0)){
+		    	    	if(!(b.getOrderID() <= 1)){
 		    	    		blockStatesList.add(b.getChecked());
 		    	    	}
 		    	    	else{
@@ -321,8 +320,7 @@ import android.app.DialogFragment;
 		    	    	
 		    	    }
 	    		}
-	    	}
-	    	
+	    	}	    	
 
 	    	listAdapter = new CustomListAdapter1(this,R.layout.listrow, blockList, blockStatesList);
 	    	l_view.setAdapter(listAdapter);	    	
@@ -333,7 +331,7 @@ import android.app.DialogFragment;
 	    		{
 	    			String value = (String)adapter.getItemAtPosition(position);
 	    			try{
-	    				if(!(bList.get(position).getOrderID() == 0)){
+	    				if(!(bList.get(position).getOrderID() <= 1)){
 	    					bList.get(position).setChecked(switchChecked(bList.get(position).getChecked()));	    				
 		    				blockStatesList.set(position, bList.get(position).getChecked());
 		    				listAdapter.setBlockStatesList(blockStatesList);

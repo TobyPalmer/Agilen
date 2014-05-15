@@ -89,7 +89,7 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
     	stopButton = (Button)findViewById(R.id.taskStop);
     	stopButton.setText(timeBlock.toTimeString(false));
     	
-    	Order standardOrder = new Order("0", "Ospec. Ordernr.", 0);
+    	Order standardOrder = new Order("0", "Saknar ordernr.", 0);
 
        	// Get all orders
     	list = MainActivity.db.getAllOrders();
@@ -103,7 +103,7 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
       	list.add(standardOrder);
       	s.setSelection(list.size()-1);
          adapter.notifyDataSetChanged();
-      	MainActivity.db.addOrder(standardOrder);
+      	//MainActivity.db.addOrder(standardOrder);
       	}
 
         if(getIntent().getExtras() != null){

@@ -66,7 +66,7 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 		
 		// Show the Up button in the action bar
 		setupActionBar();
-
+	
 		
 		// Sets the start and stop to that of the current day.
 		cal = Calendar.getInstance();
@@ -230,7 +230,11 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 	public void startTime(){
 			started = true;
 			long startTime = System.currentTimeMillis();
-			b = new Block(startTime);
+
+			
+			b = new Block(1,startTime);
+			String s = b.toString();
+			Log.v("orderID", s);
 			MainActivity.db.addBlock(b);
 			
 			printBlocks();
@@ -488,6 +492,7 @@ public class TimestampActivity extends MainActivity implements DataPassable {
                   	if(!block.isStopped()){
                 		startB.setBackgroundColor(getResources().getColor(R.color.green));
     	        		startB.setText(R.string.start);
+    	        		started = false;
                 	}
 		        	//printBlocks();
 	           }	

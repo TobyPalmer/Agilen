@@ -33,6 +33,7 @@ public class Block implements Serializable, Comparable<Block>{
 		this.start = s;
 		this.stop = 0;
 		this.orderID = orderID;
+		this.comment = "";
 		this.checked = 0;
 	}
 
