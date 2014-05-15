@@ -372,7 +372,7 @@ import android.app.DialogFragment;
 	    		}
 	    	}	    	
 
-	    	listAdapter = new CustomListAdapter1(this,R.layout.listrow, blockList, blockStatesList);
+	    	listAdapter = new CustomListAdapter1(this,R.layout.listrow, blockList, blockStatesList, "neosanslight.ttf");
 	    	l_view.setAdapter(listAdapter);	    	
 	    	l_view.setOnItemClickListener(new OnItemClickListener()
 	    	{

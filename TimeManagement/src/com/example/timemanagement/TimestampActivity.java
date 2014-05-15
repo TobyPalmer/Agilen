@@ -290,7 +290,7 @@ public class TimestampActivity extends MainActivity implements DataPassable {
         }
         
         // Define the data structure for the list strings    
-        mAdapter = new CustomListAdapter2(this,R.layout.listrow2, new ArrayList<String>(Arrays.asList(items)));
+        mAdapter = new CustomListAdapter2(this,R.layout.listrow2, new ArrayList<String>(Arrays.asList(items)), "neosanslight.ttf");
         listView.setAdapter(mAdapter);
         
         

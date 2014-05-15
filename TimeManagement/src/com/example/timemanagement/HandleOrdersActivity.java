@@ -2,8 +2,10 @@
 package com.example.timemanagement;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import com.example.timemanagement.customadapters.CustomListAdapter2;
 import com.example.timemanagement.model.Order;
 
 import android.annotation.TargetApi;
@@ -38,6 +40,7 @@ public class HandleOrdersActivity extends MainActivity implements OnItemClickLis
 	private String orderList[];
 	private Boolean[] clicked;
 	private Button delete, save;
+	private CustomListAdapter2 mAdapter;
 			
 	
 	@Override
@@ -75,8 +78,9 @@ public class HandleOrdersActivity extends MainActivity implements OnItemClickLis
         lv.setOnItemClickListener(this);
         
         
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1,  orderList);
-        lv.setAdapter(adapter);
+        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1,  orderList);
+        mAdapter = new CustomListAdapter2(this,R.layout.listrow2, orderList, "neosanslight.ttf");
+        lv.setAdapter(mAdapter);
 	}
 	
 	/**

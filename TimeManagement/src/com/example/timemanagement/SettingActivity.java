@@ -50,7 +50,7 @@ public class SettingActivity extends MainActivity implements OnItemClickListener
         String s2 = "Hantera ordrar"; 
         settingsList.add(s1);
         settingsList.add(s2);
-    	listAdapter = new CustomListAdapter2(this,R.layout.listrow2, settingsList);
+    	listAdapter = new CustomListAdapter2(this,R.layout.listrow2, settingsList, "neosanslight.ttf");
     	listView.setAdapter(listAdapter);	
 	}
 	
