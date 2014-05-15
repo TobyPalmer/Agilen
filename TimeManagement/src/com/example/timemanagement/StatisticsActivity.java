@@ -48,7 +48,7 @@ import android.widget.LinearLayout;
 
 public class StatisticsActivity extends MainActivity implements DatePassable 
 {	
-	private TextView total;
+	private TextView total, arrow, totalTimeSquare, flexTimeSquare;
 	private Block startBlock;
 	private Block stopBlock;
 	
@@ -78,13 +78,28 @@ public class StatisticsActivity extends MainActivity implements DatePassable
     	
 		start = getStartOfToday();
 		
-    	stop = getEndOfToday();    	
+    	stop = getEndOfToday();   
+    	
+    	Typeface font2 = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
+    	Typeface font_for_icon = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
+    	
 		
     	dateStartButton = (Button)findViewById(R.id.startDate);
     	dateStartButton.setText(dateAsString(start));
     	
     	dateStopButton = (Button)findViewById(R.id.stopDate);
     	dateStopButton.setText(dateAsString(stop));
+    	
+    	dateStartButton.setTypeface(font2);
+    	dateStopButton.setTypeface(font2);
+    	
+    	arrow = (TextView)findViewById(R.id.arrow);
+    	totalTimeSquare = (TextView)findViewById(R.id.totalTimeSquare);
+    	flexTimeSquare = (TextView)findViewById(R.id.flexTimeSquare);
+    	
+    	arrow.setTypeface(font_for_icon);
+    	totalTimeSquare.setTypeface(font_for_icon);
+    	flexTimeSquare.setTypeface(font_for_icon);
 		
     	
     	
@@ -114,6 +129,12 @@ public class StatisticsActivity extends MainActivity implements DatePassable
 		direct.setText(d);
 		indirect.setText(i);
 		flex.setText(f);
+		
+		Typeface font2 = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
+		total.setTypeface(font2);
+		direct.setTypeface(font2);
+		indirect.setTypeface(font2);
+		flex.setTypeface(font2);
 	}
 	
 	
@@ -127,7 +148,7 @@ public class StatisticsActivity extends MainActivity implements DatePassable
 			  dT = new timeHM(directTime);
 			  iT = new timeHM(indirectTime);
 			  int items[] = { dT.getHours(), iT.getHours() };
-			  int colors[] = { Color.BLUE, Color.GREEN };
+			  int colors[] = { getResources().getColor(R.color.green), getResources().getColor(R.color.orange) };
 			  
 			  String itemslabel[] = { " Direkttid", " Indirekttid" };
 			  for (int i = 0; i < items.length; i++) {
@@ -168,7 +189,7 @@ public class StatisticsActivity extends MainActivity implements DatePassable
 		  dT = new timeHM(directTime);
 		  iT = new timeHM(indirectTime);
 		  int items[] = { dT.getHours(), iT.getHours() };
-		  int colors[] = { Color.BLUE, Color.GREEN };		  
+		  int colors[] = { getResources().getColor(R.color.green), getResources().getColor(R.color.orange) };	  
 		  String itemslabel[] = { " Direkttid", " Indirekttid" };
 		  for (int i = 0; i < items.length; i++) {
 			   itemCount = items[i];
@@ -240,7 +261,7 @@ public class StatisticsActivity extends MainActivity implements DatePassable
 	{
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) 
 		{
-			getActionBar().setDisplayHomeAsUpEnabled(true);
+			getActionBar().setDisplayHomeAsUpEnabled(false);
 		}
 	}
 	

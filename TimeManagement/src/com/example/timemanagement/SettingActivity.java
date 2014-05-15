@@ -73,7 +73,7 @@ public class SettingActivity extends MainActivity implements OnItemClickListener
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private void setupActionBar() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			getActionBar().setDisplayHomeAsUpEnabled(true);
+			getActionBar().setDisplayHomeAsUpEnabled(false);
 		}
 	}
 	
@@ -129,7 +129,7 @@ public class SettingActivity extends MainActivity implements OnItemClickListener
 
 		   
 		 
-		 builder.setPositiveButton("Lägg till", new DialogInterface.OnClickListener() {
+		 builder.setPositiveButton("LŠgg till", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User clicked OK button
 	        	Calendar cal = Calendar.getInstance();
