@@ -22,6 +22,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnLongClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Animation.AnimationListener;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -248,24 +251,52 @@ import android.graphics.Typeface;
 		 * Sets the day to one day in the future.
 		 * Also resets some variables to the new day.
 		 */
-		public void nextDate(){
-			start += 86400000;
-			stop += 86400000;
-			
-			// resets
-			dateString = (dateFormat.format(start));
+		public void nextDate() {
+			// Define UI-element to be animated
+			final View view = (View)findViewById(R.id.checkList);
+			// Define animation
+			final Animation anim = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+			// Define animation listener
+			AnimationListener animListener = new AnimationListener() {
+				// onAnimationEnd callback
+				public void onAnimationStart(Animation animation) {}
+			    public void onAnimationRepeat(Animation animation) {}
+			    public void onAnimationEnd(Animation animation) {
+					start += 86400000;
+					stop += 86400000;
+					dateString = (dateFormat.format(start));
+			    }
+			};
+			// Set animation listener
+			anim.setAnimationListener(animListener);
+			// Start animation
+			view.startAnimation(anim);
 		}
 	
 		/**
 		 * Sets the day to one day in the past.
 		 * Also resets some variables to the new day.
 		 */
-		public void prevDate(){
-			start -= 86400000;
-			stop -= 86400000;
-			
-			// resets
-			dateString = (dateFormat.format(start));
+		public void prevDate() {
+			// Define UI-element to be animated
+			final View view = (View)findViewById(R.id.checkList);
+			// Define animation
+			final Animation anim = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+			// Define animation listener
+			AnimationListener animListener = new AnimationListener() {
+				// onAnimationEnd callback
+				public void onAnimationStart(Animation animation) {}
+			    public void onAnimationRepeat(Animation animation) {}
+			    public void onAnimationEnd(Animation animation) {
+					start -= 86400000;
+					stop -= 86400000;
+					dateString = (dateFormat.format(start));
+			    }
+			};
+			// Set animation listener
+			anim.setAnimationListener(animListener);
+			// Start animation
+			view.startAnimation(anim);
 		}
 		
 		public void iterateBlocks(String dateString)

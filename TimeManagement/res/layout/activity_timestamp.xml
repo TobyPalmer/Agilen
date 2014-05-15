@@ -10,7 +10,7 @@
     tools:context=".TimestampActivity" >
     
     <LinearLayout
-        android:id="@+id/theList"
+        android:id="@+id/timestampList"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical">

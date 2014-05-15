@@ -371,7 +371,7 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 	 */
 	public void showTomorrow(View v){
 		// Define UI-element to be animated
-		final View view = (View)findViewById(R.id.theList);
+		final View view = (View)findViewById(R.id.timestampList);
 		// Define animation
 		final Animation anim = AnimationUtils.loadAnimation(this, R.anim.slide_right);
 		// Define animation listener
@@ -400,7 +400,7 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 	 */
 	public void showYesterday(View v){
 		// Define UI-element to be animated
-		final View view = (View)findViewById(R.id.theList);
+		final View view = (View)findViewById(R.id.timestampList);
 		// Define animation
 		final Animation anim = AnimationUtils.loadAnimation(this, R.anim.slide_left);
 		// Define animation listener
