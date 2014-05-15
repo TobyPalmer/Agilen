@@ -37,6 +37,9 @@ import android.widget.Toast;
 import com.example.timemanagement.customadapters.CustomListAdapter1;
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
+import com.example.timemanagement.R;
+import android.app.DialogFragment;
+
 
 
 	public class ListActivity extends MainActivity implements DataPassable {
@@ -109,7 +112,6 @@ import com.example.timemanagement.model.Order;
 			//Create a list of all the blocks
 	    	//BList = MainActivity.db.getAllBlocks();
 			bList = MainActivity.db.getBlocksBetweenDate(start, stop);
-			
 			
 			Typeface font3 = Typeface.createFromAsset(getAssets(), "gothic.ttf");
 			Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
@@ -320,7 +322,7 @@ import com.example.timemanagement.model.Order;
 		    	    {
 		    	    	blockList.add(s);
 	
-		    	    	if(!(b.getOrderID() == 0)){
+		    	    	if(!(b.getOrderID() <= 1)){
 		    	    		blockStatesList.add(b.getChecked());
 		    	    	}
 		    	    	else{
@@ -329,8 +331,7 @@ import com.example.timemanagement.model.Order;
 		    	    	
 		    	    }
 	    		}
-	    	}
-	    	
+	    	}	    	
 
 	    	listAdapter = new CustomListAdapter1(this,R.layout.listrow, blockList, blockStatesList);
 	    	l_view.setAdapter(listAdapter);	    	
@@ -341,7 +342,7 @@ import com.example.timemanagement.model.Order;
 	    		{
 	    			String value = (String)adapter.getItemAtPosition(position);
 	    			try{
-	    				if(!(bList.get(position).getOrderID() == 0)){
+	    				if(!(bList.get(position).getOrderID() <= 1)){
 	    					bList.get(position).setChecked(switchChecked(bList.get(position).getChecked()));	    				
 		    				blockStatesList.set(position, bList.get(position).getChecked());
 		    				listAdapter.setBlockStatesList(blockStatesList);

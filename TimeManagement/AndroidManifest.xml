@@ -117,6 +117,16 @@
                 android:value="com.example.timemanagement.MainActivity" />
         </activity>
         
+        <!-- Notifications -->
+        <activity
+            android:name="com.example.timemanagement.NotificationActivity"
+            android:label="Notifikationer"
+            android:parentActivityName="com.example.timemanagement.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.timemanagement.MainActivity" />
+        </activity>
+        
     </application>
 
 </manifest>
