@@ -348,7 +348,7 @@ import android.graphics.Typeface;
 	    				}
 	    				else{
 	    					AlertDialog.Builder noOrderNrDialogBuilder = new AlertDialog.Builder(l_view.getContext());
-	    					noOrderNrDialogBuilder.setMessage("Denna post saknar ordernummer, vill du åtgärda detta?");
+	    					noOrderNrDialogBuilder.setMessage("Denna post saknar ordernummer, vill du ï¿½tgï¿½rda detta?");
 	    					noOrderNrDialogBuilder.setCancelable(true);
 	    					noOrderNrDialogBuilder.setPositiveButton("Ja", 
 	    							new DialogInterface.OnClickListener() {
@@ -387,6 +387,8 @@ import android.graphics.Typeface;
 	    			
 	    		}
 	    	});
+	    	
+	    	// Send the user to NewOrderActivity on longclick.
 	    	l_view.setLongClickable(true);
 	    	l_view.setOnItemLongClickListener(new OnItemLongClickListener() {
 
