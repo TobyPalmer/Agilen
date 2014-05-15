@@ -20,6 +20,6 @@
         android:id="@+id/orderDirectWorkPop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Direkttid" />
+        android:text="Direkt tid" />
         
 </LinearLayout>

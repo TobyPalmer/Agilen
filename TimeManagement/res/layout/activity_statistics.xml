@@ -80,7 +80,6 @@
 		        android:layout_width="wrap_content"
 		        android:layout_height="60dp"		                
 		        android:padding="10dp"
-		        android:text="Flextid: "
 		        android:textStyle="bold"
 		        android:textSize = "30dp" />	    
 		    <TextView
@@ -88,7 +87,6 @@
 		        android:layout_width="wrap_content"
 		        android:layout_height="60dp"                
 		        android:padding="10dp"
-		        android:text="Direkttid: "
 		        android:textStyle="bold"
 		        android:textSize = "30dp" />
 		    		
@@ -97,7 +95,6 @@
 		        android:layout_width="wrap_content"
 		        android:layout_height="60dp"		                
 		        android:padding="10dp"        
-		        android:text="Indirekttid: "
 		        android:textStyle="bold"
 		        android:textSize = "30dp" />	
 		    <TextView
@@ -105,7 +102,6 @@
 		        android:layout_width="wrap_content"
 		        android:layout_height="60dp"		                
 		        android:padding="10dp"
-		        android:text="Flextid: "
 		        android:textStyle="bold"
 		        android:textSize = "30dp" />
     	</LinearLayout>	

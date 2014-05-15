@@ -107,7 +107,7 @@ public class StatisticsActivity extends MainActivity implements DatePassable
 		String t,d,i,f;
 		t = "Totaltid: " + new timeHM(directTime+indirectTime).toString();
 		d = "Direkttid: " + new timeHM(directTime).toString();
-		i = "Indirekttid: " + new timeHM(indirectTime).toString();
+		i = "Interntid: " + new timeHM(indirectTime).toString();
 		f = "Flextid: " + new timeHM(flexTime).toString();
 		
 		total.setText(t);
