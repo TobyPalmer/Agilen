@@ -1,5 +1,6 @@
 package com.example.timemanagement;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,10 +28,11 @@ import android.widget.TextView;
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
 import com.example.timemanagement.sqlite.SQLiteMethods;
-import com.example.timemanagement.statistics.DatePassable;
 import com.example.timemanagement.statistics.DatePickerFragment;
 import com.example.timemanagement.statistics.OrderTimeDetails;
+import com.example.timemanagement.statistics.PickerFragment;
 import com.example.timemanagement.statistics.PieDetailsItem;
+import com.example.timemanagement.statistics.TDPassable;
 import com.example.timemanagement.statistics.View_PieChart;
 import com.example.timemanagement.statistics.timeHM;
 import com.example.timemanagement.customadapters.*;
@@ -46,7 +48,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-public class StatisticsActivity extends MainActivity implements DatePassable 
+public class StatisticsActivity extends MainActivity implements TDPassable 
 {	
 	private TextView total;
 	private Block startBlock;
@@ -67,6 +69,8 @@ public class StatisticsActivity extends MainActivity implements DatePassable
 	private long indirectTime;
 	private long flexTime;
 	
+	private DecimalFormat df = new DecimalFormat("#0.00");
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
@@ -75,26 +79,27 @@ public class StatisticsActivity extends MainActivity implements DatePassable
 		setupActionBar();
 		
 		Calendar cal = Calendar.getInstance();
-    	
-		start = getStartOfToday();
+		cal.setFirstDayOfWeek(Calendar.MONDAY);
+    	cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 		
+		
+		start = getStartOfDay(cal.getTimeInMillis());				
     	stop = getEndOfToday();    	
 		
+    	if(start > stop){
+    		start = getStartOfDay(stop);
+    	}
+    	
     	dateStartButton = (Button)findViewById(R.id.startDate);
     	dateStartButton.setText(dateAsString(start));
     	
     	dateStopButton = (Button)findViewById(R.id.stopDate);
     	dateStopButton.setText(dateAsString(stop));
-		
     	
-    	
-		
-    	
-    	// TESTAR TESTAR TESTAR TESTAR TESTAR //
 		iterateBlocks();
 		createPieChart();
 		updateTextFields();
-		//total = (TextView) findViewById(R.id.total);
+		
 	}
 	
 	private void updateTextFields(){
@@ -106,9 +111,15 @@ public class StatisticsActivity extends MainActivity implements DatePassable
 		
 		String t,d,i,f;
 		t = "Totaltid: " + new timeHM(directTime+indirectTime).toString();
-		d = "Direkttid: " + new timeHM(directTime).toString();
-		i = "Indirekttid: " + new timeHM(indirectTime).toString();
-		f = "Flextid: " + new timeHM(flexTime).toString();
+		d = "Direkttid: " + new timeHM(directTime).toString() + " " + df.format(procent(directTime + indirectTime, directTime)) + " %";
+		i = "Interntid: " + new timeHM(indirectTime).toString() + " " + df.format(procent(directTime + indirectTime, indirectTime)) + " %";
+		if(flexTime >= 0){
+			f = "Flextid: " + new timeHM(Math.abs(flexTime)).toString() + " Plus";
+		}
+		else{
+			f = "Flextid: " + new timeHM(Math.abs(flexTime)).toString() + " Minus";
+		}
+		
 		
 		total.setText(t);
 		direct.setText(d);
@@ -213,7 +224,9 @@ public class StatisticsActivity extends MainActivity implements DatePassable
 	private long getStartOfDay(long time){		
 		Calendar cal = Calendar.getInstance();
 		cal.setTimeInMillis(time);
-		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 0,0);
+		cal.set(cal.get(Calendar.YEAR), 
+					cal.get(Calendar.MONTH), 
+						cal.get(Calendar.DAY_OF_MONTH), 0, 0);
 		return cal.getTimeInMillis();
 	}
 	
@@ -228,7 +241,9 @@ public class StatisticsActivity extends MainActivity implements DatePassable
 	private long getEndOfDay(long time){		
 		Calendar cal = Calendar.getInstance();
 		cal.setTimeInMillis(time);
-		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 23,59);
+		cal.set(cal.get(Calendar.YEAR), 
+					cal.get(Calendar.MONTH), 
+						cal.get(Calendar.DAY_OF_MONTH), 23, 59);
 		return cal.getTimeInMillis();
 	}
 
@@ -263,42 +278,46 @@ public class StatisticsActivity extends MainActivity implements DatePassable
 	}
 	
 	@Override
-	public void update(DatePickerFragment p, long o, int ID) {		
-		  long changedDate = o;		  
-		  if(ID == 1){	
-			  
-			  stop = getEndOfDay(changedDate);			  
-			  if((compareDates(stop, start)  >= 0) && compareToFutureDate(stop) < 1){				  
-				  dateStopButton.setText(dateAsString(stop));
-			  }
-			  else{
-				  if(compareToFutureDate(stop) < 1){
-					  stop = start;					  
+	public void update(PickerFragment p, long o, int ID) {		
+		Log.e("Got to here"," Yep!");
+		if(p instanceof DatePickerFragment)  {
+			Log.e("Got to here"," Yep!");
+			long changedDate = o;		  
+			  if(ID == 1){	
+				  
+				  stop = getEndOfDay(changedDate);			  
+				  if((compareDates(stop, start)  >= 0) && compareToFutureDate(stop) < 1){				  
+					  dateStopButton.setText(dateAsString(stop));
 				  }
-				  else{					  
-					  stop = getCurrentMillis();					  
-				  }
-				  dateStopButton.setText(dateAsString(stop));
+				  else{
+					  if(compareToFutureDate(stop) < 1){
+						  stop = start;					  
+					  }
+					  else{					  
+						  stop = getCurrentMillis();					  
+					  }
+					  dateStopButton.setText(dateAsString(stop));
+				  }			  
 			  }			  
-		  }			  
-		  else{
-			  start = getStartOfDay(changedDate);			  
-			  if((compareDates(start, stop) < 1) && compareToFutureDate(start) < 1){				  
-				  dateStartButton.setText(dateAsString(start));
-			  }
 			  else{
-				  if(compareToFutureDate(start) < 1){
-					  start = stop;					  
+				  start = getStartOfDay(changedDate);			  
+				  if((compareDates(start, stop) < 1) && compareToFutureDate(start) < 1){				  
+					  dateStartButton.setText(dateAsString(start));
 				  }
-				  else{					  
-					  start = getCurrentMillis();					  
+				  else{
+					  if(compareToFutureDate(start) < 1){
+						  start = stop;					  
+					  }
+					  else{					  
+						  start = getCurrentMillis();					  
+					  }
+					  dateStartButton.setText(dateAsString(start));
 				  }
-				  dateStartButton.setText(dateAsString(start));
 			  }
-		  }	
-		  iterateBlocks();
-		  updatePieChart();
-		  updateTextFields();
+			  iterateBlocks();
+			  updatePieChart();
+			  updateTextFields();
+		}		  
 	}
 	
 	public long getCurrentMillis(){
@@ -363,7 +382,7 @@ public class StatisticsActivity extends MainActivity implements DatePassable
 		}
 		
 		
-		// Är inte stolt över detta men det var mest tidseffektivt, it works :)
+		// Är inte stolt över detta men det var mest tidseffektivt
 		long s = getStartOfDay(start);
 		long e = getEndOfDay(start);
 		long step = 1000*60*60*24;
@@ -382,9 +401,8 @@ public class StatisticsActivity extends MainActivity implements DatePassable
 					time += timeDiff; //Lägg ihop tiden för samtliga block som har en stopptid
 				}
 			}
-			if(time > workDay){
-				overTime += time - workDay; 
-			}
+			
+			overTime += time - MainActivity.currentUser.getWorkday(); 						
 			
 			s += step;
 			e += step;
@@ -404,6 +422,17 @@ public class StatisticsActivity extends MainActivity implements DatePassable
 		Log.e("Overtime: ", d.toString());
 		Log.e("Number of days: ", Integer.toString(getNumberOfDays(start,stop)));
 		
+	}
+	
+	double procent(long total, long part){
+		double t = total;
+		double p = part;
+		
+		if(total != 0){
+			Log.e("RÄknade ", Long.toString(total));
+			return ((p/t) * 100);
+		}
+		return 0;		
 	}
 	
 	int getNumberOfDays(long start, long stop){

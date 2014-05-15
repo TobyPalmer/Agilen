@@ -8,9 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import android.util.Log;
-
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -19,10 +17,11 @@ import com.example.timemanagement.model.*;
 
 public class MainActivity extends Activity {
 	
+	private final long DEFAULT_WORKDAY = 8 * 60 * 60 * 1000; 
 	private Button login;
 	private TextView user, pass;
 	
-	
+	public static UserDetails currentUser;	
 	public static SQLiteMethods db;
 
     @Override
@@ -38,10 +37,35 @@ public class MainActivity extends Activity {
         login = (Button)findViewById(R.id.timestampButton);
     	login.setTypeface(font);
     	
+		login.setOnClickListener(new View.OnClickListener() {					
+					@Override
+					public void onClick(View v) {
+						Log.e("LOGIN!!: ", "DEN KOM HIT!!!");
+						Log.e("NAME!!: ", user.getText().toString());
+				        //Se till så att man kan hålla koll på workday för varje user.
+				        if(user.getText().length() > 0){
+				        	currentUser = db.getUserDetails(user.getText().toString());
+				            if(currentUser == null){
+				            	currentUser = new UserDetails(user.getText().toString(), DEFAULT_WORKDAY);
+				            	db.addUser(currentUser);
+				            }
+				        }
+				        else{
+				        	// Om man loggar in utan något username så skapas en temporär post med 8 timmars dag, denna sparas ej
+				        	currentUser = new UserDetails("Test", DEFAULT_WORKDAY);
+				        }				
+				        Log.e("USERNAME: ", currentUser.getUsername());
+				        Log.e("WORKDAY: ", Long.toString(currentUser.getWorkday()));
+				        Intent intent = new Intent(getApplicationContext(), TimestampActivity.class);				        
+				        startActivity(intent);	
+					}
+				});
+    	
         user = (TextView)findViewById(R.id.userName);
     	user.setTypeface(font);
         pass = (TextView)findViewById(R.id.passWord);
-    	pass.setTypeface(font);
+    	pass.setTypeface(font);   	
+    	
     }
 
     @Override
@@ -80,7 +104,7 @@ public class MainActivity extends Activity {
     	return false;
     }
     
-    public void timestampActivity(View view){
+    public void timestampActivity(View view){    	       
         Intent intent = new Intent(this, TimestampActivity.class);
         
         startActivity(intent);
@@ -115,7 +139,7 @@ public class MainActivity extends Activity {
     
     // Making Timestamp view
     public void timestampActivity(){
-        Intent intent = new Intent(this, TimestampActivity.class);
+    	Intent intent = new Intent(this, TimestampActivity.class); 
         
         startActivity(intent);
     }
@@ -132,10 +156,15 @@ public class MainActivity extends Activity {
         Intent intent = new Intent(this, HandleOrdersActivity.class);
         startActivity(intent);
     }
-
-    // Making Settings view
-    public void backupActivity(){
+    
+    public void userDetailActivity(){
     	
+        Intent intent = new Intent(this, UserDetailActivity.class);
+        startActivity(intent);
+    }
+    
+        // Making Settings view
+    public void backupActivity(){
         Intent intent = new Intent(this, BackupActivity.class);
         startActivity(intent);
     }

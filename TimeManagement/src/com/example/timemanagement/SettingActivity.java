@@ -61,7 +61,7 @@ public class SettingActivity extends MainActivity implements OnItemClickListener
         //If you want tomake something happen when you click the new Item
         //Make a new funktion with what should happen and make a call to it
         //in the onItemClick function in this class
-        String array[] = {"Lägg till notifikation", "Hantera ordrar"};
+        String array[] = {"Lägg till notifikation", "Hantera ordrar", "Användarinställningar"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1,  array);
         listView.setAdapter(adapter);
 		
@@ -186,9 +186,8 @@ public class SettingActivity extends MainActivity implements OnItemClickListener
 		 dialog.show();
    	
    }
-
-
-	@Override
+    
+  	@Override
 	public void onItemClick(AdapterView<?> l, View v, int pos, long id) {
 		// TODO Auto-generated method stub
 		if(pos==0){
@@ -197,6 +196,10 @@ public class SettingActivity extends MainActivity implements OnItemClickListener
 		
 		if(pos==1){
 			handleOrdersActivity();
+		}
+		
+		if(pos==2){
+			userDetailActivity();
 		}
 	}
 
