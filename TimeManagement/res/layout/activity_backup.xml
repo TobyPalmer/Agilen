@@ -67,7 +67,7 @@
         android:layout_marginRight="30dp"
         android:textSize="30sp"
     	android:textColor="#FFFFFF"
-        android:text="Exportera tidsrapport (CSV)"
+        android:text="Exportera tidsrapport (.csv)"
         android:background="@color/orange"/>
     
     </LinearLayout>
@@ -83,7 +83,7 @@
         android:layout_marginRight="30dp"
         android:textSize="30sp"
     	android:textColor="#FFFFFF"
-        android:text="Skapa backup av data (JSON)"
+        android:text="Skapa backup av data (.json)"
         android:background="@color/orange"
     	android:layout_alignParentBottom="true" />
 	
