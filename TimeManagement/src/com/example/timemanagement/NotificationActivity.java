@@ -86,12 +86,18 @@ public class NotificationActivity extends MainActivity implements OnItemClickLis
 		
     	for(int i=0;i<notificationList.size();i++)
     		clicked[i] = false;
+    	
+    	String[] orderList = new String[notificationList.size()];
+    	
+    	for(int i=0;i<orderList.length;i++)
+    		orderList[i] = notificationList.get(i).toString();
 		
 		if(!notificationList.isEmpty()){
 						
-	        ArrayAdapter<Notification> adapter = new ArrayAdapter<Notification>(this, android.R.layout.simple_list_item_1, android.R.id.text1,  notificationList);
-	        //mAdapter = new CustomListAdapter2(this,R.layout.listrow2, orderList, "neosanslight.ttf");
-	        listView.setAdapter(adapter);
+	        //ArrayAdapter<Notification> adapter = new ArrayAdapter<Notification>(this, android.R.layout.simple_list_item_1, android.R.id.text1,  notificationList);
+	        mAdapter = new CustomListAdapter2(this,R.layout.listrow2, orderList , "neosanslight.ttf");
+	        
+	        listView.setAdapter(mAdapter);
 			
 		}
 	  
