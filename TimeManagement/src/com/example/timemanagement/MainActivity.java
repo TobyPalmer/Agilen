@@ -77,10 +77,10 @@ public class MainActivity extends Activity {
     		timestampActivity();
     		return true;
     	}
-    	else if(item.getItemId() == R.id.menu_schedule) {
+    	/*else if(item.getItemId() == R.id.menu_schedule) {
     		scheduleActivity();
     		return true;
-    	}
+    	}*/
     	else if(item.getItemId() == R.id.menu_settings) {
     		settingActivity();
     		return true;

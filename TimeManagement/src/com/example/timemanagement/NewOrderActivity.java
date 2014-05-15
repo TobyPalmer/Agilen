@@ -173,7 +173,7 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 	
 	public void addNewOrderNumber(View view) {
 		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		 builder.setTitle("Ny order");
+		 builder.setTitle("Nytt ordernummer");
 		 
 		 LayoutInflater inflater = getLayoutInflater();
 
@@ -214,8 +214,8 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 	        				 // Add order to list
 		        			 list.add(order);
 		        			 // Notify user
-		        			 String message = "Order tillagd";
-		        			 newPopUp("Ny order", message);
+		        			 String message = "Ordernummer tillagt!";
+		        			 newPopUp("Nytt ordernummer", message);
 		        			 // Update list
 		        			 s.setSelection(list.size()-1);
 		        			 adapter.notifyDataSetChanged();
