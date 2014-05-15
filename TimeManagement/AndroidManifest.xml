@@ -37,7 +37,8 @@
             android:name="com.example.timemanagement.TimestampActivity"
             android:label="@string/title_activity_timestamp"
             android:parentActivityName="com.example.timemanagement.MainActivity"
-            android:windowSoftInputMode="stateHidden" >
+            android:windowSoftInputMode="stateHidden"
+            android:launchMode = "singleTask" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.timemanagement.MainActivity" />

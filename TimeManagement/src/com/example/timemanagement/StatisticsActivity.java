@@ -27,13 +27,8 @@ import android.widget.TextView;
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
 import com.example.timemanagement.sqlite.SQLiteMethods;
-import com.example.timemanagement.statistics.DatePassable;
-import com.example.timemanagement.statistics.DatePickerFragment;
-import com.example.timemanagement.statistics.OrderTimeDetails;
-import com.example.timemanagement.statistics.PieDetailsItem;
-import com.example.timemanagement.statistics.View_PieChart;
-import com.example.timemanagement.statistics.timeHM;
 import com.example.timemanagement.customadapters.*;
+import com.example.timemanagement.statistics.*;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -369,7 +364,7 @@ public class StatisticsActivity extends MainActivity implements DatePassable
 				b = bit.next();
 				if(b.getStop() != 0){
 					long timeDiff = b.getStop() - b.getStart(); //diff i millisekunder
-					otd.totalTime += timeDiff; //Lägg ihop tiden för samtliga block som har en stopptid
+					otd.totalTime += timeDiff; //LÃ¤gg ihop tiden fÃ¶r samtliga block som har en stopptid
 				}
 			}
 			
@@ -384,7 +379,7 @@ public class StatisticsActivity extends MainActivity implements DatePassable
 		}
 		
 		
-		// Är inte stolt över detta men det var mest tidseffektivt, it works :)
+		// Ã„r inte stolt Ã¶ver detta men det var mest tidseffektivt, it works :)
 		long s = getStartOfDay(start);
 		long e = getEndOfDay(start);
 		long step = 1000*60*60*24;
@@ -400,7 +395,7 @@ public class StatisticsActivity extends MainActivity implements DatePassable
 				b = bit.next();				
 				if(b.getStop() != 0){
 					long timeDiff = b.getStop() - b.getStart(); //diff i millisekunder
-					time += timeDiff; //Lägg ihop tiden för samtliga block som har en stopptid
+					time += timeDiff; //LÃ¤gg ihop tiden fÃ¶r samtliga block som har en stopptid
 				}
 			}
 			if(time > workDay){
