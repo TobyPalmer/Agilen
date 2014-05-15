@@ -15,6 +15,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -25,6 +27,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ListView;
@@ -38,6 +41,8 @@ public class NotificationActivity extends MainActivity implements OnItemClickLis
 	private Notification notification = new Notification();
 	private ListView listView;
 	private List<Notification> notificationList;
+	private Boolean[] clicked;
+	private Button delete, save;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +54,14 @@ public class NotificationActivity extends MainActivity implements OnItemClickLis
 		
         listView = (ListView) findViewById(R.id.notificationListView);
         listView.setOnItemClickListener(this);
+        
+		Typeface font_neo = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
+    	
+        delete = (Button)findViewById(R.id.deleteNotification);
+        save = (Button)findViewById(R.id.addNotification);
+    	delete.setTypeface(font_neo);
+    	save.setTypeface(font_neo);
+    
         
 		printList();
 		
@@ -91,6 +104,10 @@ public class NotificationActivity extends MainActivity implements OnItemClickLis
 	public void printList(){
 		
 		notificationList = MainActivity.db.getAllNotifications();
+		clicked = new Boolean[notificationList.size()];
+		
+    	for(int i=0;i<notificationList.size();i++)
+    		clicked[i] = false;
 		
 		if(!notificationList.isEmpty()){
 						
@@ -110,7 +127,7 @@ public class NotificationActivity extends MainActivity implements OnItemClickLis
 		Intent mServiceIntent = new Intent(NotificationActivity.this, NotificationHandler.class);
 		
 		mServiceIntent.putExtra("title", "Chronox");
-		mServiceIntent.putExtra("text", "Du har glömt att tidsrapportera!");
+		mServiceIntent.putExtra("text", "Glöm inte att tidsrapportera!");
 		
 		PendingIntent pendingIntent = PendingIntent.getService(NotificationActivity.this, notification.getID(), mServiceIntent, 0);
 		
@@ -144,8 +161,8 @@ public class NotificationActivity extends MainActivity implements OnItemClickLis
 	           	TimePicker time = (TimePicker)d.findViewById(R.id.notificationTime);
 	           	CheckBox spareTime = (CheckBox)d.findViewById(R.id.spareTime);
 	           	
-
-
+	           	notification.setSpareTime(spareTime.isChecked());
+	           		
 	           	cal.set(date.getYear(), date.getMonth(), date.getDayOfMonth(), time.getCurrentHour(), time.getCurrentMinute());
 	           	
 	           	//Call to the function that creates the notification with the selected date/time
@@ -194,6 +211,24 @@ public class NotificationActivity extends MainActivity implements OnItemClickLis
   	
   }
    
+	@Override
+	public void onItemClick(AdapterView<?> l, View v, int pos, long id) {
+		// TODO Auto-generated method stub
+
+		for(int i = 0; i<notificationList.size(); i++){
+			if(pos==i){
+				if(clicked[i]==false){
+					v.setBackgroundColor(getResources().getColor(R.color.red));
+					clicked[i]=true;
+				}
+				else{
+					v.setBackgroundColor(Color.TRANSPARENT);
+					clicked[i]=false;
+				}
+			}
+		}
+	}
+   
    public void onRadioButtonClicked(View view) {
 	    // Is the button now checked?
 	    boolean checked = ((RadioButton) view).isChecked();
@@ -228,11 +263,59 @@ public class NotificationActivity extends MainActivity implements OnItemClickLis
 	           
 	    }
 	}
+   
+   public void deleteNotifications(View v){
+		
+		if(nothingClicked()){
+			
+			newPopUp("Fel","Du måste markera de notifikationer du vill ta bort.");
+			
+			return;
+		}
+		
+		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-	@Override
-	public void onItemClick(AdapterView<?> l, View v, int pos, long id) {
-		// TODO Auto-generated method stub
+		 builder.setTitle("Vill du verkligen ta bort?");
+
+		    // Inflate and set the layout for the dialog
+		    // Pass null as the parent view because its going in the dialog layout
+		 
+		 builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	               // User clicked OK button
+		    		for(int index = 0; index<notificationList.size(); index++){
+		    			if(clicked[index]==true){
+		    				MainActivity.db.deleteNotification(notificationList.get(index));
+		    			}
+		    		}
+		    		onCreate(null);
+
+	           }	
+	       });
+		 
+		 builder.setNegativeButton("Nej", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	               // User cancelled the dialog
+
+	           }
+	       });
+
+		 AlertDialog dialog = builder.create();
+		 
+		 dialog.show(); 
 		
 	}
+   
+	public boolean nothingClicked(){
+		for(int i=0;i<clicked.length;i++){
+			if(clicked[i]==true)
+				return false;
+		}
+		return true;
+	}
+	
+   
+
+
 
 }

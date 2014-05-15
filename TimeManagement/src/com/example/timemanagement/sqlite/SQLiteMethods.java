@@ -29,7 +29,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
 	
 	// Database info
 
-    private static final int DATABASE_VERSION = 20;
+    private static final int DATABASE_VERSION = 21;
     private static final String DATABASE_NAME = "TimeManagement";
  
     // Constructor
@@ -66,7 +66,8 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         	"time LONG, " +
         	"everyDay INTEGER, " +
         	"everyWeek INTEGER, " +
-        	"everyMonth INTEGER)";
+        	"everyMonth INTEGER, " +
+        	"spareTime INTEGER)";
         db.execSQL(CREATE_NOTIFICATIONS_TABLE);
     }
     
@@ -474,11 +475,13 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     private static final String NOTIFICATIONS_TABLE_KEY_EVERYDAY = "everyDay";
     private static final String NOTIFICATIONS_TABLE_KEY_EVERYWEEK = "everyWeek";
     private static final String NOTIFICATIONS_TABLE_KEY_EVERYMONTH = "everyMonth";
+    private static final String NOTIFICATIONS_TABLE_KEY_SPARETIME = "spareTime";
     private static final String[] NOTIFICATIONS_TABLE_COLUMNS = {NOTIFICATIONS_TABLE_KEY_ID, 
 														    	NOTIFICATIONS_TABLE_KEY_TIME, 
 														    	NOTIFICATIONS_TABLE_KEY_EVERYDAY, 
 														    	NOTIFICATIONS_TABLE_KEY_EVERYWEEK,
-														    	NOTIFICATIONS_TABLE_KEY_EVERYMONTH};
+														    	NOTIFICATIONS_TABLE_KEY_EVERYMONTH,
+														    	NOTIFICATIONS_TABLE_KEY_SPARETIME};
     
     
     /**
@@ -490,15 +493,17 @@ public class SQLiteMethods extends SQLiteOpenHelper {
  
         ContentValues values = new ContentValues();
         
-        int d,w,m;
+        int d,w,m,s;
         d = (notification.everyDay())?1:0;
         w = (notification.everyWeek())?1:0;
         m = (notification.everyMonth())?1:0;
+        s = (notification.spareTime())?1:0;
         
         values.put(NOTIFICATIONS_TABLE_KEY_TIME, notification.getTime());  
         values.put(NOTIFICATIONS_TABLE_KEY_EVERYDAY, d); 
         values.put(NOTIFICATIONS_TABLE_KEY_EVERYWEEK, w);
         values.put(NOTIFICATIONS_TABLE_KEY_EVERYMONTH, m);
+        values.put(NOTIFICATIONS_TABLE_KEY_SPARETIME, s);
  
         notification.setID((int)db.insert(NOTIFICATIONS_TABLE, null, values));
         
@@ -526,10 +531,11 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         	if(!cursor.isAfterLast()) { // Return Notification
         		cursor.moveToFirst();
         		
-                boolean d,w,m;
+                boolean d,w,m,s;
                 d = (cursor.getInt(2)==1)?true:false;
                 w = (cursor.getInt(3)==1)?true:false;
                 m = (cursor.getInt(4)==1)?true:false;
+                s = (cursor.getInt(5)==1)?true:false;
                 
             	Notification notification = new Notification();
         		notification.setID(cursor.getInt(0));
@@ -537,6 +543,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         		notification.setEveryDay(d);
         		notification.setEveryWeek(w);
         		notification.setEveryMonth(m);
+        		notification.setSpareTime(s);
         		
 	            return notification;
         	}
@@ -565,10 +572,11 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
             	
-                boolean d,w,m;
+                boolean d,w,m,s;
                 d = (cursor.getInt(2)==1)?true:false;
                 w = (cursor.getInt(3)==1)?true:false;
                 m = (cursor.getInt(4)==1)?true:false;
+                s = (cursor.getInt(5)==1)?true:false;
                 
             	Notification notification = new Notification();
         		notification.setID(cursor.getInt(0));
@@ -576,8 +584,9 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         		notification.setEveryDay(d);
         		notification.setEveryWeek(w);
         		notification.setEveryMonth(m);
+        		notification.setSpareTime(s);
         		notifications.add(notification);
-        		Log.w("notif", ""+notification.toString());
+
             } while (cursor.moveToNext());
         }
         
@@ -594,16 +603,18 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     public int putNotification(Notification notification) {
         SQLiteDatabase db = this.getWritableDatabase();
         
-        int d,w,m;
+        int d,w,m,s;
         d = (notification.everyDay())?1:0;
         w = (notification.everyWeek())?1:0;
         m = (notification.everyMonth())?1:0;
+        s = (notification.spareTime())?1:0;
      
         ContentValues values = new ContentValues();
         values.put(NOTIFICATIONS_TABLE_KEY_TIME, notification.getTime()); 
         values.put(NOTIFICATIONS_TABLE_KEY_EVERYDAY, d);
         values.put(NOTIFICATIONS_TABLE_KEY_EVERYWEEK, w);
         values.put(NOTIFICATIONS_TABLE_KEY_EVERYMONTH, m);
+        values.put(NOTIFICATIONS_TABLE_KEY_SPARETIME, s);
      
         int i = db.update(NOTIFICATIONS_TABLE, 
         					values, 

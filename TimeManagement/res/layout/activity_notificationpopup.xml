@@ -31,7 +31,6 @@
             android:id="@+id/everyDay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true"
             android:text="Varje dag"
             android:onClick="onRadioButtonClicked" />
 
