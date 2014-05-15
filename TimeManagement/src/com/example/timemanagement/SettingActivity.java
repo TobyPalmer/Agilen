@@ -56,7 +56,7 @@ public class SettingActivity extends MainActivity implements OnItemClickListener
         //If you want tomake something happen when you click the new Item
         //Make a new funktion with what should happen and make a call to it
         //in the onItemClick function in this class
-        String array[] = {"Hantera notifikationer", "Hantera ordrar"};
+        String array[] = {"Hantera notifikationer", "Hantera ordernummer"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1,  array);
         listView.setAdapter(adapter);	
 	}
