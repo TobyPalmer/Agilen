@@ -44,6 +44,10 @@ public class Block implements Serializable, Comparable<Block>{
 		this.comment = comment;
 		this.checked = 0;
 	}
+	
+	public boolean isStopped(){
+		return (this.stop != 0);
+	}
 
 	
 	public int getID() {
@@ -112,7 +116,7 @@ public class Block implements Serializable, Comparable<Block>{
 		Date stop = new java.util.Date(this.stop);
 		String stopString = new SimpleDateFormat("HH:mm").format(stop);
 		
-		if(this.stop!=0)
+		if(this.isStopped())
 			return startString + " - " + stopString;
 		else
 			return startString + " - xx:xx";
