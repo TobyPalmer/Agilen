@@ -1,6 +1,9 @@
-#Agilen
-TNM082 - Grupp A - Time Management
+#Chronox
+TNM082 - Grupp A - Chronox
 Agilen is a project developed by a group of students at Linköpings University, coached by Combitech.
+
+#Licence
+Chronox is licenced under the  [BSD licence](https://github.com/TobyPalmer/Agilen/blob/master/LICENSE )
 
 
 ##Get started

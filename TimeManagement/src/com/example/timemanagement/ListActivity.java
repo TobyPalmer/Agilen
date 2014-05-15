@@ -185,7 +185,7 @@ import android.app.DialogFragment;
 			    	while(it.hasNext())
 			    	{
 			    		b = it.next();
-			    		if(b.getOrderID() != 0){
+			    		if(b.getOrderID() > 1 ){
 			    			b.setChecked(1);
 			    			MainActivity.db.putBlock(b);
 			    		}			    		
@@ -205,7 +205,7 @@ import android.app.DialogFragment;
 			    	while(it.hasNext())
 			    	{
 			    		b = it.next();
-			    		if(b.getOrderID() != 0){
+			    		if(b.getOrderID() > 1){
 			    			b.setChecked(0);
 			    			MainActivity.db.putBlock(b);
 			    		}			    		
@@ -218,8 +218,16 @@ import android.app.DialogFragment;
 		
 		private void setAllChecks(int value){
 			for(int i = 0; i < blockStatesList.size();i++){
-				blockStatesList.set(i, value);				
+				
+				if(!(bList.get(i).getOrderID() <= 1)){
+					blockStatesList.set(i, value);
+					bList.get(i).setChecked(value);
+				}
+				else
+					bList.get(i).setChecked(0);
+									
 			}
+			
 			listAdapter.setBlockStatesList(blockStatesList);
 		}
 		
@@ -352,6 +360,7 @@ import android.app.DialogFragment;
 	    				else{
 	    					AlertDialog.Builder noOrderNrDialogBuilder = new AlertDialog.Builder(l_view.getContext());
 	    					noOrderNrDialogBuilder.setMessage("Denna post saknar ordernummer, vill du ŒtgŠrda detta?");
+
 	    					noOrderNrDialogBuilder.setCancelable(true);
 	    					noOrderNrDialogBuilder.setPositiveButton("Ja", 
 	    							new DialogInterface.OnClickListener() {
@@ -382,7 +391,7 @@ import android.app.DialogFragment;
 	    				
 	    			}
 	    			catch (Exception e){
-	    				Log.e("NÃ¥got blev fel! At position:",Integer.toString(position));
+	    				Log.e("Något blev fel! At position:",Integer.toString(position));
 	    			}
 	    			Log.e("VÃ¤rde i listan: ",value);
 	    			Log.e("Position i listan: ",Integer.toString(position));

@@ -24,6 +24,7 @@ public class SettingActivity extends MainActivity implements OnItemClickListener
 	private ArrayList<String> settingsList;
 	
 	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -43,6 +44,7 @@ public class SettingActivity extends MainActivity implements OnItemClickListener
         //If you want tomake something happen when you click the new Item
         //Make a new funktion with what should happen and make a call to it
         //in the onItemClick function in this class
+
         //String array[] = {"Hantera notifikationer", "Hantera ordrar"};
         String s1 = "Hantera notifikationer";
         String s2 = "Hantera ordrar"; 
@@ -50,7 +52,6 @@ public class SettingActivity extends MainActivity implements OnItemClickListener
         settingsList.add(s2);
     	listAdapter = new CustomListAdapter2(this,R.layout.listrow2, settingsList);
     	listView.setAdapter(listAdapter);	
-		
 	}
 	
 	/**
@@ -63,33 +64,6 @@ public class SettingActivity extends MainActivity implements OnItemClickListener
 		}
 	}
 	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			// This ID represents the Home or Up button. In the case of this
-			// activity, the Up button is shown. Use NavUtils to allow users
-			// to navigate up one level in the application structure. For
-			// more details, see the Navigation pattern on Android Design:
-			//
-			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-			//
-			NavUtils.navigateUpFromSameTask(this);
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-	
-
-
-
 	@Override
 	public void onItemClick(AdapterView<?> l, View v, int pos, long id) {
 		// TODO Auto-generated method stub

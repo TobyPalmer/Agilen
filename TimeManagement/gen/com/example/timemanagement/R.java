@@ -80,10 +80,9 @@ public final class R {
         public static final int linearLayoutDatePick=0x7f090038;
         public static final int linear_layout2=0x7f09003a;
         public static final int listView1=0x7f090032;
-        public static final int menu_backup=0x7f09004a;
+        public static final int menu_backup=0x7f090049;
         public static final int menu_checkview=0x7f090045;
-        public static final int menu_schedule=0x7f090048;
-        public static final int menu_settings=0x7f090049;
+        public static final int menu_settings=0x7f090048;
         public static final int menu_statistics=0x7f090046;
         public static final int menu_timestamp=0x7f090047;
         public static final int nextDay=0x7f09000b;
