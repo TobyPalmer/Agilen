@@ -31,6 +31,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.swipetodismiss.*;
+import com.example.timemanagement.customadapters.CustomListAdapter2;
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
 
@@ -40,6 +41,7 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 	private ListView listView;
 	private Button next, prev, startB, create;
 	private Button day;
+	private CustomListAdapter2 mAdapter;
 	
 	// Calendar that is set to the chosen day.
 	private Calendar cal;
@@ -48,10 +50,6 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 	Block b;
 	
 	boolean started = false;
-	
-	// Contains strings representing all blocks
-	ArrayAdapter<String> mAdapter;
-	
 
 	// longs that represents the start- and endtime of the day
 	private long start, stop, today;
@@ -286,8 +284,8 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 			items[i] = s;
         }
         
-        // Define the data structure for the list strings
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, new ArrayList<String>(Arrays.asList(items)));        
+        // Define the data structure for the list strings    
+        mAdapter = new CustomListAdapter2(this,R.layout.listrow2, new ArrayList<String>(Arrays.asList(items)));
         listView.setAdapter(mAdapter);
         
         
