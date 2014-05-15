@@ -604,6 +604,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     	// Return text
     	String success = "Exporterade backup-data till telefonminne: " + folderName + "/" + fileName + "";
     	String error = "Misslyckades";
+
     	String json;
     	// Time constraint?
     	if(start == 0 && stop == 0) {

@@ -443,7 +443,7 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 		   
 		 
 
-		 builder.setPositiveButton("Lägg till", new DialogInterface.OnClickListener() {
+		 builder.setPositiveButton("LÃ¤gg till", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User clicked OK button
 	        	
