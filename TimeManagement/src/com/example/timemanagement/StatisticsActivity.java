@@ -364,7 +364,7 @@ public class StatisticsActivity extends MainActivity implements DatePassable
 				b = bit.next();
 				if(b.getStop() != 0){
 					long timeDiff = b.getStop() - b.getStart(); //diff i millisekunder
-					otd.totalTime += timeDiff; //L�gg ihop tiden f�r samtliga block som har en stopptid
+					otd.totalTime += timeDiff; //Lägg ihop tiden för samtliga block som har en stopptid
 				}
 			}
 			
@@ -379,7 +379,7 @@ public class StatisticsActivity extends MainActivity implements DatePassable
 		}
 		
 		
-		// �r inte stolt �ver detta men det var mest tidseffektivt, it works :)
+		// Är inte stolt över detta men det var mest tidseffektivt, it works :)
 		long s = getStartOfDay(start);
 		long e = getEndOfDay(start);
 		long step = 1000*60*60*24;
@@ -395,7 +395,7 @@ public class StatisticsActivity extends MainActivity implements DatePassable
 				b = bit.next();				
 				if(b.getStop() != 0){
 					long timeDiff = b.getStop() - b.getStart(); //diff i millisekunder
-					time += timeDiff; //L�gg ihop tiden f�r samtliga block som har en stopptid
+					time += timeDiff; //Lägg ihop tiden för samtliga block som har en stopptid
 				}
 			}
 			if(time > workDay){

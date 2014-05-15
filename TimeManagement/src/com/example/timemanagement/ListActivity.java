@@ -348,7 +348,7 @@ import android.graphics.Typeface;
 	    				}
 	    				else{
 	    					AlertDialog.Builder noOrderNrDialogBuilder = new AlertDialog.Builder(l_view.getContext());
-	    					noOrderNrDialogBuilder.setMessage("Denna post saknar ordernummer, vill du �tg�rda detta?");
+	    					noOrderNrDialogBuilder.setMessage("Denna post saknar ordernummer, vill du åtgärda detta?");
 	    					noOrderNrDialogBuilder.setCancelable(true);
 	    					noOrderNrDialogBuilder.setPositiveButton("Ja", 
 	    							new DialogInterface.OnClickListener() {
@@ -379,9 +379,9 @@ import android.graphics.Typeface;
 	    				
 	    			}
 	    			catch (Exception e){
-	    				Log.e("N�got blev fel! At position:",Integer.toString(position));
+	    				Log.e("Något blev fel! At position:",Integer.toString(position));
 	    			}
-	    			Log.e("V�rde i listan: ",value);
+	    			Log.e("Värde i listan: ",value);
 	    			Log.e("Position i listan: ",Integer.toString(position));
 	    			iterateBlocks(getDateString());
 	    			
