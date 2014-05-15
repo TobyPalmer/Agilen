@@ -1,46 +1,27 @@
 package com.example.timemanagement;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
-import com.example.timemanagement.model.Order;
 
 import android.annotation.TargetApi;
-import android.app.AlarmManager;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.support.v4.util.LogWriter;
-import android.text.Editable;
-import android.text.format.Time;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.TimePicker;
+
+import com.example.timemanagement.customadapters.CustomListAdapter1;
+import com.example.timemanagement.customadapters.CustomListAdapter2;
 
 public class SettingActivity extends MainActivity implements OnItemClickListener{
 	
-
+	private CustomListAdapter2 listAdapter;
+	private  ListView listView;
+	private ArrayList<String> settingsList;
 	
 	
 	@Override
@@ -52,17 +33,23 @@ public class SettingActivity extends MainActivity implements OnItemClickListener
 		setupActionBar();
 		
 		
-        ListView listView = (ListView) findViewById(R.id.listView1);
+        listView = (ListView) findViewById(R.id.listView1);
         listView.setOnItemClickListener(this);
+        
+        settingsList = new ArrayList<String>();
         
         
         //Add strings in the array to get a clickable listItem
         //If you want tomake something happen when you click the new Item
         //Make a new funktion with what should happen and make a call to it
         //in the onItemClick function in this class
-        String array[] = {"Hantera notifikationer", "Hantera ordrar"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1,  array);
-        listView.setAdapter(adapter);
+        //String array[] = {"Hantera notifikationer", "Hantera ordrar"};
+        String s1 = "Hantera notifikationer";
+        String s2 = "Hantera ordrar"; 
+        settingsList.add(s1);
+        settingsList.add(s2);
+    	listAdapter = new CustomListAdapter2(this,R.layout.listrow2, settingsList);
+    	listView.setAdapter(listAdapter);	
 		
 	}
 	

@@ -132,7 +132,8 @@ public final class R {
         public static final int activity_statistics=0x7f03000b;
         public static final int activity_timestamp=0x7f03000c;
         public static final int listrow=0x7f03000d;
-        public static final int spinner_item=0x7f03000e;
+        public static final int listrow2=0x7f03000e;
+        public static final int spinner_item=0x7f03000f;
     }
     public static final class menu {
         public static final int list=0x7f080000;
