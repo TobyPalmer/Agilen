@@ -8,29 +8,32 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical" 
+         android:layout_gravity="bottom">
 
         <LinearLayout
             android:id="@+id/linearLayout1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_gravity="bottom"
              >
 
             <Button
                 android:id="@+id/prevDay"
-                android:layout_width="80dp"
+                android:layout_width="0dp"
                 android:layout_height="80dp"
                 android:layout_alignParentLeft="true"
                 android:layout_weight="1"
                 android:background="@color/orange"
                 android:text="@string/fa_arrow_left" 
-                android:textColor="#FFF"
+                android:textColor="@color/white"
                 android:textSize="50sp" />
 
             <Button
                 android:id="@+id/day"
-                android:background="#0000"
-                android:layout_width="80dp"
+                android:background="@color/white"
+                android:layout_width="0dp"
                 android:layout_height="80dp"
                 android:layout_weight="2"
                 android:gravity="center"
@@ -39,13 +42,13 @@
 
             <Button
                 android:id="@+id/nextDay"
-                android:layout_width="80dp"
+                android:layout_width="0dp"
                 android:layout_height="80dp"
                 android:layout_alignParentRight="true"
                 android:layout_weight="1"
                 android:background="@color/orange"
                 android:text="@string/fa_arrow_right" 
-                android:textColor="#FFF"
+                android:textColor="@color/white"
                 android:textSize="50sp" />
 
         </LinearLayout>
@@ -53,10 +56,8 @@
         <ListView
             android:id="@+id/l_view"
             android:layout_width="fill_parent"
-            android:layout_height="400dp"
-			android:gravity="top"
+            android:layout_height="fill_parent"
 			android:textSize="50sp">
-
         </ListView>
 
         <TextView
@@ -66,19 +67,19 @@
             android:text="Total"
             android:textSize="25sp"
             android:gravity="bottom" 
-            android:layout_marginLeft="10sp"/>
+            android:layout_marginLeft="10sp"
+            android:layout_marginBottom="10sp"/>
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:background="#aaa9a9"
-            android:gravity="bottom"
-            android:orientation="vertical" >
+            android:background="@color/lightGrey"
+            android:layout_gravity="bottom"
+            android:orientation="horizontal" >
 
             <Button
                 android:id="@+id/deselectAll"
-                android:layout_width="fill_parent"
+                android:layout_width="0dp"
                 android:layout_height="80dp"
                 android:layout_marginBottom="30dp"
                 android:layout_marginTop="30dp"
@@ -87,18 +88,19 @@
                 android:layout_weight="2"
                 android:background="@color/orange"
                 android:text="Avmarkera alla"
-                android:textColor="#FFF"
+                android:textColor="@color/white"
                 android:textSize="30sp" />
 
             <Button
                 android:id="@+id/selectAll"
-                android:layout_width="fill_parent"
+                android:layout_width="0dp"
                 android:layout_height="80dp"
                 android:layout_weight="2"
                 android:background="@color/orange"
                 android:text="Markera alla"
-                android:textColor="#FFF"
+                android:textColor="@color/white"
                 android:layout_marginBottom="30dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:textSize="30sp" />
