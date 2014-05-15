@@ -68,12 +68,11 @@ public class HandleOrdersActivity extends MainActivity implements OnItemClickLis
 		
 		for(int i=0; i<list.size(); i++){
 			clicked[i]=false;
-			orderList[i] = list.get(i).toString();
+			orderList[i] = list.get(i).heavytoString();
 		}
 		
         ListView lv = (ListView) findViewById(R.id.orderListView);
         lv.setOnItemClickListener(this);
-        
         
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1,  orderList);
         lv.setAdapter(adapter);
@@ -91,7 +90,7 @@ public class HandleOrdersActivity extends MainActivity implements OnItemClickLis
 	
 	public void addNewOrder(View v){
 		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		 builder.setTitle("Ny order");
+		 builder.setTitle("Nytt ordernummer");
 		 
 		 LayoutInflater inflater = getLayoutInflater();
 
@@ -119,7 +118,7 @@ public class HandleOrdersActivity extends MainActivity implements OnItemClickLis
 	        			 list.add(order);
 			        	
 	        			 String message = "Du har lagt till en order!";
-	        			 newPopUp("Order tillagd", message);
+	        			 newPopUp("Ordernummer tillagt!", message);
 	        			
 	        			 //Save to dB
 	        			 MainActivity.db.addOrder(order); 
@@ -202,7 +201,7 @@ public class HandleOrdersActivity extends MainActivity implements OnItemClickLis
 		for(int i = 0; i<orderList.length; i++){
 			if(id==i){
 				if(clicked[i]==false){
-					v.setBackgroundColor(getResources().getColor(R.color.red));
+					v.setBackgroundColor(getResources().getColor(R.color.veryLightGrey));
 					clicked[i]=true;
 				}
 				else{

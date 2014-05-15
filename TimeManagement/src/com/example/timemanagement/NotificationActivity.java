@@ -122,9 +122,7 @@ public class NotificationActivity extends MainActivity implements OnItemClickLis
 		    // Inflate and set the layout for the dialog
 		    // Pass null as the parent view because its going in the dialog layout
 		    builder.setView(inflater.inflate(R.layout.activity_notificationpopup, null));
-		    
-
-		   
+ 
 		 
 		 builder.setPositiveButton("Lägg till", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {

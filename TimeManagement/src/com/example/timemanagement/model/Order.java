@@ -58,6 +58,21 @@ public class Order {
 		return this.orderNumber;
 	}
 
+	public String heavytoString(){
+		
+		String dWork;
+		if(this.directWork == 1){
+			dWork = "Direkttid";
+		}
+		else{
+			dWork = "Interntid";
+		}
+		//Vill inte visa Direkt-/Indirekttid i Spinner
+		return orderNumber + " - " + orderName + " - " + dWork;
+		//return "Order [ID=" + ID + ", orderNumber=" + orderNumber + ", orderName=" + orderName + "]";
+		
+	}
+
 	@Override
 	public String toString() {
 		String dWork;
