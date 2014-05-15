@@ -26,7 +26,7 @@
     android:layout_marginRight="30dp"
     android:textSize="30sp"
     android:paddingLeft="20dp"
-    android:background="#FFFFFF"
+    android:background="@color/white"
     android:hint="@string/userName"
 	android:layout_span="4" />
  	 
@@ -40,9 +40,10 @@
     android:layout_marginRight="30dp"
     android:textSize="30sp"
     android:paddingLeft="20dp"
-    android:background="#FFFFFF"
+    android:background="@color/white"
     android:hint="@string/passWord"
-	android:layout_span="4" />
+	android:layout_span="4"
+	android:inputType="textPassword"/>
 
 
     <Button

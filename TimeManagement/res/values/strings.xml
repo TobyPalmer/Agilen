@@ -8,12 +8,12 @@
     <string name="menu_timestamp">Tidslogg</string>
     <string name="menu_schedule">Schemavy</string>
     <string name="menu_settings">Inställningar</string>
-    <string name="menu_backup">Backup (import/export)</string>
+    <string name="menu_backup">Export (Backup)</string>
     <!-- Activities -->
     <string name="title_activity_timestamp">Tidslogg</string>
     <string name="title_activity_new_order">Editera block</string>
     <string name="title_activity_list">Avcheckning</string>
-    <string name="title_activity_backup">Backup (import/export)</string>
+    <string name="title_activity_backup">Export (Backup)</string>
     
     <string name="taskDate"></string>
     <string name="taskStart"></string>
@@ -37,7 +37,7 @@
     <string name="fa_square">&#xf0c8;</string>
     
     <string name="deselectAll">Börja om</string>
-     <string name="selectAll">Bekräfta alla</string>
+    <string name="selectAll">Bekräfta alla</string>
      
     <color name="green">#57BF23</color>
     <color name="red">#FB3804</color>
