@@ -14,7 +14,7 @@ public class timeHM {
 	
 @Override
 public String toString(){
-	return Integer.toString(hours) + " H, " + Integer.toString(minutes);	
+	return Integer.toString(hours) + "h, " + Integer.toString(minutes) + "m";	
 }
 
 public String hoursToString(){

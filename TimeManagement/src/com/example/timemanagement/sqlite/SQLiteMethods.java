@@ -2,9 +2,12 @@ package com.example.timemanagement.sqlite;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -381,12 +384,12 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     	// Get all blocks
     	if(orderID == 0) {
     		cursor = db.rawQuery("SELECT * FROM blocks "
-    							+ "WHERE start >= ? AND stop <= ?",
+    							+ "WHERE start >= ? AND stop <= ? ORDER BY start",
     	  						new String[] {String.valueOf(start), String.valueOf(stop)});
     	} // Get blocks of a certain orderID
     	else {
     		cursor = db.rawQuery("SELECT * FROM blocks "
-						+ "WHERE start >= ? AND stop <= ? AND orderID = ?",
+						+ "WHERE start >= ? AND stop <= ? AND orderID = ? ORDER BY start",
 					new String[] {String.valueOf(start), String.valueOf(stop), String.valueOf(orderID)});
     	}
         if (cursor.moveToFirst()) {
@@ -445,8 +448,12 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         db.close();
     }
     
+    // *********************************************** //
+    // EXPORT METHODS
+    // *********************************************** //
+
     /**
-     * Return database data as JSON string
+     * Return all data as JSON string
      * 
      */
     public String toJSONString() {
@@ -454,7 +461,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     }
     
     /**
-     * Return database data as JSON string
+     * Return data subset as JSON string
      * 
      */
     public String toJSONString(long start, long stop) {
@@ -526,7 +533,53 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     }
     
     /**
-     * Export json string file
+     * Return all data as JSON string
+     * 
+     */
+    public String toCSVString() {
+    	return this.toCSVString(0, 0);
+    }
+    
+    /**
+     * Return data subset as JSON string
+     * 
+     */
+    public String toCSVString(long start, long stop) {
+    	// Contains CSV output...
+    	String output = "Ordernummer,Start,Slut,Kommentar,Avcheckad\n";
+    	// Define date format
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm z"); // the format of your date
+		sdf.setTimeZone(TimeZone.getDefault());
+    	// Get all blocks
+        List<Block> blocks;
+        if(start == 0 && stop == 0){
+        	blocks = this.getAllBlocks();
+        }
+        else {
+        	blocks = this.getBlocksBetweenDate(start, stop);
+        }
+        // For all blocks
+        for(int i = 0; i < blocks.size(); i++) {
+        	Order order = this.getOrder(blocks.get(i).getOrderID());
+        	String orderNumber;
+        	if(order == null) {
+        		orderNumber = "0";
+        	}
+        	else {
+        		orderNumber = order.getOrderNumber();
+        	}
+			output += orderNumber + ",";
+			output += "\"" + sdf.format(new Date(blocks.get(i).getStart())) + "\",";
+			output += sdf.format(new Date(blocks.get(i).getStop())) + ",";
+			output += "\"" + blocks.get(i).getComment() + "\",";
+			output += blocks.get(i).getChecked() + ",";
+			output += "\n";
+        }
+        return output;
+    }
+    
+    /**
+     * Export all data as JSON file
      * 
      * @return
      */
@@ -534,13 +587,22 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     	return exportJSON(0,0);
     }
     
+    /**
+     * Export data subset as JSON file
+     * 
+     * @return
+     */
     public String exportJSON(long start, long stop) {
+    	// For formatting dates
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+		sdf.setTimeZone(TimeZone.getDefault());
     	// Where to store the file?
     	String path = Environment.getExternalStorageDirectory().toString();
     	String folderName = "Chronox";
-    	String fileName = "ChronoxExport(" + System.currentTimeMillis() / 1000L + ").json";
+    	String fileName = "";
+    	fileName = "Backup (sparad " + sdf.format(new Date(System.currentTimeMillis())) + ").json";	
     	// Return text
-    	String success = "Exporterade data till telefonminne: " + folderName + "/" + fileName + "";
+    	String success = "Exporterade backup-data till telefonminne: " + folderName + "/" + fileName + "";
     	String error = "Misslyckades";
     	String json;
     	// Time constraint?
@@ -565,8 +627,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         		return error;
         	}
         }
-        // Write to file
-        try {
+        try { // Write to file
 	    	Log.w("timemanagement", "SQLiteMethods.exportJSON(): Writing file...");
 	        FileWriter fw = new FileWriter(file.toString(), false);
 	        // ************************************************** //
@@ -576,6 +637,73 @@ public class SQLiteMethods extends SQLiteOpenHelper {
 	        return success;
         } catch(Exception e) {
         	Log.w("timemanagement", "SQLiteMethods.exportJSON(): Trying to write to file, Exception: " + e.toString());
+        	return error;
+        }
+    }
+    
+    /**
+     * Export all data as CSV file
+     * 
+     * @return
+     */
+    public String exportCSV() {
+    	return exportCSV(0,0);
+    }
+    
+    /**
+     * Export data subset as CSV file
+     * 
+     * @return
+     */
+    public String exportCSV(long start, long stop) {
+    	// For formatting dates
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		sdf.setTimeZone(TimeZone.getDefault());
+    	// Where to store the file?
+    	String path = Environment.getExternalStorageDirectory().toString();
+    	String fileName = "";
+    	String folderName = "Chronox";
+    	if(start == 0 && stop == 0) {
+    		fileName = "Tidrapport (sparad " + sdf.format(new Date(System.currentTimeMillis())) + ").csv";
+    	}
+    	else {
+    		fileName = "Tidrapport (" + sdf.format(new Date(start)) + " till " + sdf.format(new Date(stop)) + ").csv";
+    	}
+    	// Return text
+    	String success = "Exporterade tidrapport till telefonminne: " + folderName + "/" + fileName + "";
+    	String error = "Misslyckades";
+    	// Find folder, or create if it does not exist
+        File folder = new File(path + "/" + folderName);
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
+        // Find file, or create if it does not exist
+        File file = new File(path + "/" + folderName + "/" + fileName);
+        if(!file.exists()) {
+        	try {
+        		file.createNewFile();
+        	} catch (Exception e) {
+        		Log.w("timemanagement", "SQLiteMethods.exportCSV(): trying to create new file, Exception: " + e.toString());
+        		return error;
+        	}
+        }
+        try { // Write to file
+	    	Log.w("timemanagement", "SQLiteMethods.exportCSV(): Writing file... " + folderName + "/" + fileName + "");
+	        FileWriter fw = new FileWriter(file.toString(), false);
+	        // ************************************************** //
+	        String line = "";
+	        if(start == 0 && stop == 0) {
+	        	line = this.toCSVString();
+	        }
+	        else {
+	        	line = this.toCSVString(start, stop);
+	        }
+    		fw.write(line);
+	        // ************************************************** //
+	        fw.close();
+	        return success;
+        } catch(Exception e) {
+        	Log.w("timemanagement", "SQLiteMethods.exportCSV(): Trying to write to file, Exception: " + e.toString());
         	return error;
         }
     }
