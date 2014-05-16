@@ -367,8 +367,6 @@ import android.app.DialogFragment;
 	    					AlertDialog alertNoOrder = noOrderNrDialogBuilder.create();
 	    					alertNoOrder.show();
 	    				}
-	    				
-	    				
 	    			}
 	    			catch (Exception e){
 	    				Log.e("Något blev fel! At position:",Integer.toString(position));
