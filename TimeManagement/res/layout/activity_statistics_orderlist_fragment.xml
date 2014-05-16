@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_piechart_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <TextView style="?android:textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Direkttids ordrar"
+        android:textSize = "35sp" />    
+    <ListView
+            android:id="@+id/statistics_direct_time_list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+			android:gravity="top"
+			/>
+
+        
+    <TextView style="?android:textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="Interntids ordrar"
+        android:textSize = "35sp" />
+    
+    <ListView
+            android:id="@+id/statistics_indirect_time_list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+			android:gravity="top"
+			android:textSize="50sp"
+			/>
+
+</LinearLayout>

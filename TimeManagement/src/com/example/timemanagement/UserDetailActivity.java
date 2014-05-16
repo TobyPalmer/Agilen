@@ -1,8 +1,5 @@
 package com.example.timemanagement;
 
-import java.util.Calendar;
-
-import com.example.timemanagement.statistics.DatePickerFragment;
 import com.example.timemanagement.statistics.PickerFragment;
 import com.example.timemanagement.statistics.TDPassable;
 import com.example.timemanagement.statistics.TimePickerFragment;
@@ -17,6 +14,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+/**
+ * Activity to handle the configuration of the currentUser
+ * @author Marcus
+ *
+ */
 public class UserDetailActivity extends MainActivity implements TDPassable {
 	
 	private Button chooseWorkday;
@@ -47,24 +49,40 @@ public class UserDetailActivity extends MainActivity implements TDPassable {
 			getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 	}
-	
+	/**
+	 * Updates the workday to be used in the Statistics calculations
+	 */
 	private void updateFields(){
 		timeHM workday = new timeHM(MainActivity.currentUser.getWorkday());
 		chooseWorkday.setText(workday.toString());
 		username.setText(MainActivity.currentUser.getUsername().toString());
 	}
 	
+	/**
+	 * Function to get a new time by using a time picker dialog fragment
+	 * @param view
+	 */
 	public void changeWorkday(View view){
 		
 	    DialogFragment newFragment = new TimePickerFragment(MainActivity.currentUser.getWorkday(), 0);
 	    newFragment.show(getFragmentManager(), "timePicker");	    
 	}
 	
+	/**
+	 * Update the new workday for the current user
+	 */
 	@Override
 	public void update(PickerFragment p, long o, int ID) {		
 		if(p instanceof TimePickerFragment)  {
 			long changedWorkday = o;		  
 			MainActivity.currentUser.setWorkday(changedWorkday); 
+			if(currentUser.getUsername().compareTo(MainActivity.DEFAULT_USER_NAME) != 0){
+				try{
+					MainActivity.db.putUser(MainActivity.currentUser);
+				}catch (Exception e){
+					Log.w("DB EXCEPTION", "COULD NOT UPDATE USER DETAILS");
+				}
+			}			
 			updateFields();
 		}		  
 	}

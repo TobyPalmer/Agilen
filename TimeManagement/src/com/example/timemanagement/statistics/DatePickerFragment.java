@@ -20,6 +20,11 @@ public class DatePickerFragment extends PickerFragment
 	protected Calendar cal;
 	protected long time;
 	
+	/**
+	 * Fragment to pick a date
+	 * @param time Unix time as Long
+	 * @param ID ID of this particular fragment
+	 */
 	
 	public DatePickerFragment(long time, int ID){		
 		this.time = time;
@@ -27,7 +32,7 @@ public class DatePickerFragment extends PickerFragment
 	}	
 	
 	/**
-	 * Using the date of the current timeBlock to set the DatePicker.
+	 * Set a calander to the time given and build the DatePickerDialog
 	 */
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {	
@@ -39,15 +44,14 @@ public class DatePickerFragment extends PickerFragment
 				
 	}
 	/**
-	 * Gets called when the new date is set.
+	 * When the date has been picked this is run. Which sends the picked time
+	 * back to the parent Activity that initiated the fragment
 	 */
 	@Override
 	public void onDateSet(DatePicker view, int year, int monthOfYear,
 			int dayOfMonth){
 		 cal.set(year, monthOfYear, dayOfMonth);
 		 time = cal.getTimeInMillis();
-		 //Update the parent activity with the new date.
-		 Log.e("GET TO HERE IN DATEFRAGMENT", "TUDELS");
 		 parentActivity.update(this, time, ID);
 	}
 

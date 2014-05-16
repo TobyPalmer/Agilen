@@ -29,7 +29,7 @@ public class TimePickerFragment extends PickerFragment
 	
 	
 	/**
-	 * Using the date of the current timeBlock to set the DatePicker.
+	 * Creates a timepicker fragment
 	 */
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {	
@@ -40,8 +40,9 @@ public class TimePickerFragment extends PickerFragment
 				cal.get(Calendar.MINUTE), DateFormat.is24HourFormat(getActivity()));
 				
 	}
+	
 	/**
-	 * Gets called when the new date is set.
+	 * When time is set return to parent activity
 	 */
 	@Override
 	public void onTimeSet(TimePicker view, int hour, int minute){

@@ -11,7 +11,12 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 
-
+/**
+ * List Adapter used for the ListActivity. This is special in that it takes a blockStatesList that can manipulate
+ * How each row is presented
+ * @author Marcus
+ *
+ */
 
 public class CustomListAdapter1 extends ArrayAdapter<String>{
 	private ArrayList<Integer> blockStatesList;
