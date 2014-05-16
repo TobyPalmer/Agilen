@@ -29,7 +29,7 @@ import java.util.Date;
 
 public class BackupActivity extends MainActivity implements DatePassable{
 	
-	private TextView arrow;
+	private TextView arrow, dateText;
 	private Button exportStart, exportStop;
 	private long start, stop, today;
 	private Calendar cal;
@@ -55,6 +55,7 @@ public class BackupActivity extends MainActivity implements DatePassable{
 		stop = cal.getTimeInMillis(); 
 		
 		arrow = (TextView)findViewById(R.id.arrow);
+		dateText = (TextView)findViewById(R.id.dateText);
 		
 		exportStart = (Button)findViewById(R.id.dateStartButton);
 		exportStart.setText(dateAsString(start));
@@ -106,6 +107,7 @@ public class BackupActivity extends MainActivity implements DatePassable{
 		Typeface font_for_icon = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
 		
 		arrow.setTypeface(font_for_icon);
+		dateText.setTypeface(font2);
 		exportStart.setTypeface(font2);
 		exportStop.setTypeface(font2);
 		exportAllAsJSONButton.setTypeface(font2);
