@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.timemanagement.R;
+import com.example.timemanagement.StatisticsActivity;
 import com.example.timemanagement.statistics.OrderTimeDetails;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,10 +52,14 @@ public class CustomListAdapterStatistics extends ArrayAdapter<OrderTimeDetails>{
 		TextView orderTime = (TextView)rowView.findViewById(R.id.statistics_order_time);
 		
 		//4. Set the text for the textViews
-		if(rowView != null){
+		if(rowView != null){			
+			Typeface font3 = Typeface.createFromAsset(context.getAssets(), "gothic.ttf");
 			orderNr.setText(itemsList.get(position).getOrderNr());
+			orderNr.setTypeface(font3);
 			orderName.setText(itemsList.get(position).getOrderName());
+			orderName.setTypeface(font3);
 			orderTime.setText(itemsList.get(position).getTotalTime());
+			orderTime.setTypeface(font3);
 		}
 		
 		//5. Return rowView

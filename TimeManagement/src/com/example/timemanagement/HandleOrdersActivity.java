@@ -2,20 +2,25 @@
 package com.example.timemanagement;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import com.example.timemanagement.customadapters.CustomListAdapter2;
 import com.example.timemanagement.model.Order;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.Html;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +29,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ListView;
 
 public class HandleOrdersActivity extends MainActivity implements OnItemClickListener{
@@ -32,6 +39,8 @@ public class HandleOrdersActivity extends MainActivity implements OnItemClickLis
 	private List<Order> list = new ArrayList<Order>();
 	private String orderList[];
 	private Boolean[] clicked;
+	private Button delete, save;
+	private CustomListAdapter2 mAdapter;
 			
 	
 	@Override
@@ -42,6 +51,18 @@ public class HandleOrdersActivity extends MainActivity implements OnItemClickLis
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
+		Typeface font_neo = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
+    	
+        delete = (Button)findViewById(R.id.deleteButton);
+        save = (Button)findViewById(R.id.addNewOrderButton);
+    	delete.setTypeface(font_neo);
+    	save.setTypeface(font_neo);
+		
+		printList();
+		
+	}
+	
+	public void printList(){
 		list = MainActivity.db.getAllOrders();
 		
 		orderList = new String[list.size()];
@@ -57,9 +78,9 @@ public class HandleOrdersActivity extends MainActivity implements OnItemClickLis
         lv.setOnItemClickListener(this);
         
         
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1,  orderList);
-        lv.setAdapter(adapter);
-		
+        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1,  orderList);
+        mAdapter = new CustomListAdapter2(this,R.layout.listrow2, orderList, "neosanslight.ttf");
+        lv.setAdapter(mAdapter);
 	}
 	
 	/**
@@ -68,35 +89,84 @@ public class HandleOrdersActivity extends MainActivity implements OnItemClickLis
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private void setupActionBar() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			getActionBar().setDisplayHomeAsUpEnabled(true);
+			getActionBar().setDisplayHomeAsUpEnabled(false);
 		}
 	}
 	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
+	public void addNewOrder(View v){
+		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		 builder.setTitle("Ny order");
+		 
+		 LayoutInflater inflater = getLayoutInflater();
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			// This ID represents the Home or Up button. In the case of this
-			// activity, the Up button is shown. Use NavUtils to allow users
-			// to navigate up one level in the application structure. For
-			// more details, see the Navigation pattern on Android Design:
-			//
-			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-			//
-			NavUtils.navigateUpFromSameTask(this);
-			return true;
+		 // Inflate and set the layout for the addNewOrderdialog
+		 // Pass null as the parent view because its going in the dialog layout
+		 builder.setView(inflater.inflate(R.layout.activity_neworderpopup, null));
+		 
+		 builder.setPositiveButton("Lägg till", new DialogInterface.OnClickListener() {
+			 public void onClick(DialogInterface dialog, int id) {
+				 // User clicked OK button
+	        	 Dialog d = (Dialog) dialog;
+
+	        	 EditText orderName = (EditText)d.findViewById(R.id.orderNamePop);
+	        	 EditText orderNumber = (EditText)d.findViewById(R.id.orderNumberPop);
+	        	 CheckBox orderDirectWork = (CheckBox)d.findViewById(R.id.orderDirectWorkPop);
+	        	 String stringOrderName = orderName.getText().toString();
+	        	 String stringOrderNumber = orderNumber.getText().toString();
+	        	 int integerOrderDirectWork = 0; 
+	        	 if(orderDirectWork.isChecked()){
+	        		integerOrderDirectWork = 1;
+	        	 }	        	
+	        	 if(isInteger(stringOrderNumber)) {
+	        		 Order order = new Order(stringOrderNumber, stringOrderName, integerOrderDirectWork);
+	        		 if(!list.contains(order)){
+	        			 list.add(order);
+			        	
+	        			 String message = "Du har lagt till en order!";
+	        			 newPopUp("Order tillagd", message);
+	        			
+	        			 //Save to dB
+	        			 MainActivity.db.addOrder(order); 
+	        			 
+	        			 printList();
+	        			 
+	        		 }
+	        		 else{
+	        			 newPopUp("Error!","'" + order + "' finns redan!");
+	        		 }
+	        	 }
+	        	 else{
+	        		 newPopUp("Error!","'" + stringOrderNumber + "' är inte ett giltigt nummer!");
+	        	 }
+			 }
+		 });
+		 
+		 builder.setNegativeButton("Avbryt", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	               // User cancelled the dialog
+	           }
+	     });
+		 AlertDialog dialog = builder.create();
+		 dialog.show(); 
+	 }
+	
+	public boolean nothingClicked(){
+		for(int i=0;i<clicked.length;i++){
+			if(clicked[i]==true)
+				return false;
 		}
-		return super.onOptionsItemSelected(item);
+		return true;
 	}
 	
 	public void deleteOrders(View v){
+		
+		if(nothingClicked()){
+			
+			newPopUp("Fel","Du måste markera de ordrar du vill ta bort.");
+			
+			return;
+		}
+		
 		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
 		 builder.setTitle("Vill du verkligen ta bort?");
@@ -136,7 +206,7 @@ public class HandleOrdersActivity extends MainActivity implements OnItemClickLis
 		for(int i = 0; i<orderList.length; i++){
 			if(id==i){
 				if(clicked[i]==false){
-					v.setBackgroundColor(Color.RED);
+					v.setBackgroundColor(getResources().getColor(R.color.red));
 					clicked[i]=true;
 				}
 				else{
@@ -146,4 +216,31 @@ public class HandleOrdersActivity extends MainActivity implements OnItemClickLis
 			}
 		}
 	}
+	
+	public void newPopUp(String title, String message){
+   	 AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		 builder.setTitle(title);
+		 builder.setMessage(message);
+		 
+		 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	               // User clicked OK button
+	           }
+	     });
+		
+		 AlertDialog dialog = builder.create();
+		 
+		 dialog.show();
+   	
+   }
+	
+	public static boolean isInteger(String s) {
+	        try { 
+	            Integer.parseInt(s); 
+	        } catch(NumberFormatException e) { 
+	            return false; 
+	        }
+	        // only got here if we didn't return false
+	        return true;
+	    }
 }

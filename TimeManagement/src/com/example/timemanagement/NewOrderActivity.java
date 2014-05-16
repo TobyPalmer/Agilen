@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -21,6 +22,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -56,6 +58,7 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 		//Setting the font
 		Typeface font_neo = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
 		Typeface font_for_icon = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
+
     	
         delete = (Button)findViewById(R.id.deleteButton);
         save = (Button)findViewById(R.id.button1);
@@ -72,6 +75,8 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
     	taskstop.setTypeface(font_neo);
     	newOrder.setTypeface(font_for_icon);
     	arrow.setTypeface(font_for_icon);
+    	
+
 
     	//Gets the current date.
     	//ToDo: Get date from existing task instead.
@@ -89,7 +94,7 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
     	stopButton = (Button)findViewById(R.id.taskStop);
     	stopButton.setText(timeBlock.toTimeString(false));
     	
-    	Order standardOrder = new Order("0", "Ospec. Ordernr.", 0);
+    	Order standardOrder = new Order("0", "Saknar ordernr.", 0);
 
        	// Get all orders
     	list = MainActivity.db.getAllOrders();
@@ -103,7 +108,7 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
       	list.add(standardOrder);
       	s.setSelection(list.size()-1);
          adapter.notifyDataSetChanged();
-      	MainActivity.db.addOrder(standardOrder);
+      	//MainActivity.db.addOrder(standardOrder);
       	}
 
         if(getIntent().getExtras() != null){
@@ -167,70 +172,91 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 	    newFragment.show(getFragmentManager(), "stopPicker");
 	}
 	
-	public void setBlock(Block b){
-
+	public void setBlock(Block b) {
     	timeBlock = b;
-
 	}
 	
-	public void addNewOrderNumber(View view){
+	public void addNewOrderNumber(View view) {
 		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		 builder.setTitle("Ny order");
+		 builder.setTitle("Nytt ordernummer");
 		 
 		 LayoutInflater inflater = getLayoutInflater();
 
-		    // Inflate and set the layout for the dialog
-		    // Pass null as the parent view because its going in the dialog layout
-		    builder.setView(inflater.inflate(R.layout.activity_neworderpopup, null));
+		 // Inflate and set the layout for the dialog
+		 // Pass null as the parent view because its going in the dialog layout
+		 builder.setView(inflater.inflate(R.layout.activity_neworderpopup, null));
 		 
-		 builder.setPositiveButton("Lï¿½gg till", new DialogInterface.OnClickListener() {
-	           public void onClick(DialogInterface dialog, int id) {
-	               // User clicked OK button
-	        	
-	        	Dialog d = (Dialog) dialog;
+		 builder.setPositiveButton("LŠgg till", new DialogInterface.OnClickListener() {
+			 public void onClick(DialogInterface dialog, int id) {
+				 // User clicked OK button
+	        	 Dialog d = (Dialog) dialog;
 
-	           	EditText orderName = (EditText)d.findViewById(R.id.orderNamePop);
-	        	EditText orderNumber = (EditText)d.findViewById(R.id.orderNumberPop);
-	        	CheckBox orderDirectWork = (CheckBox)d.findViewById(R.id.orderDirectWorkPop);
-	        	String stringOrderName = orderName.getText().toString();
-	        	String stringOrderNumber = orderNumber.getText().toString();
-	        	int integerOrderDirectWork = 0; 
-	        	if(orderDirectWork.isChecked()){
+	        	 EditText orderName = (EditText)d.findViewById(R.id.orderNamePop);
+	        	 EditText orderNumber = (EditText)d.findViewById(R.id.orderNumberPop);
+	        	 CheckBox orderDirectWork = (CheckBox)d.findViewById(R.id.orderDirectWorkPop);
+	        	 String stringOrderName = orderName.getText().toString();
+	        	 String stringOrderNumber = orderNumber.getText().toString();
+	        	 int integerOrderDirectWork = 0; 
+	        	 if(orderDirectWork.isChecked()){
 	        		integerOrderDirectWork = 1;
-	        	}	        	
-	        	
-	        	if(isInteger(stringOrderNumber)){
-	        		Order order = new Order(stringOrderNumber, stringOrderName, integerOrderDirectWork);
-	        		if(!list.contains(order)){
-			        	list.add(order);
-			        	
-			        	String message = "Du har lagt till en order!";
-			        	newPopUp("Order tillagd",message);
-			        	
-			            s.setSelection(list.size()-1);
-			            adapter.notifyDataSetChanged();
-			        	
-			        	//Save to dB
-			        	MainActivity.db.addOrder(order);
-	        		}
-	        		else{
-	        			newPopUp("Error!","'" + order + "' finns redan!");
-	        		}
-	        	}
-	        	else{
-	        		newPopUp("Error!","'" + stringOrderNumber + "' är inte ett giltigt nummer!");
-	        	}
-	           }
-	       });
+	        	 }	        	
+	        	 if(isInteger(stringOrderNumber)) {
+	        		 Order order = new Order(stringOrderNumber, stringOrderName, integerOrderDirectWork);
+	        		 if(!list.contains(order)) {
+	        			 // Is this order number taken?
+	        			 Boolean exists = false;
+		        		 // Get all orders
+	        			 List<Order> orders = db.getAllOrders();
+		        		 // ...and check all orders
+	        			 for(int i = 0; i < orders.size(); i++) {
+	        				 Log.w("timemanagement", "orders.get(i).getOrderNumber() = " + orders.get(i).getOrderNumber());
+        					 Log.w("timemanagement", "stringOrderNumber = " + stringOrderNumber);
+	        				 if(orders.get(i).getOrderNumber().equals(stringOrderNumber)) {
+	        					 exists = true;	// This order number already exists
+	        				 }
+	        			 }
+	        			 if(exists == false) {
+	        				 // Add order to list
+		        			 list.add(order);
+		        			 // Notify user
+		        			 String message = "Ordernummer tillagt!";
+		        			 newPopUp("Nytt ordernummer", message);
+		        			 // Update list
+		        			 s.setSelection(list.size()-1);
+		        			 adapter.notifyDataSetChanged();
+		        			 //Save to db
+		        			 MainActivity.db.addOrder(order);
+	        			 }
+	        			 else {
+	        				 newPopUp("Error", "Detta ordernummer är redan registerat.");
+	        			 }
+	        		 }
+	        		 else{
+	        			 newPopUp("Error", "Detta ordernummer är redan registerat.");
+	        		 }
+	        	 }
+	        	 else{
+	        		 newPopUp("Error","'" + stringOrderNumber + "' är inte ett giltigt ordernummer.");
+	        	 }
+		     		InputMethodManager imm = (InputMethodManager)getSystemService(
+			  			      Context.INPUT_METHOD_SERVICE);
+			  			imm.hideSoftInputFromWindow(orderName.getWindowToken(), 0);	        	 
+
+			 }
+			 
+		 });
 		 
 		 builder.setNegativeButton("Avbryt", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User cancelled the dialog
+	        	   Dialog d = (Dialog) dialog;
+	        	   EditText orderName = (EditText)d.findViewById(R.id.orderNamePop);
+		     		InputMethodManager imm = (InputMethodManager)getSystemService(
+			  			      Context.INPUT_METHOD_SERVICE);
+			  			imm.hideSoftInputFromWindow(orderName.getWindowToken(), 0);	 	        	   
 	           }
-	       });
-
+	     });
 		 AlertDialog dialog = builder.create();
-		 
 		 dialog.show(); 
 	 }
 	 
@@ -297,6 +323,7 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 		 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User clicked OK button
+
 	           }
 	     });
 		

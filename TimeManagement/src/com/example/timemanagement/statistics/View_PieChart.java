@@ -54,26 +54,28 @@ public class View_PieChart extends View {
 	   return;
 	  }
 	  canvas.drawColor(mBgcolor);
-	  mBagpaints.setAntiAlias(true);
-	  mBagpaints.setStyle(Paint.Style.FILL);
-	  mBagpaints.setColor(0x88FF0000);
-	  mBagpaints.setStrokeWidth(0.0f);
-	  mLinePaints.setAntiAlias(true);
-	  mLinePaints.setColor(0xff000000);
-	  mLinePaints.setStrokeWidth(3.0f);
-	  mLinePaints.setStyle(Paint.Style.STROKE);
-	  RectF mOvals = new RectF(mGapleft, mGapTop, mWidth - mGapright, mHeight
-	    - mGapBottm);
-	  mStart = START_INC;
-	  PieDetailsItem item;
-	  for (int i = 0; i < mdataArray.size(); i++) {
-	   item = mdataArray.get(i);
-	   mBagpaints.setColor(item.color);
-	   mSweep = 360* ((float) item.count / (float) mMaxConnection);
-	   canvas.drawArc(mOvals, mStart, mSweep, true, mBagpaints);
-	   canvas.drawArc(mOvals, mStart, mSweep, true, mLinePaints);
-	   mStart = mStart + mSweep;
-	  }
+		if (mMaxConnection > 0) {
+			mBagpaints.setAntiAlias(true);
+			mBagpaints.setStyle(Paint.Style.FILL);
+			mBagpaints.setColor(0x88FF0000);
+			mBagpaints.setStrokeWidth(0.0f);
+			mLinePaints.setAntiAlias(true);
+			mLinePaints.setColor(0xff000000);
+			mLinePaints.setStrokeWidth(3.0f);
+			mLinePaints.setStyle(Paint.Style.STROKE);
+			RectF mOvals = new RectF(mGapleft, mGapTop, mWidth - mGapright,
+					mHeight - mGapBottm);
+			mStart = START_INC;
+			PieDetailsItem item;
+			for (int i = 0; i < mdataArray.size(); i++) {
+				item = mdataArray.get(i);
+				mBagpaints.setColor(item.color);
+				mSweep = 360 * ((float) item.count / (float) mMaxConnection);
+				canvas.drawArc(mOvals, mStart, mSweep, true, mBagpaints);
+				canvas.drawArc(mOvals, mStart, mSweep, true, mLinePaints);
+				mStart = mStart + mSweep;
+			}
+		}
 
 	  mState = IS_DRAW;
 	 }

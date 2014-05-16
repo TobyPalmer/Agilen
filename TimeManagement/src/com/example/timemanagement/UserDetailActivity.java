@@ -7,6 +7,7 @@ import com.example.timemanagement.statistics.timeHM;
 
 import android.annotation.TargetApi;
 import android.app.DialogFragment;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,8 +32,20 @@ public class UserDetailActivity extends MainActivity implements TDPassable {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_userdetail);
 		
+		Typeface font2 = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
+		
 		chooseWorkday = (Button)findViewById(R.id.workday);		
 		username = (TextView)findViewById(R.id.username);
+		
+		TextView usernameLabel, workdayLabel;
+		
+		usernameLabel = (TextView)findViewById(R.id.usernameLabel);
+		workdayLabel = (TextView)findViewById(R.id.txtWorkday);
+		
+		chooseWorkday.setTypeface(font2);
+		username.setTypeface(font2);
+		usernameLabel.setTypeface(font2);
+		workdayLabel.setTypeface(font2);
 		
 		updateFields();
 		

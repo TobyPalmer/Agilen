@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="iso-8859-1"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.timemanagement"
     android:versionCode="1"
@@ -37,7 +37,8 @@
             android:name="com.example.timemanagement.TimestampActivity"
             android:label="@string/title_activity_timestamp"
             android:parentActivityName="com.example.timemanagement.MainActivity"
-            android:windowSoftInputMode="stateHidden" >
+            android:windowSoftInputMode="stateHidden"
+            android:launchMode = "singleTask" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.timemanagement.MainActivity" />
@@ -57,7 +58,8 @@
         <!-- ListActivity -->
         <activity
             android:name="com.example.timemanagement.ListActivity"
-            android:label="ListÃ¶versikt"
+            android:label="@string/title_activity_list"
+            
             android:parentActivityName="com.example.timemanagement.MainActivity" 
             android:windowSoftInputMode="stateHidden" >
             <meta-data
@@ -78,7 +80,7 @@
         <!-- UserDetailActivity -->
         <activity
             android:name="com.example.timemanagement.UserDetailActivity"
-            android:label="AnvÃ¤ndarinstÃ¤llningar"
+            android:label="Användarinställningar"
             android:parentActivityName="com.example.timemanagement.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -98,7 +100,7 @@
         <!-- SettingActivity -->
         <activity
             android:name="com.example.timemanagement.SettingActivity"
-            android:label="InstÃ¤llningar"
+            android:label="Inställningar"
             android:parentActivityName="com.example.timemanagement.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -108,7 +110,7 @@
          <!-- HandleOrdersActivity -->
         <activity
             android:name="com.example.timemanagement.HandleOrdersActivity"
-            android:label="Hantera Ordernummer"
+            android:label="Hantera Ordernummer  öfådöaåwöeåaöwä"
             android:parentActivityName="com.example.timemanagement.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -119,6 +121,16 @@
         <activity
             android:name="com.example.timemanagement.BackupActivity"
             android:label="@string/title_activity_backup"
+            android:parentActivityName="com.example.timemanagement.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.timemanagement.MainActivity" />
+        </activity>
+        
+        <!-- Notifications -->
+        <activity
+            android:name="com.example.timemanagement.NotificationActivity"
+            android:label="Notifikationer"
             android:parentActivityName="com.example.timemanagement.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

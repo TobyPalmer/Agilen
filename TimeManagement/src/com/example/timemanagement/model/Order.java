@@ -65,7 +65,7 @@ public class Order {
 			dWork = "Direkttid";
 		}
 		else{
-			dWork = "Indirekttid";
+			dWork = "Interntid";
 		}
 		//Vill inte visa Direkt-/Indirekttid i Spinner
 		return orderNumber + " - " + orderName;// + " - " + dWork;

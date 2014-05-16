@@ -5,9 +5,11 @@ import java.util.List;
 
 import com.example.timemanagement.R;
 import com.example.timemanagement.StatisticsActivity;
+
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -38,12 +40,26 @@ public class PieChartFragment extends Fragment {
 	 */
 	private void updateTextFields(View rootView){
 		
+		Typeface font2 = Typeface.createFromAsset(((StatisticsActivity)getActivity()).getAssets(), "neosanslight.ttf");
+    	Typeface font_for_icon = Typeface.createFromAsset(((StatisticsActivity)getActivity()).getAssets(), "fontawesome-webfont.ttf");    	
+    	
+    	TextView totalTimeSquare = (TextView)rootView.findViewById(R.id.totalTimeSquare);
+    	TextView flexTimeSquare = (TextView)rootView.findViewById(R.id.flexTimeSquare);    	
+    	
+    	totalTimeSquare.setTypeface(font_for_icon);
+    	flexTimeSquare.setTypeface(font_for_icon);
+		
 		TextView total, direct, indirect, flex;	
 				
 		total = (TextView)rootView.findViewById(R.id.totalTime);
 		direct = (TextView)rootView.findViewById(R.id.directTime);
 		indirect = (TextView)rootView.findViewById(R.id.indirectTime);
 		flex = (TextView)rootView.findViewById(R.id.flexTime);
+		
+		total.setTypeface(font2);
+		direct.setTypeface(font2);
+		indirect.setTypeface(font2);
+		flex.setTypeface(font2);
 		
 		long directTime, indirectTime, flexTime;
 		directTime = ((StatisticsActivity)getActivity()).directTime;

@@ -12,17 +12,25 @@ import java.util.List;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnLongClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Animation.AnimationListener;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
@@ -33,11 +41,8 @@ import com.example.timemanagement.customadapters.CustomListAdapter1;
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
 import com.example.timemanagement.R;
-import com.example.timemanagement.customadapters.*;
-
-import android.app.AlertDialog;
 import android.app.DialogFragment;
-import android.graphics.Typeface;
+
 
 
 	public class ListActivity extends MainActivity implements DataPassable {
@@ -77,7 +82,7 @@ import android.graphics.Typeface;
 	        width = wm.getDefaultDisplay().getWidth();
 			
 			ListView l = (ListView)findViewById(R.id.l_view);
-			l.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, (height-600)));
+			l.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, (height-480)));
 
 			cal = Calendar.getInstance();
 
@@ -110,7 +115,6 @@ import android.graphics.Typeface;
 			//Create a list of all the blocks
 	    	//BList = MainActivity.db.getAllBlocks();
 			bList = MainActivity.db.getBlocksBetweenDate(start, stop);
-			
 			
 			Typeface font3 = Typeface.createFromAsset(getAssets(), "gothic.ttf");
 			Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
@@ -146,22 +150,20 @@ import android.graphics.Typeface;
 	    	day.setOnClickListener(new View.OnClickListener() {
 				
 				@Override
-				public void onClick(View v) {
+			public void onClick(View v) {
 					Block temp = new Block(start);
 					temp.setStop(stop);
 				    DialogFragment newFragment = new DatePickFragment(temp);
 				    newFragment.show(getFragmentManager(), "datePicker");
 				}
 			});
-	   	
-
+	    		   
 	    	next.setOnClickListener(new View.OnClickListener() {
 
 		        public void onClick(View v) {
 		        	if(new Date(start).before(currentDate)){
 		        		nextDate();
-		        		iterateBlocks(dateString);
-		        	}
+		        	};
 		        }
 	    	});
 		        		
@@ -172,7 +174,6 @@ import android.graphics.Typeface;
 
 		        public void onClick(View v) {
 		        	prevDate();
-		        	iterateBlocks(dateString);	
 		        }
 		    });
 		    
@@ -185,7 +186,7 @@ import android.graphics.Typeface;
 			    	while(it.hasNext())
 			    	{
 			    		b = it.next();
-			    		if(b.getOrderID() != 0){
+			    		if(b.getOrderID() > 1 ){
 			    			b.setChecked(1);
 			    			MainActivity.db.putBlock(b);
 			    		}			    		
@@ -205,7 +206,7 @@ import android.graphics.Typeface;
 			    	while(it.hasNext())
 			    	{
 			    		b = it.next();
-			    		if(b.getOrderID() != 0){
+			    		if(b.getOrderID() > 1){
 			    			b.setChecked(0);
 			    			MainActivity.db.putBlock(b);
 			    		}			    		
@@ -218,8 +219,16 @@ import android.graphics.Typeface;
 		
 		private void setAllChecks(int value){
 			for(int i = 0; i < blockStatesList.size();i++){
-				blockStatesList.set(i, value);				
+				
+				if(!(bList.get(i).getOrderID() <= 1)){
+					blockStatesList.set(i, value);
+					bList.get(i).setChecked(value);
+				}
+				else
+					bList.get(i).setChecked(0);
+									
 			}
+			
 			listAdapter.setBlockStatesList(blockStatesList);
 		}
 		
@@ -245,24 +254,54 @@ import android.graphics.Typeface;
 		 * Sets the day to one day in the future.
 		 * Also resets some variables to the new day.
 		 */
-		public void nextDate(){
-			start += 86400000;
-			stop += 86400000;
-			
-			// resets
-			dateString = (dateFormat.format(start));
+		public void nextDate() {
+			// Define UI-element to be animated
+			final View view = (View)findViewById(R.id.checkList);
+			// Define animation
+			final Animation anim = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+			// Define animation listener
+			AnimationListener animListener = new AnimationListener() {
+				// onAnimationEnd callback
+				public void onAnimationStart(Animation animation) {}
+			    public void onAnimationRepeat(Animation animation) {}
+			    public void onAnimationEnd(Animation animation) {
+					start += 86400000;
+					stop += 86400000;
+					dateString = (dateFormat.format(start));
+	        		iterateBlocks(dateString);
+			    }
+			};
+			// Set animation listener
+			anim.setAnimationListener(animListener);
+			// Start animation
+			view.startAnimation(anim);
 		}
 	
 		/**
 		 * Sets the day to one day in the past.
 		 * Also resets some variables to the new day.
 		 */
-		public void prevDate(){
-			start -= 86400000;
-			stop -= 86400000;
-			
-			// resets
-			dateString = (dateFormat.format(start));
+		public void prevDate() {
+			// Define UI-element to be animated
+			final View view = (View)findViewById(R.id.checkList);
+			// Define animation
+			final Animation anim = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+			// Define animation listener
+			AnimationListener animListener = new AnimationListener() {
+				// onAnimationEnd callback
+				public void onAnimationStart(Animation animation) {}
+			    public void onAnimationRepeat(Animation animation) {}
+			    public void onAnimationEnd(Animation animation) {
+					start -= 86400000;
+					stop -= 86400000;
+					dateString = (dateFormat.format(start));
+	        		iterateBlocks(dateString);
+			    }
+			};
+			// Set animation listener
+			anim.setAnimationListener(animListener);
+			// Start animation
+			view.startAnimation(anim);
 		}
 		
 		public void iterateBlocks(String dateString)
@@ -277,10 +316,17 @@ import android.graphics.Typeface;
 			Iterator<Block> it = bList.iterator(); 
 	    	while(it.hasNext())
 	    	{
+	    			
 	    		b = it.next();
 	    		if(b.getStop()!=0)
 	    		{
-		    		s = new SimpleDateFormat("HH:mm").format(b.getStart());
+	    			s="";
+	    			if(b.getChecked() == 1) {
+	    				s += Html.fromHtml((String)"&#10003;").toString();
+	    				s += " ";
+	    			}
+	    			
+		    		s += new SimpleDateFormat("HH:mm").format(b.getStart());
 		    		s += " - ";
 		    		s += new SimpleDateFormat("HH:mm").format(b.getStop());	    			
 		    		if(b.getOrderID()!=0){
@@ -315,7 +361,7 @@ import android.graphics.Typeface;
 		    	    {
 		    	    	blockList.add(s);
 	
-		    	    	if(!(b.getOrderID() == 0)){
+		    	    	if(!(b.getOrderID() <= 1)){
 		    	    		blockStatesList.add(b.getChecked());
 		    	    	}
 		    	    	else{
@@ -324,20 +370,18 @@ import android.graphics.Typeface;
 		    	    	
 		    	    }
 	    		}
-	    	}
-	    	
+	    	}	    	
 
-	    	listAdapter = new CustomListAdapter1(this,R.layout.listrow, blockList, blockStatesList);
+	    	listAdapter = new CustomListAdapter1(this,R.layout.listrow, blockList, blockStatesList, "neosanslight.ttf");
 	    	l_view.setAdapter(listAdapter);	    	
 	    	l_view.setOnItemClickListener(new OnItemClickListener()
 	    	{
-	    		
 	    		@Override 
 	    		public void onItemClick(AdapterView<?> adapter, View v, final int position, long arg3)
 	    		{
 	    			String value = (String)adapter.getItemAtPosition(position);
 	    			try{
-	    				if(!(bList.get(position).getOrderID() == 0)){
+	    				if(!(bList.get(position).getOrderID() <= 1)){
 	    					bList.get(position).setChecked(switchChecked(bList.get(position).getChecked()));	    				
 		    				blockStatesList.set(position, bList.get(position).getChecked());
 		    				listAdapter.setBlockStatesList(blockStatesList);
@@ -346,7 +390,7 @@ import android.graphics.Typeface;
 	    				}
 	    				else{
 	    					AlertDialog.Builder noOrderNrDialogBuilder = new AlertDialog.Builder(l_view.getContext());
-	    					noOrderNrDialogBuilder.setMessage("Denna posten saknar order nr!\nVill du redigera detta?");
+	    					noOrderNrDialogBuilder.setMessage("Denna post saknar ordernummer, vill du åtgärda detta?");
 	    					noOrderNrDialogBuilder.setCancelable(true);
 	    					noOrderNrDialogBuilder.setPositiveButton("Ja", 
 	    							new DialogInterface.OnClickListener() {
@@ -377,17 +421,35 @@ import android.graphics.Typeface;
 	    				
 	    			}
 	    			catch (Exception e){
-	    				Log.e("Nï¿½got blev fel! At position:",Integer.toString(position));
+	    				Log.e("Något blev fel! At position:",Integer.toString(position));
 	    			}
-	    			Log.e("Vï¿½rde i listan: ",value);
+	    			Log.e("Värde i listan: ",value);
 	    			Log.e("Position i listan: ",Integer.toString(position));
 	    			iterateBlocks(getDateString());
 	    			
 	    		}
 	    	});
+	    	
+	    	// Send the user to NewOrderActivity on longclick.
+	    	l_view.setLongClickable(true);
+	    	l_view.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+				@Override
+				public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+						int pos, long id) {
+					Block block = bList.get(pos);
+					Intent i = new Intent(getApplicationContext(), NewOrderActivity.class);
+		        	
+		        	i.putExtra("Block", block);
+		        	i.putExtra("Caller", "Checkview");
+		        	        	
+		        	startActivity(i);
+					return false;
+				}
+	        }); 
      
 	    	day.setText(dateString);
-	    	s = " Total time: " + hoursDay + "h " + minutesDay + "m";
+	    	s = " Sammanlagd tid: " + hoursDay + "h " + minutesDay + "m";
 	    	total.setText(s);
 		}
 		

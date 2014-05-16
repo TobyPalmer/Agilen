@@ -2,9 +2,12 @@ package com.example.timemanagement.sqlite;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,6 +22,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.example.timemanagement.model.Block;
+import com.example.timemanagement.model.Notification;
 import com.example.timemanagement.model.Order;
 import com.example.timemanagement.model.UserDetails;
 
@@ -26,7 +30,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
 	
 	// Database info
 
-    private static final int DATABASE_VERSION = 18;
+    private static final int DATABASE_VERSION = 22;
     private static final String DATABASE_NAME = "TimeManagement";
  
     // Constructor
@@ -56,12 +60,25 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         	+"checked INTEGER)";
         db.execSQL(CREATE_BLOCKS_TABLE);
         
+
         //Create "userdetails"-table
         String CREATE_USER_DETAILS_TABLE = 
         	"CREATE TABLE userdetails(" +
         	"username VARCHAR(50) PRIMARY KEY, " +
         	"workday INTEGER)";
         db.execSQL(CREATE_USER_DETAILS_TABLE);
+
+     // Create "notifications"-table
+        String CREATE_NOTIFICATIONS_TABLE =
+        	"CREATE TABLE notifications(" +
+        	"ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        	"time LONG, " +
+        	"everyDay INTEGER, " +
+        	"everyWeek INTEGER, " +
+        	"everyMonth INTEGER, " +
+        	"spareTime INTEGER)";
+        db.execSQL(CREATE_NOTIFICATIONS_TABLE);
+
     }
     
     // *********************************************** //
@@ -72,6 +89,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS orders");
         db.execSQL("DROP TABLE IF EXISTS blocks");
         db.execSQL("DROP TABLE IF EXISTS userdetails");
+        db.execSQL("DROP TABLE IF EXISTS notifications");
         this.onCreate(db);
     }
     
@@ -490,12 +508,12 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     	// Get all blocks
     	if(orderID == 0) {
     		cursor = db.rawQuery("SELECT * FROM blocks "
-    							+ "WHERE start >= ? AND stop <= ?",
+    							+ "WHERE start >= ? AND stop <= ? ORDER BY start",
     	  						new String[] {String.valueOf(start), String.valueOf(stop)});
     	} // Get blocks of a certain orderID
     	else {
     		cursor = db.rawQuery("SELECT * FROM blocks "
-						+ "WHERE start >= ? AND stop <= ? AND orderID = ?",
+						+ "WHERE start >= ? AND stop <= ? AND orderID = ? ORDER BY start",
 					new String[] {String.valueOf(start), String.valueOf(stop), String.valueOf(orderID)});
     	}
         if (cursor.moveToFirst()) {
@@ -554,8 +572,194 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         db.close();
     }
     
+    
+    // *********************************************** //
+    // NOTIFICATIONS
+    // *********************************************** //
+    
+    // *********************************************** //
+    // Define Notification table
+    // *********************************************** //
+    private static final String NOTIFICATIONS_TABLE = "notifications"; // Name
+    private static final String NOTIFICATIONS_TABLE_KEY_ID = "ID";
+    private static final String NOTIFICATIONS_TABLE_KEY_TIME = "time";
+    private static final String NOTIFICATIONS_TABLE_KEY_EVERYDAY = "everyDay";
+    private static final String NOTIFICATIONS_TABLE_KEY_EVERYWEEK = "everyWeek";
+    private static final String NOTIFICATIONS_TABLE_KEY_EVERYMONTH = "everyMonth";
+    private static final String NOTIFICATIONS_TABLE_KEY_SPARETIME = "spareTime";
+    private static final String[] NOTIFICATIONS_TABLE_COLUMNS = {NOTIFICATIONS_TABLE_KEY_ID, 
+														    	NOTIFICATIONS_TABLE_KEY_TIME, 
+														    	NOTIFICATIONS_TABLE_KEY_EVERYDAY, 
+														    	NOTIFICATIONS_TABLE_KEY_EVERYWEEK,
+														    	NOTIFICATIONS_TABLE_KEY_EVERYMONTH,
+														    	NOTIFICATIONS_TABLE_KEY_SPARETIME};
+    
+    
     /**
-     * Return database data as JSON string
+     * INSERT: Create new notification
+     * @param notification
+     */
+    public void addNotification(Notification notification){
+        SQLiteDatabase db = this.getWritableDatabase();
+ 
+        ContentValues values = new ContentValues();
+        
+        int d,w,m,s;
+        d = (notification.everyDay())?1:0;
+        w = (notification.everyWeek())?1:0;
+        m = (notification.everyMonth())?1:0;
+        s = (notification.spareTime())?1:0;
+        
+        values.put(NOTIFICATIONS_TABLE_KEY_TIME, notification.getTime());  
+        values.put(NOTIFICATIONS_TABLE_KEY_EVERYDAY, d); 
+        values.put(NOTIFICATIONS_TABLE_KEY_EVERYWEEK, w);
+        values.put(NOTIFICATIONS_TABLE_KEY_EVERYMONTH, m);
+        values.put(NOTIFICATIONS_TABLE_KEY_SPARETIME, s);
+ 
+        notification.setID((int)db.insert(NOTIFICATIONS_TABLE, null, values));
+        
+        db.close(); 
+    }
+    
+    /**
+     * GET: Return a notification
+     * 
+     * @param ID
+     * @return
+     */
+    public Notification getNotification(int ID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(NOTIFICATIONS_TABLE, NOTIFICATIONS_TABLE_COLUMNS, 
+        							" id = ?", 
+        							new String[] { String.valueOf(ID) }, 
+        							null, 
+        							null, 
+        							null, 
+        							"1");
+        
+        if (cursor != null) {
+        	// If there are any rows
+        	if(!cursor.isAfterLast()) { // Return Notification
+        		cursor.moveToFirst();
+        		
+                boolean d,w,m,s;
+                d = (cursor.getInt(2)==1)?true:false;
+                w = (cursor.getInt(3)==1)?true:false;
+                m = (cursor.getInt(4)==1)?true:false;
+                s = (cursor.getInt(5)==1)?true:false;
+                
+            	Notification notification = new Notification();
+        		notification.setID(cursor.getInt(0));
+        		notification.setTime(cursor.getLong(1));
+        		notification.setEveryDay(d);
+        		notification.setEveryWeek(w);
+        		notification.setEveryMonth(m);
+        		notification.setSpareTime(s);
+        		
+	            return notification;
+        	}
+        	else { // No rows
+        		return null;
+        	}
+        } // No rows
+        else {
+        	return null;
+        }
+    }
+    
+    /**
+     * GET: Return all notifications
+     * 
+     * @return 
+     */
+	public List<Notification> getAllNotifications() {
+    	SQLiteDatabase db = this.getReadableDatabase();
+    	
+    	String query = "SELECT  * FROM " + NOTIFICATIONS_TABLE;
+    	Cursor cursor = db.rawQuery(query, null);
+        
+    	List<Notification> notifications = new LinkedList<Notification>();
+    	
+        if (cursor.moveToFirst()) {
+            do {
+            	
+                boolean d,w,m,s;
+                d = (cursor.getInt(2)==1)?true:false;
+                w = (cursor.getInt(3)==1)?true:false;
+                m = (cursor.getInt(4)==1)?true:false;
+                s = (cursor.getInt(5)==1)?true:false;
+                
+            	Notification notification = new Notification();
+        		notification.setID(cursor.getInt(0));
+        		notification.setTime(cursor.getLong(1));
+        		notification.setEveryDay(d);
+        		notification.setEveryWeek(w);
+        		notification.setEveryMonth(m);
+        		notification.setSpareTime(s);
+        		notifications.add(notification);
+
+            } while (cursor.moveToNext());
+        }
+        
+        return notifications;
+    }
+    
+    
+    /**
+     * PUT: Update a notification
+     * 
+     * @param notification
+     * @return
+     */
+    public int putNotification(Notification notification) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        
+        int d,w,m,s;
+        d = (notification.everyDay())?1:0;
+        w = (notification.everyWeek())?1:0;
+        m = (notification.everyMonth())?1:0;
+        s = (notification.spareTime())?1:0;
+     
+        ContentValues values = new ContentValues();
+        values.put(NOTIFICATIONS_TABLE_KEY_TIME, notification.getTime()); 
+        values.put(NOTIFICATIONS_TABLE_KEY_EVERYDAY, d);
+        values.put(NOTIFICATIONS_TABLE_KEY_EVERYWEEK, w);
+        values.put(NOTIFICATIONS_TABLE_KEY_EVERYMONTH, m);
+        values.put(NOTIFICATIONS_TABLE_KEY_SPARETIME, s);
+     
+        int i = db.update(NOTIFICATIONS_TABLE, 
+        					values, 
+        					NOTIFICATIONS_TABLE_KEY_ID+" = ?", 
+        					new String[] { String.valueOf(notification.getID()) }); 
+        
+        db.close();
+     
+        return i;
+    }
+    
+    /**
+     * DELETE: Remove a notification
+     * 
+     * @param notification
+     */
+    public void deleteNotification(Notification notification) {
+        SQLiteDatabase db = this.getWritableDatabase();
+ 
+        db.delete(NOTIFICATIONS_TABLE, 
+        			NOTIFICATIONS_TABLE_KEY_ID + " = ?", 
+        			new String[] { String.valueOf(notification.getID()) });
+
+        db.close();
+    }
+    
+    
+    
+    // *********************************************** //
+    // EXPORT METHODS
+    // *********************************************** //
+
+    /**
+     * Return all data as JSON string
      * 
      */
     public String toJSONString() {
@@ -563,7 +767,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     }
     
     /**
-     * Return database data as JSON string
+     * Return data subset as JSON string
      * 
      */
     public String toJSONString(long start, long stop) {
@@ -635,7 +839,53 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     }
     
     /**
-     * Export json string file
+     * Return all data as JSON string
+     * 
+     */
+    public String toCSVString() {
+    	return this.toCSVString(0, 0);
+    }
+    
+    /**
+     * Return data subset as JSON string
+     * 
+     */
+    public String toCSVString(long start, long stop) {
+    	// Contains CSV output...
+    	String output = "Ordernummer,Start,Slut,Kommentar,Avcheckad\n";
+    	// Define date format
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm z"); // the format of your date
+		sdf.setTimeZone(TimeZone.getDefault());
+    	// Get all blocks
+        List<Block> blocks;
+        if(start == 0 && stop == 0){
+        	blocks = this.getAllBlocks();
+        }
+        else {
+        	blocks = this.getBlocksBetweenDate(start, stop);
+        }
+        // For all blocks
+        for(int i = 0; i < blocks.size(); i++) {
+        	Order order = this.getOrder(blocks.get(i).getOrderID());
+        	String orderNumber;
+        	if(order == null) {
+        		orderNumber = "0";
+        	}
+        	else {
+        		orderNumber = order.getOrderNumber();
+        	}
+			output += orderNumber + ",";
+			output += "\"" + sdf.format(new Date(blocks.get(i).getStart())) + "\",";
+			output += sdf.format(new Date(blocks.get(i).getStop())) + ",";
+			output += "\"" + blocks.get(i).getComment() + "\",";
+			output += blocks.get(i).getChecked() + ",";
+			output += "\n";
+        }
+        return output;
+    }
+    
+    /**
+     * Export all data as JSON file
      * 
      * @return
      */
@@ -643,14 +893,24 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     	return exportJSON(0,0);
     }
     
+    /**
+     * Export data subset as JSON file
+     * 
+     * @return
+     */
     public String exportJSON(long start, long stop) {
+    	// For formatting dates
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+		sdf.setTimeZone(TimeZone.getDefault());
     	// Where to store the file?
     	String path = Environment.getExternalStorageDirectory().toString();
     	String folderName = "Chronox";
-    	String fileName = "ChronoxExport(" + System.currentTimeMillis() / 1000L + ").json";
+    	String fileName = "";
+    	fileName = "Backup (sparad " + sdf.format(new Date(System.currentTimeMillis())) + ").json";	
     	// Return text
-    	String success = "Exporterade data till telefonminne: " + folderName + "/" + fileName + "";
+    	String success = "Exporterade backup-data till telefonminne: " + folderName + "/" + fileName + "";
     	String error = "Misslyckades";
+
     	String json;
     	// Time constraint?
     	if(start == 0 && stop == 0) {
@@ -674,8 +934,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         		return error;
         	}
         }
-        // Write to file
-        try {
+        try { // Write to file
 	    	Log.w("timemanagement", "SQLiteMethods.exportJSON(): Writing file...");
 	        FileWriter fw = new FileWriter(file.toString(), false);
 	        // ************************************************** //
@@ -685,6 +944,73 @@ public class SQLiteMethods extends SQLiteOpenHelper {
 	        return success;
         } catch(Exception e) {
         	Log.w("timemanagement", "SQLiteMethods.exportJSON(): Trying to write to file, Exception: " + e.toString());
+        	return error;
+        }
+    }
+    
+    /**
+     * Export all data as CSV file
+     * 
+     * @return
+     */
+    public String exportCSV() {
+    	return exportCSV(0,0);
+    }
+    
+    /**
+     * Export data subset as CSV file
+     * 
+     * @return
+     */
+    public String exportCSV(long start, long stop) {
+    	// For formatting dates
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		sdf.setTimeZone(TimeZone.getDefault());
+    	// Where to store the file?
+    	String path = Environment.getExternalStorageDirectory().toString();
+    	String fileName = "";
+    	String folderName = "Chronox";
+    	if(start == 0 && stop == 0) {
+    		fileName = "Tidrapport (sparad " + sdf.format(new Date(System.currentTimeMillis())) + ").csv";
+    	}
+    	else {
+    		fileName = "Tidrapport (" + sdf.format(new Date(start)) + " till " + sdf.format(new Date(stop)) + ").csv";
+    	}
+    	// Return text
+    	String success = "Exporterade tidrapport till telefonminne: " + folderName + "/" + fileName + "";
+    	String error = "Misslyckades";
+    	// Find folder, or create if it does not exist
+        File folder = new File(path + "/" + folderName);
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
+        // Find file, or create if it does not exist
+        File file = new File(path + "/" + folderName + "/" + fileName);
+        if(!file.exists()) {
+        	try {
+        		file.createNewFile();
+        	} catch (Exception e) {
+        		Log.w("timemanagement", "SQLiteMethods.exportCSV(): trying to create new file, Exception: " + e.toString());
+        		return error;
+        	}
+        }
+        try { // Write to file
+	    	Log.w("timemanagement", "SQLiteMethods.exportCSV(): Writing file... " + folderName + "/" + fileName + "");
+	        FileWriter fw = new FileWriter(file.toString(), false);
+	        // ************************************************** //
+	        String line = "";
+	        if(start == 0 && stop == 0) {
+	        	line = this.toCSVString();
+	        }
+	        else {
+	        	line = this.toCSVString(start, stop);
+	        }
+    		fw.write(line);
+	        // ************************************************** //
+	        fw.close();
+	        return success;
+        } catch(Exception e) {
+        	Log.w("timemanagement", "SQLiteMethods.exportCSV(): Trying to write to file, Exception: " + e.toString());
         	return error;
         }
     }

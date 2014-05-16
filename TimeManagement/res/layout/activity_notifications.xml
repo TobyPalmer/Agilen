@@ -2,15 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:orientation="vertical" >
 
+    
     <ListView
-        android:id="@+id/orderListView"
+        android:id="@+id/notificationListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >        
     </ListView>
+
     
-    <LinearLayout
+ <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -26,7 +28,7 @@
             android:orientation="horizontal" >
 
             <Button
-                android:id="@+id/addNewOrderButton"
+                android:id="@+id/addNotification"
                 android:layout_width="fill_parent"
                 android:layout_height="80sp"
                 android:layout_marginBottom="20dp"
@@ -34,8 +36,8 @@
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="30dp"
                 android:background="@color/green"
-                android:onClick="addNewOrder"
-                android:text="Lägg till order"
+                android:onClick="notificationPopup"
+                android:text="Lägg till notifikation"
                 android:textColor="@color/white"
                 android:textSize="30sp" />
         </LinearLayout>
@@ -48,18 +50,21 @@
             android:orientation="horizontal" >
 
             <Button
-                android:id="@+id/deleteButton"
+                android:id="@+id/deleteNotification"
                 android:layout_width="fill_parent"
                 android:layout_height="80sp"
                 android:layout_marginBottom="30dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:background="@color/red"
-                android:onClick="deleteOrders"
-                android:text="Ta bort order"
+                android:text="Ta bort notifikation"
+                android:onClick="deleteNotifications"
                 android:textColor="@color/white"
                 android:textSize="30sp" />
         </LinearLayout>
     </LinearLayout>
+    
+
+
 
 </RelativeLayout>

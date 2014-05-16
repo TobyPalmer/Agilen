@@ -28,7 +28,8 @@ public class timeHM {
 	 */
 @Override
 public String toString(){
-	return Integer.toString(hours) + " H, " + Integer.toString(minutes) + " M";	
+
+	return Integer.toString(hours) + " h, " + Integer.toString(minutes) + " m";	
 }
 
 /**

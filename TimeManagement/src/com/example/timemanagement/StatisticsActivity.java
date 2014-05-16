@@ -5,18 +5,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
-import java.util.List;
-
-import android.annotation.TargetApi;
-import android.os.Build;
-import android.os.Bundle;
+import java.util.List;import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -25,6 +19,7 @@ import android.app.DialogFragment;
 import android.graphics.Color;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Typeface;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -41,11 +36,14 @@ import com.example.timemanagement.statistics.PieDetailsItem;
 import com.example.timemanagement.statistics.TDPassable;
 import com.example.timemanagement.statistics.View_PieChart;
 import com.example.timemanagement.statistics.timeHM;
+import com.example.timemanagement.sqlite.SQLiteMethods;
 import com.example.timemanagement.customadapters.*;
+import com.example.timemanagement.statistics.*;
 
 
 public class StatisticsActivity extends FragmentActivity implements TDPassable 
 {	
+
 	public static final String DIRECT_TIME = "Direkttid: ";
 	public static final String INDIRECT_TIME = "Interntid: ";
 	public static final String TOTAL_TIME = "Totaltid: ";
@@ -54,10 +52,11 @@ public class StatisticsActivity extends FragmentActivity implements TDPassable
 	public static final String FLEX_TIME_PLUS = " Plus";
 	public static final String DIRECT_TIME_PIE_LABEL = " Direkttid";
 	public static final String INDIRECT_TIME_PIE_LABEL = " Interntid";
-	public static final int DIRECT_TIME_PIE_CHART_COLOR =  Color.BLUE;
-	public static final int INDIRECT_TIME_PIE_CHART_COLOR =  Color.GREEN;
+	public static final int DIRECT_TIME_PIE_CHART_COLOR =  Color.parseColor("#57BF23");
+	public static final int INDIRECT_TIME_PIE_CHART_COLOR =  Color.parseColor("#F88621");
 	public static final int PIE_CHART_SIZE =  255;
 	public static final int PIE_CHART_COLOR =  Color.TRANSPARENT;
+
 	
 	//Variables for the paging function, PieChart and Orderlist statistics
 	private static final int NUM_PAGES = 2;	
@@ -86,8 +85,7 @@ public class StatisticsActivity extends FragmentActivity implements TDPassable
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_statistics);
-		setupActionBar();
+		setContentView(R.layout.activity_statistics);		
 		
 		/**
 		 * Retrieve where the pager will go, and initiate it with a custom 
@@ -106,9 +104,11 @@ public class StatisticsActivity extends FragmentActivity implements TDPassable
 		Calendar cal = Calendar.getInstance();
 		cal.setFirstDayOfWeek(Calendar.MONDAY);
     	cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);		
-		
+		    	   	
 		start = getStartOfDay(cal.getTimeInMillis());				
-    	stop = getEndOfToday();    	
+    	stop = getEndOfToday(); 
+    	
+    	
 		
     	/**
     	 * As a precaution if, for some reason start becomes bigger than stop,
@@ -127,6 +127,15 @@ public class StatisticsActivity extends FragmentActivity implements TDPassable
     	dateStopButton = (Button)findViewById(R.id.stopDate);
     	dateStopButton.setText(dateAsString(stop));
     	
+    	TextView arrow = (TextView)findViewById(R.id.arrow);
+    	
+    	Typeface font2 = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
+    	Typeface font_for_icon = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
+    	
+    	dateStartButton.setTypeface(font2);
+    	dateStopButton.setTypeface(font2);
+    	arrow.setTypeface(font_for_icon);
+    	
     	/**
     	 * As a precaution if a user doesn't log in but instead
     	 * goes directly to this activity, currentUser will be initiated with the 
@@ -140,18 +149,6 @@ public class StatisticsActivity extends FragmentActivity implements TDPassable
     	 * Make the calculations 
     	 */
 		calculateStatistics();		
-	}
-	
-	/**
-	 * Set up the {@link android.app.ActionBar}, if the API is available.
-	 */
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	private void setupActionBar() 
-	{
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) 
-		{
-			getActionBar().setDisplayHomeAsUpEnabled(true);
-		}
 	}
 	
 		
@@ -212,12 +209,20 @@ public class StatisticsActivity extends FragmentActivity implements TDPassable
 			f = FLEX_TIME + new timeHM(Math.abs(flexTime)).toString() + FLEX_TIME_MINUS;
 		}
 				
+
 		total.setText(t);
 		direct.setText(d);
 		indirect.setText(i);
 		flex.setText(f);
+		
+		Typeface font2 = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
+		total.setTypeface(font2);
+		direct.setTypeface(font2);
+		indirect.setTypeface(font2);
+		flex.setTypeface(font2);
 	}
 	
+
 	/**
 	 * This function creates and updates the Pie Chart
 	 */
@@ -320,6 +325,7 @@ public class StatisticsActivity extends FragmentActivity implements TDPassable
 	 * @param time unix time as a Long
 	 * @return Date formated as yyyy-MM-dd
 	 */
+
 	public String dateAsString(long time){
 		return new SimpleDateFormat("yyyy-MM-dd").format(time);
 	}
@@ -494,7 +500,7 @@ public class StatisticsActivity extends FragmentActivity implements TDPassable
 		 * off the flex time, if the user has worked more than a normal workday
 		 * time will be added to the flex time 
 		 */
-		long s = getStartOfDay(start); 
+		long s = getStartOfDay(start);
 		long e = getEndOfDay(start);
 		long step = 1000*60*60*24; // One full day in unix time (Milliseconds)			
 		long overTime = 0;	// Initialize the overTime to zero before calculations
@@ -509,7 +515,7 @@ public class StatisticsActivity extends FragmentActivity implements TDPassable
 				b = bit.next();				
 				if(b.getStop() != 0){
 					long timeDiff = b.getStop() - b.getStart(); 
-					time += timeDiff; 
+					time += timeDiff;
 				}
 			}
 			

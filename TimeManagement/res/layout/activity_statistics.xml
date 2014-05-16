@@ -1,64 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/LinearLayout1"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout01"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-     >
-	
-	<RelativeLayout
-	    android:id="@+id/relativeLayoutDatePick"
-	    android:layout_width="match_parent"
-	    android:layout_height ="wrap_content"
-	    android:layout_marginBottom = "30dp">	    
-	<TextView 
-	    android:id="@+id/startDateText"
-	    android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-	    android:text="Från: "
-	    android:textStyle="bold"	    
-	    android:textSize="30sp"
-	    />
-	<TextView
-	    android:id="@+id/stopDateText"
-	    android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:textStyle="bold" 
-	    android:text="Till: "
-	    android:textSize="30sp"
-	    /> 
-	</RelativeLayout>
-	<RelativeLayout
-	    android:id="@+id/relativeLayoutDatePick"
-	    android:layout_width="match_parent"
-	    android:layout_height ="wrap_content"
-	    android:layout_marginBottom = "30dp">
-	<Button
-        android:id="@+id/startDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"      
-        android:background="@android:color/transparent"        
-        android:onClick="changeStartDate"        
-        android:textSize="50sp" />      
-	   
-	<Button
-        android:id="@+id/stopDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"        
-        android:background="@android:color/transparent"        
-        android:onClick="changeStopDate"        
-        android:textSize="50sp" />
-	 </RelativeLayout>
+    android:orientation="vertical">
+    
+   	 <LinearLayout   	     
+	    android:layout_width="fill_parent"
+	 	android:layout_height="wrap_content"
+	 	android:id="@+id/LinearLayout02"
+		android:orientation="horizontal"
+		android:layout_marginTop="30dp">  
+        
+	    <Button
+		    android:id="@+id/startDate"
+		    android:layout_width="wrap_content"
+		    android:textSize="30sp"
+		    android:layout_height="80dp"
+		    android:width="0dp"
+		    android:layout_weight="3"
+		    android:text="@string/taskStart"
+		    android:background="@android:color/transparent" 
+		    android:onClick="changeStartDate"/> 
 	    
-   	<android.support.v4.view.ViewPager
+	    <TextView
+		    android:id="@+id/arrow"
+		    android:layout_width="wrap_content"
+		    android:textSize="30sp"
+		    android:layout_height="40dp"
+		    android:width="0dp"
+		    android:layout_weight="1"
+		    android:text="@string/fa_arrow_right"
+		    android:background="@android:color/transparent" 
+		    android:gravity="center"
+		    android:onClick="changeStart"/> 
+	    
+	    <Button
+		    android:id="@+id/stopDate"
+		    android:layout_width="wrap_content"
+		    android:textSize="30sp"
+		    android:layout_height="80dp"
+		    android:width="0dp"
+		    android:layout_weight="3"
+		    android:text="@string/taskStop"
+		    android:background="@android:color/transparent" 
+		    android:onClick="changeStopDate"/> 
+		    
+    </LinearLayout>    
+    <android.support.v4.view.ViewPager
 	    xmlns:android="http://schemas.android.com/apk/res/android"
 	    android:id="@+id/statistics_pager"
+	    android:layout_below="@+id/LinearLayout02"
 	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"/>
-   	
-   			
-</LinearLayout>
+	    android:layout_height="wrap_content"/>    
+</RelativeLayout>
+
