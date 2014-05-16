@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -21,6 +22,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -56,6 +58,7 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 		//Setting the font
 		Typeface font_neo = Typeface.createFromAsset(getAssets(), "neosanslight.ttf");
 		Typeface font_for_icon = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
+
     	
         delete = (Button)findViewById(R.id.deleteButton);
         save = (Button)findViewById(R.id.button1);
@@ -72,6 +75,8 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
     	taskstop.setTypeface(font_neo);
     	newOrder.setTypeface(font_for_icon);
     	arrow.setTypeface(font_for_icon);
+    	
+
 
     	//Gets the current date.
     	//ToDo: Get date from existing task instead.
@@ -173,7 +178,7 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 	
 	public void addNewOrderNumber(View view) {
 		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		 builder.setTitle("Ny order");
+		 builder.setTitle("Nytt ordernummer");
 		 
 		 LayoutInflater inflater = getLayoutInflater();
 
@@ -181,7 +186,7 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 		 // Pass null as the parent view because its going in the dialog layout
 		 builder.setView(inflater.inflate(R.layout.activity_neworderpopup, null));
 		 
-		 builder.setPositiveButton("Lägg till", new DialogInterface.OnClickListener() {
+		 builder.setPositiveButton("LŠgg till", new DialogInterface.OnClickListener() {
 			 public void onClick(DialogInterface dialog, int id) {
 				 // User clicked OK button
 	        	 Dialog d = (Dialog) dialog;
@@ -214,8 +219,8 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 	        				 // Add order to list
 		        			 list.add(order);
 		        			 // Notify user
-		        			 String message = "Order tillagd";
-		        			 newPopUp("Ny order", message);
+		        			 String message = "Ordernummer tillagt!";
+		        			 newPopUp("Nytt ordernummer", message);
 		        			 // Update list
 		        			 s.setSelection(list.size()-1);
 		        			 adapter.notifyDataSetChanged();
@@ -233,12 +238,22 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 	        	 else{
 	        		 newPopUp("Error","'" + stringOrderNumber + "' är inte ett giltigt ordernummer.");
 	        	 }
+		     		InputMethodManager imm = (InputMethodManager)getSystemService(
+			  			      Context.INPUT_METHOD_SERVICE);
+			  			imm.hideSoftInputFromWindow(orderName.getWindowToken(), 0);	        	 
+
 			 }
+			 
 		 });
 		 
 		 builder.setNegativeButton("Avbryt", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User cancelled the dialog
+	        	   Dialog d = (Dialog) dialog;
+	        	   EditText orderName = (EditText)d.findViewById(R.id.orderNamePop);
+		     		InputMethodManager imm = (InputMethodManager)getSystemService(
+			  			      Context.INPUT_METHOD_SERVICE);
+			  			imm.hideSoftInputFromWindow(orderName.getWindowToken(), 0);	 	        	   
 	           }
 	     });
 		 AlertDialog dialog = builder.create();
@@ -308,6 +323,7 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 		 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               // User clicked OK button
+
 	           }
 	     });
 		

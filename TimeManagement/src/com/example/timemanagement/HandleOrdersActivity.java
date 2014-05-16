@@ -2,8 +2,10 @@
 package com.example.timemanagement;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import com.example.timemanagement.customadapters.CustomListAdapter2;
 import com.example.timemanagement.model.Order;
 
 import android.annotation.TargetApi;
@@ -38,6 +40,7 @@ public class HandleOrdersActivity extends MainActivity implements OnItemClickLis
 	private String orderList[];
 	private Boolean[] clicked;
 	private Button delete, save;
+	private CustomListAdapter2 mAdapter;
 			
 	
 	@Override
@@ -75,8 +78,9 @@ public class HandleOrdersActivity extends MainActivity implements OnItemClickLis
         lv.setOnItemClickListener(this);
         
         
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1,  orderList);
-        lv.setAdapter(adapter);
+        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1,  orderList);
+        mAdapter = new CustomListAdapter2(this,R.layout.listrow2, orderList, "neosanslight.ttf");
+        lv.setAdapter(mAdapter);
 	}
 	
 	/**
@@ -85,32 +89,8 @@ public class HandleOrdersActivity extends MainActivity implements OnItemClickLis
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private void setupActionBar() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			getActionBar().setDisplayHomeAsUpEnabled(true);
+			getActionBar().setDisplayHomeAsUpEnabled(false);
 		}
-	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			// This ID represents the Home or Up button. In the case of this
-			// activity, the Up button is shown. Use NavUtils to allow users
-			// to navigate up one level in the application structure. For
-			// more details, see the Navigation pattern on Android Design:
-			//
-			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-			//
-			NavUtils.navigateUpFromSameTask(this);
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
 	}
 	
 	public void addNewOrder(View v){

@@ -12,14 +12,21 @@ import java.util.List;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnLongClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Animation.AnimationListener;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -35,6 +42,7 @@ import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
 import com.example.timemanagement.R;
 import android.app.DialogFragment;
+
 
 
 	public class ListActivity extends MainActivity implements DataPassable {
@@ -74,7 +82,7 @@ import android.app.DialogFragment;
 	        width = wm.getDefaultDisplay().getWidth();
 			
 			ListView l = (ListView)findViewById(R.id.l_view);
-			l.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, (height-600)));
+			l.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, (height-480)));
 
 			cal = Calendar.getInstance();
 
@@ -149,15 +157,13 @@ import android.app.DialogFragment;
 				    newFragment.show(getFragmentManager(), "datePicker");
 				}
 			});
-	   	
-
+	    		   
 	    	next.setOnClickListener(new View.OnClickListener() {
 
 		        public void onClick(View v) {
 		        	if(new Date(start).before(currentDate)){
 		        		nextDate();
-		        		iterateBlocks(dateString);
-		        	}
+		        	};
 		        }
 	    	});
 		        		
@@ -168,7 +174,6 @@ import android.app.DialogFragment;
 
 		        public void onClick(View v) {
 		        	prevDate();
-		        	iterateBlocks(dateString);	
 		        }
 		    });
 		    
@@ -181,7 +186,7 @@ import android.app.DialogFragment;
 			    	while(it.hasNext())
 			    	{
 			    		b = it.next();
-			    		if(b.getOrderID() != 0){
+			    		if(b.getOrderID() > 1 ){
 			    			b.setChecked(1);
 			    			MainActivity.db.putBlock(b);
 			    		}			    		
@@ -201,7 +206,7 @@ import android.app.DialogFragment;
 			    	while(it.hasNext())
 			    	{
 			    		b = it.next();
-			    		if(b.getOrderID() != 0){
+			    		if(b.getOrderID() > 1){
 			    			b.setChecked(0);
 			    			MainActivity.db.putBlock(b);
 			    		}			    		
@@ -214,8 +219,16 @@ import android.app.DialogFragment;
 		
 		private void setAllChecks(int value){
 			for(int i = 0; i < blockStatesList.size();i++){
-				blockStatesList.set(i, value);				
+				
+				if(!(bList.get(i).getOrderID() <= 1)){
+					blockStatesList.set(i, value);
+					bList.get(i).setChecked(value);
+				}
+				else
+					bList.get(i).setChecked(0);
+									
 			}
+			
 			listAdapter.setBlockStatesList(blockStatesList);
 		}
 		
@@ -241,24 +254,54 @@ import android.app.DialogFragment;
 		 * Sets the day to one day in the future.
 		 * Also resets some variables to the new day.
 		 */
-		public void nextDate(){
-			start += 86400000;
-			stop += 86400000;
-			
-			// resets
-			dateString = (dateFormat.format(start));
+		public void nextDate() {
+			// Define UI-element to be animated
+			final View view = (View)findViewById(R.id.checkList);
+			// Define animation
+			final Animation anim = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+			// Define animation listener
+			AnimationListener animListener = new AnimationListener() {
+				// onAnimationEnd callback
+				public void onAnimationStart(Animation animation) {}
+			    public void onAnimationRepeat(Animation animation) {}
+			    public void onAnimationEnd(Animation animation) {
+					start += 86400000;
+					stop += 86400000;
+					dateString = (dateFormat.format(start));
+	        		iterateBlocks(dateString);
+			    }
+			};
+			// Set animation listener
+			anim.setAnimationListener(animListener);
+			// Start animation
+			view.startAnimation(anim);
 		}
 	
 		/**
 		 * Sets the day to one day in the past.
 		 * Also resets some variables to the new day.
 		 */
-		public void prevDate(){
-			start -= 86400000;
-			stop -= 86400000;
-			
-			// resets
-			dateString = (dateFormat.format(start));
+		public void prevDate() {
+			// Define UI-element to be animated
+			final View view = (View)findViewById(R.id.checkList);
+			// Define animation
+			final Animation anim = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+			// Define animation listener
+			AnimationListener animListener = new AnimationListener() {
+				// onAnimationEnd callback
+				public void onAnimationStart(Animation animation) {}
+			    public void onAnimationRepeat(Animation animation) {}
+			    public void onAnimationEnd(Animation animation) {
+					start -= 86400000;
+					stop -= 86400000;
+					dateString = (dateFormat.format(start));
+	        		iterateBlocks(dateString);
+			    }
+			};
+			// Set animation listener
+			anim.setAnimationListener(animListener);
+			// Start animation
+			view.startAnimation(anim);
 		}
 		
 		public void iterateBlocks(String dateString)
@@ -273,10 +316,17 @@ import android.app.DialogFragment;
 			Iterator<Block> it = bList.iterator(); 
 	    	while(it.hasNext())
 	    	{
+	    			
 	    		b = it.next();
 	    		if(b.getStop()!=0)
 	    		{
-		    		s = new SimpleDateFormat("HH:mm").format(b.getStart());
+	    			s="";
+	    			if(b.getChecked() == 1) {
+	    				s += Html.fromHtml((String)"&#10003;").toString();
+	    				s += " ";
+	    			}
+	    			
+		    		s += new SimpleDateFormat("HH:mm").format(b.getStart());
 		    		s += " - ";
 		    		s += new SimpleDateFormat("HH:mm").format(b.getStop());	    			
 		    		if(b.getOrderID()!=0){
@@ -322,7 +372,7 @@ import android.app.DialogFragment;
 	    		}
 	    	}	    	
 
-	    	listAdapter = new CustomListAdapter1(this,R.layout.listrow, blockList, blockStatesList);
+	    	listAdapter = new CustomListAdapter1(this,R.layout.listrow, blockList, blockStatesList, "neosanslight.ttf");
 	    	l_view.setAdapter(listAdapter);	    	
 	    	l_view.setOnItemClickListener(new OnItemClickListener()
 	    	{

@@ -18,19 +18,25 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.util.LogWriter;
+import android.os.Handler.Callback;
+import android.os.Message;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.swipetodismiss.SwipeDismissListViewTouchListener;
 import com.example.swipetodismiss.*;
+import com.example.timemanagement.customadapters.CustomListAdapter2;
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Order;
 
@@ -40,6 +46,7 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 	private ListView listView;
 	private Button next, prev, startB, create;
 	private Button day;
+	private CustomListAdapter2 mAdapter;
 	
 	// Calendar that is set to the chosen day.
 	private Calendar cal;
@@ -48,10 +55,6 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 	Block b;
 	
 	boolean started = false;
-	
-	// Contains strings representing all blocks
-	ArrayAdapter<String> mAdapter;
-	
 
 	// longs that represents the start- and endtime of the day
 	private long start, stop, today;
@@ -285,8 +288,8 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 			items[i] = s;
         }
         
-        // Define the data structure for the list strings
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, new ArrayList<String>(Arrays.asList(items)));        
+        // Define the data structure for the list strings    
+        mAdapter = new CustomListAdapter2(this,R.layout.listrow2, new ArrayList<String>(Arrays.asList(items)), "neosanslight.ttf");
         listView.setAdapter(mAdapter);
         
         
@@ -352,11 +355,27 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 	 * @param v
 	 */
 	public void showTomorrow(View v){
-		start += 86400000;
-		stop += 86400000;
-		setDayText(start);
-		setStartButton();
-		printBlocks();
+		// Define UI-element to be animated
+		final View view = (View)findViewById(R.id.timestampList);
+		// Define animation
+		final Animation anim = AnimationUtils.loadAnimation(this, R.anim.slide_right);
+		// Define animation listener
+		AnimationListener animListener = new AnimationListener() {
+			// onAnimationEnd callback
+			public void onAnimationStart(Animation animation) {}
+		    public void onAnimationRepeat(Animation animation) {}
+		    public void onAnimationEnd(Animation animation) {
+		    	start += 86400000;
+				stop += 86400000;
+		    	setDayText(start);
+		    	setStartButton();
+		    	printBlocks();
+		    }
+		};
+		// Set animation listener
+		anim.setAnimationListener(animListener);
+		// Start animation
+		view.startAnimation(anim);
 	}
 	
 	/**
@@ -365,11 +384,27 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 	 * @param v
 	 */
 	public void showYesterday(View v){
-		start -= 86400000;
-		stop -= 86400000;
-		setDayText(start);
-		setStartButton();
-		printBlocks();
+		// Define UI-element to be animated
+		final View view = (View)findViewById(R.id.timestampList);
+		// Define animation
+		final Animation anim = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+		// Define animation listener
+		AnimationListener animListener = new AnimationListener() {
+			// onAnimationEnd callback
+			public void onAnimationStart(Animation animation) {}
+		    public void onAnimationRepeat(Animation animation) {}
+		    public void onAnimationEnd(Animation animation) {
+		    	start -= 86400000;
+				stop -= 86400000;
+		    	setDayText(start);
+				setStartButton();
+				printBlocks();
+		    }
+		};
+		// Set animation listener
+		anim.setAnimationListener(animListener);
+		// Start animation
+		view.startAnimation(anim);
 	}
 	
 	/**

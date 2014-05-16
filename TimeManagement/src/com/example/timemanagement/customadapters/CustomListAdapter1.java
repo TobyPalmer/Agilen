@@ -1,15 +1,14 @@
 package com.example.timemanagement.customadapters;
 
 import java.util.ArrayList;
-
-import com.example.timemanagement.R;
-
 import android.content.Context;
 import android.graphics.drawable.StateListDrawable;
+import android.graphics.Typeface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import com.example.timemanagement.R;
 
 
 
@@ -17,10 +16,13 @@ import android.widget.TextView;
 public class CustomListAdapter1 extends ArrayAdapter<String>{
 	private ArrayList<Integer> blockStatesList;
 	private StateListDrawable states;
+	private Typeface tf;
 	
-	public CustomListAdapter1(Context context, int resID, ArrayList<String> items, ArrayList<Integer>blockStatesList){
+	public CustomListAdapter1(Context context, int resID, ArrayList<String> items, ArrayList<Integer>blockStatesList, String font){
 		super(context, resID, items);
 		this.blockStatesList = blockStatesList;	
+		this.blockStatesList = blockStatesList;		
+	    tf = Typeface.createFromAsset(context.getAssets(), font);	
 	}
 	
 	@Override
@@ -35,6 +37,7 @@ public class CustomListAdapter1 extends ArrayAdapter<String>{
 			states.addState(new int[]{},
 					getContext().getResources().getDrawable(R.drawable.green_normal));
 		}
+
 		else if(blockStatesList.get(position) == 2){
 			states.addState(new int[]{android.R.attr.state_pressed},
 					getContext().getResources().getDrawable(R.drawable.selected));
@@ -48,6 +51,7 @@ public class CustomListAdapter1 extends ArrayAdapter<String>{
 					getContext().getResources().getDrawable(R.drawable.white_normal));
 		}
 		((TextView)v).setBackground(states);
+		((TextView)v).setTypeface(tf);
 		return v;
 	}
 	
