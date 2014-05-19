@@ -103,7 +103,7 @@ public class HandleOrdersActivity extends MainActivity implements OnItemClickLis
 		 // Pass null as the parent view because its going in the dialog layout
 		 builder.setView(inflater.inflate(R.layout.activity_neworderpopup, null));
 		 
-		 builder.setPositiveButton("Lägg till", new DialogInterface.OnClickListener() {
+		 builder.setPositiveButton("LÃ¤gg till", new DialogInterface.OnClickListener() {
 			 public void onClick(DialogInterface dialog, int id) {
 				 // User clicked OK button
 	        	 Dialog d = (Dialog) dialog;
@@ -136,7 +136,7 @@ public class HandleOrdersActivity extends MainActivity implements OnItemClickLis
 	        		 }
 	        	 }
 	        	 else{
-	        		 newPopUp("Error!","'" + stringOrderNumber + "' är inte ett giltigt nummer!");
+	        		 newPopUp("Error!","'" + stringOrderNumber + "' Ã¤r inte ett giltigt nummer!");
 	        	 }
 			 }
 		 });
@@ -162,7 +162,7 @@ public class HandleOrdersActivity extends MainActivity implements OnItemClickLis
 		
 		if(nothingClicked()){
 			
-			newPopUp("Fel","Du måste markera de ordrar du vill ta bort.");
+			newPopUp("Fel","Du mÃ¥ste markera de ordrar du vill ta bort.");
 			
 			return;
 		}

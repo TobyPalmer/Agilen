@@ -184,7 +184,6 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 	        		startB.setText(R.string.start);
 	        		stopTime();  	
 	        	}
-	        	
 	        }
 	    });
 	    setStartButton();
@@ -546,6 +545,18 @@ public class TimestampActivity extends MainActivity implements DataPassable {
 		 
 		 dialog.show(); 
 	 }
+	
+	/**
+	 * Stops any running block if activity is destroyed.
+	 */
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+		if(started){
+			stopTime();  
+		}
+	}
+			
 
 	@Override
 	public void update(PickFragment p, Object o) {

@@ -1,15 +1,14 @@
 package com.example.timemanagement.customadapters;
 
 import java.util.ArrayList;
-
-import android.R;
 import android.content.Context;
-import android.graphics.Color;
+import android.graphics.drawable.StateListDrawable;
 import android.graphics.Typeface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import com.example.timemanagement.R;
 
 
 /**
@@ -21,29 +20,42 @@ import android.widget.TextView;
 
 public class CustomListAdapter1 extends ArrayAdapter<String>{
 	private ArrayList<Integer> blockStatesList;
-	Context context; 
-	Typeface tf;
+	private StateListDrawable states;
+	private Typeface tf;
 	
 	public CustomListAdapter1(Context context, int resID, ArrayList<String> items, ArrayList<Integer>blockStatesList, String font){
 		super(context, resID, items);
+		this.blockStatesList = blockStatesList;	
 		this.blockStatesList = blockStatesList;		
-	    this.context = context;
 	    tf = Typeface.createFromAsset(context.getAssets(), font);	
 	}
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent){
-		View v = super.getView(position, convertView, parent);
+		final View v = super.getView(position, convertView, parent);
+		 
+		states = new StateListDrawable();
 		
-		if(blockStatesList.get(position)== 1){
-			((TextView)v).setBackgroundColor(Color.parseColor("#57bf23"));
+		if(blockStatesList.get(position) == 1){
+			states.addState(new int[]{android.R.attr.state_pressed},
+					getContext().getResources().getDrawable(R.drawable.selected));
+			states.addState(new int[]{},
+					getContext().getResources().getDrawable(R.drawable.green_normal));
 		}
-		else if(blockStatesList.get(position)== 2){
-			((TextView)v).setBackgroundColor(Color.parseColor("#fcfdb4"));
+
+		else if(blockStatesList.get(position) == 2){
+			states.addState(new int[]{android.R.attr.state_pressed},
+					getContext().getResources().getDrawable(R.drawable.selected));
+			states.addState(new int[]{},
+					getContext().getResources().getDrawable(R.drawable.yellow_normal));
 		}	
 		else{
-			((TextView)v).setBackgroundColor(Color.parseColor("#cff9b9"));
+			states.addState(new int[]{android.R.attr.state_pressed},
+					getContext().getResources().getDrawable(R.drawable.selected));
+			states.addState(new int[]{},
+					getContext().getResources().getDrawable(R.drawable.white_normal));
 		}
+		((TextView)v).setBackground(states);
 		((TextView)v).setTypeface(tf);
 		return v;
 	}
