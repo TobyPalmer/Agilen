@@ -6,7 +6,15 @@
     android:orientation="vertical"
     tools:context=".TimestampActivity" >
 
-    	<LinearLayout
+
+         <LinearLayout
+            android:id="@+id/checkList"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+         <LinearLayout
+
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_alignParentTop="true"
@@ -45,13 +53,6 @@
                 android:textSize="50sp" />
 
         </LinearLayout>
-   
-         <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginTop="80dp">
-            
 
 	        <ListView
 	            android:id="@+id/l_view"

@@ -2,8 +2,10 @@
 package com.example.timemanagement;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import com.example.timemanagement.customadapters.CustomListAdapter2;
 import com.example.timemanagement.model.Order;
 
 import android.annotation.TargetApi;
@@ -38,6 +40,7 @@ public class HandleOrdersActivity extends MainActivity implements OnItemClickLis
 	private String orderList[];
 	private Boolean[] clicked;
 	private Button delete, save;
+	private CustomListAdapter2 mAdapter;
 			
 	
 	@Override
@@ -74,8 +77,10 @@ public class HandleOrdersActivity extends MainActivity implements OnItemClickLis
         ListView lv = (ListView) findViewById(R.id.orderListView);
         lv.setOnItemClickListener(this);
         
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1,  orderList);
-        lv.setAdapter(adapter);
+        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1,  orderList);
+        mAdapter = new CustomListAdapter2(this,R.layout.listrow2, orderList, "neosanslight.ttf");
+        lv.setAdapter(mAdapter);
+
 	}
 	
 	/**
@@ -98,7 +103,7 @@ public class HandleOrdersActivity extends MainActivity implements OnItemClickLis
 		 // Pass null as the parent view because its going in the dialog layout
 		 builder.setView(inflater.inflate(R.layout.activity_neworderpopup, null));
 		 
-		 builder.setPositiveButton("Lägg till", new DialogInterface.OnClickListener() {
+		 builder.setPositiveButton("LÃ¤gg till", new DialogInterface.OnClickListener() {
 			 public void onClick(DialogInterface dialog, int id) {
 				 // User clicked OK button
 	        	 Dialog d = (Dialog) dialog;
@@ -131,7 +136,7 @@ public class HandleOrdersActivity extends MainActivity implements OnItemClickLis
 	        		 }
 	        	 }
 	        	 else{
-	        		 newPopUp("Error!","'" + stringOrderNumber + "' är inte ett giltigt nummer!");
+	        		 newPopUp("Error!","'" + stringOrderNumber + "' Ã¤r inte ett giltigt nummer!");
 	        	 }
 			 }
 		 });
@@ -157,7 +162,7 @@ public class HandleOrdersActivity extends MainActivity implements OnItemClickLis
 		
 		if(nothingClicked()){
 			
-			newPopUp("Fel","Du måste markera de ordrar du vill ta bort.");
+			newPopUp("Fel","Du mÃ¥ste markera de ordrar du vill ta bort.");
 			
 			return;
 		}

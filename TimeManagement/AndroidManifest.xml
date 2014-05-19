@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="iso-8859-1"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.timemanagement"
     android:versionCode="1"
@@ -77,6 +77,16 @@
                 android:value="com.example.timemanagement.MainActivity" />
         </activity>
         
+        <!-- UserDetailActivity -->
+        <activity
+            android:name="com.example.timemanagement.UserDetailActivity"
+            android:label="Användarinställningar"
+            android:parentActivityName="com.example.timemanagement.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.timemanagement.MainActivity" />
+        </activity>
+        
         <!-- ScheduleActivity -->
         <activity
             android:name="com.example.timemanagement.ScheduleActivity"
@@ -90,7 +100,7 @@
         <!-- SettingActivity -->
         <activity
             android:name="com.example.timemanagement.SettingActivity"
-            android:label="InstÃ¤llningar"
+            android:label="Inställningar"
             android:parentActivityName="com.example.timemanagement.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

@@ -31,6 +31,8 @@
     <string name="newBlock">Manuell rapportering</string>
     <string name="addNewOrderNumber">Ny order</string>
     <string name="orderName">Namn</string>
+    <string name="chooseDateExportText">Välj mellan vilka datum du vill exportera:</string>
+    
     <string name="fa_arrow_right">&#xf105;</string>
     <string name="fa_arrow_left">&#xf104;</string>
     <string name="fa_plus">&#xf067;</string>
@@ -40,8 +42,11 @@
     <string name="selectAll">Bekräfta alla</string>
      
     <color name="green">#57BF23</color>
+    <color name="oliveGreen">#cff9b9</color>
     <color name="red">#FB3804</color>
     <color name="white">#FFFFFF</color>
+    <color name="yellow">#FCFDB4</color>
+    <color name="blue">#FFC700</color>
     
     <string name="userName">Användarnamn</string>
     <string name="passWord">Lösenord</string>

@@ -141,7 +141,7 @@ public class NotificationHandler extends IntentService
 		Intent mServiceIntent = new Intent(NotificationHandler.this, NotificationHandler.class);
 		
 		mServiceIntent.putExtra("title", "Chronox");
-		mServiceIntent.putExtra("text", "Du har glömt att tidsrapportera!");
+		mServiceIntent.putExtra("text", "Du har glÃ¶mt att tidsrapportera!");
 		
 		PendingIntent pendingIntent = PendingIntent.getService(NotificationHandler.this, id, mServiceIntent, 0);
 		
