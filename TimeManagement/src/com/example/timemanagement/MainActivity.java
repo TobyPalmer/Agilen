@@ -73,7 +73,7 @@ public class MainActivity extends Activity {
 
     	pass.setTypeface(font);
     	
-    	Order standardOrder = new Order("0", "Saknar ordernr.", 0);
+    	Order standardOrder = new Order("0", "Saknar ordernummer", 0);
 
        	// Get all orders
     	orderList = db.getAllOrders();

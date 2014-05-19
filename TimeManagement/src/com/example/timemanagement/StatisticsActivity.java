@@ -5,16 +5,22 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
-import java.util.List;import android.os.Bundle;
+import java.util.List;
+
+import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.annotation.TargetApi;
 import android.app.DialogFragment;
 import android.graphics.Color;
 import android.graphics.Bitmap;
@@ -85,6 +91,7 @@ public class StatisticsActivity extends FragmentActivity implements TDPassable
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
+		setupActionBar();
 		setContentView(R.layout.activity_statistics);		
 		
 		/**
@@ -148,8 +155,53 @@ public class StatisticsActivity extends FragmentActivity implements TDPassable
     	/**
     	 * Make the calculations 
     	 */
-		calculateStatistics();		
+		calculateStatistics();
 	}
+	
+	/** ANNA TESTAR LITE
+	* Set up the {@link android.app.ActionBar}, if the API is available.
+	*/
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	private void setupActionBar() 
+	{
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) 
+		{
+			getActionBar().setDisplayHomeAsUpEnabled(false);
+		}
+	}
+	
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+	
+	 @Override
+	    public boolean onOptionsItemSelected(MenuItem item) {
+	    	if(item.getItemId() == R.id.menu_checkview) {
+	    		//listActivity();
+	    		return true;
+	    	}
+	    	else if(item.getItemId() == R.id.menu_statistics) {
+	    		//statisticsActivity();
+	    		return true;
+	    	}
+	    	else if(item.getItemId() == R.id.menu_timestamp) {
+	    		//timestampActivity();
+	    		return true;
+	    	}
+
+	    	else if(item.getItemId() == R.id.menu_settings) {
+	    		//settingActivity();
+	    		return true;
+	    	}
+	    	else if(item.getItemId() == R.id.menu_backup) {
+	    		//backupActivity();
+	    		return true;
+	    	}
+	    	return false;
+	    }
 	
 		
 	/**
@@ -432,6 +484,8 @@ public class StatisticsActivity extends FragmentActivity implements TDPassable
 		return d1.compareTo(currentDate);		
 	}
 	
+	
+	
 	/**
 	 * This function calculates the different statistics as total times,
 	 * Direct and Indirect times, flex time and also populates two lists
@@ -543,6 +597,7 @@ public class StatisticsActivity extends FragmentActivity implements TDPassable
 		}
 		return 0;		
 	}
+	
 	
 	/**
 	 * Function that counts how many full days are between two unix times
