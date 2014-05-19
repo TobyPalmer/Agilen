@@ -29,6 +29,7 @@ public class OrderListStatisticsFragment extends Fragment {
         return rootView;
     }
 	
+	
 	/**
 	 * Initializes the Lists when the fragment is first created. Afterwards the updates are made in the parent Activity
 	 * @param rootView

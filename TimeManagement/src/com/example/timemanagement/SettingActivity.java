@@ -47,11 +47,11 @@ public class SettingActivity extends MainActivity implements OnItemClickListener
 
         //String array[] = {"Hantera notifikationer", "Hantera ordrar"};
         String s1 = "Hantera notifikationer";
-        String s2 = "Hantera ordrar"; 
+        String s2 = "Hantera ordernummer"; 
         String s3 = "Användarinställningar";
         settingsList.add(s1);
         settingsList.add(s2);
-        settingsList.add(s3);
+        //settingsList.add(s3);
     	listAdapter = new CustomListAdapter2(this,R.layout.listrow2, settingsList, "neosanslight.ttf");
     	listView.setAdapter(listAdapter);	
 

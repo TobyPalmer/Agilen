@@ -186,7 +186,7 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
 		 // Pass null as the parent view because its going in the dialog layout
 		 builder.setView(inflater.inflate(R.layout.activity_neworderpopup, null));
 		 
-		 builder.setPositiveButton("LŠgg till", new DialogInterface.OnClickListener() {
+		 builder.setPositiveButton("Lägg till", new DialogInterface.OnClickListener() {
 			 public void onClick(DialogInterface dialog, int id) {
 				 // User clicked OK button
 	        	 Dialog d = (Dialog) dialog;
@@ -277,7 +277,7 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
     
     	timeBlock.setComment(comments);
     	
-    	String message = "Du har redigerat din order! \n\n" +
+    	String message = "Du har redigerat ditt tidsblock! \n\n" +
     					 orderString + "\n" + timeBlock.toStringPublic() +
     					 "\n " + comments;
     	newPopUp("Redigerad!",message);
@@ -289,7 +289,7 @@ public class NewOrderActivity extends MainActivity implements DataPassable{
     		MainActivity.db.addBlock(timeBlock);
     	
     	 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		 builder.setTitle("Uppgift sparad");
+		 builder.setTitle("Tidsblock sparat");
 		 builder.setMessage(message);
 		 
 		 // User clicked OK button

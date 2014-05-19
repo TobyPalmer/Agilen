@@ -390,7 +390,7 @@ import android.app.DialogFragment;
 	    				}
 	    				else{
 	    					AlertDialog.Builder noOrderNrDialogBuilder = new AlertDialog.Builder(l_view.getContext());
-	    					noOrderNrDialogBuilder.setMessage("Denna post saknar ordernummer, vill du √•tg√§rda detta?");
+	    					noOrderNrDialogBuilder.setMessage("Denna post saknar ordernummer. \nVill du Âtg‰rda detta?");
 	    					noOrderNrDialogBuilder.setCancelable(true);
 	    					noOrderNrDialogBuilder.setPositiveButton("Ja", 
 	    							new DialogInterface.OnClickListener() {

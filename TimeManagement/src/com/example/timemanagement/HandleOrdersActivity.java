@@ -103,7 +103,7 @@ public class HandleOrdersActivity extends MainActivity implements OnItemClickLis
 		 // Pass null as the parent view because its going in the dialog layout
 		 builder.setView(inflater.inflate(R.layout.activity_neworderpopup, null));
 		 
-		 builder.setPositiveButton("LÃ¤gg till", new DialogInterface.OnClickListener() {
+		 builder.setPositiveButton("Lägg till", new DialogInterface.OnClickListener() {
 			 public void onClick(DialogInterface dialog, int id) {
 				 // User clicked OK button
 	        	 Dialog d = (Dialog) dialog;
