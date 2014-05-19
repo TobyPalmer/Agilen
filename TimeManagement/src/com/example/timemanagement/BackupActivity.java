@@ -4,7 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import com.example.timemanagement.model.Block;
-import com.example.timemanagement.statistics.DatePassable;
+import com.example.timemanagement.statistics.PickerFragment;
+import com.example.timemanagement.statistics.TDPassable;
 import com.example.timemanagement.statistics.DatePickerFragment;
 
 import android.annotation.TargetApi;
@@ -27,7 +28,7 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class BackupActivity extends MainActivity implements DatePassable{
+public class BackupActivity extends MainActivity implements TDPassable{
 	
 	private TextView arrow, dateText;
 	private Button exportStart, exportStop;
@@ -164,51 +165,39 @@ public class BackupActivity extends MainActivity implements DatePassable{
 	}
 
 	@Override
-	public void update(DatePickerFragment p, long o, int ID) 
-	{		
-		  long changedDate = o;		  
-		  if(ID == 1)
-		  {	
-			  
-			  stop = changedDate;
-			 		  
-			  if((compareDates(stop, start)  >= 0) && compareToFutureDate(stop) < 1)
-			  {				  
-				  exportStop.setText(dateAsString(stop));
-			  }
-			  else
-			  {
-				  if(compareToFutureDate(stop) < 1)
-				  {
-					  stop = start;					  
-				  }
-				  else
-				  {					  
-					  stop = getCurrentMillis();					  
-				  }
-				  exportStop.setText(dateAsString(stop));
-			  }			 
-		  }			  
-		  else
-		  {
-			  start = changedDate;			  
-			  		  
-			  if((compareDates(start, stop) < 1) && compareToFutureDate(start) < 1)
-			  {				  
-				  exportStart.setText(dateAsString(start));
-			  }
-			  else
-			  {
-				  if(compareToFutureDate(start) < 1)
-				  {
-					  start = stop;					  
-				  }
-				  else
-				  {					  
-					  start = getCurrentMillis();					  
-				  }
-				  exportStart.setText(dateAsString(start));
-			  }
-		  }	
+	public void update(PickerFragment p, long o, int ID) {
+		if (p instanceof DatePickerFragment) {
+			long changedDate = o;
+			if (ID == 1) {
+
+				stop = changedDate;
+
+				if ((compareDates(stop, start) >= 0)
+						&& compareToFutureDate(stop) < 1) {
+					exportStop.setText(dateAsString(stop));
+				} else {
+					if (compareToFutureDate(stop) < 1) {
+						stop = start;
+					} else {
+						stop = getCurrentMillis();
+					}
+					exportStop.setText(dateAsString(stop));
+				}
+			} else {
+				start = changedDate;
+
+				if ((compareDates(start, stop) < 1)
+						&& compareToFutureDate(start) < 1) {
+					exportStart.setText(dateAsString(start));
+				} else {
+					if (compareToFutureDate(start) < 1) {
+						start = stop;
+					} else {
+						start = getCurrentMillis();
+					}
+					exportStart.setText(dateAsString(start));
+				}
+			}
+		}
 	}
 }

@@ -24,12 +24,13 @@ import android.util.Log;
 import com.example.timemanagement.model.Block;
 import com.example.timemanagement.model.Notification;
 import com.example.timemanagement.model.Order;
+import com.example.timemanagement.model.UserDetails;
 
 public class SQLiteMethods extends SQLiteOpenHelper {
 	
 	// Database info
 
-    private static final int DATABASE_VERSION = 21;
+    private static final int DATABASE_VERSION = 22;
     private static final String DATABASE_NAME = "TimeManagement";
  
     // Constructor
@@ -59,6 +60,14 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         	+"checked INTEGER)";
         db.execSQL(CREATE_BLOCKS_TABLE);
         
+
+        //Create "userdetails"-table
+        String CREATE_USER_DETAILS_TABLE = 
+        	"CREATE TABLE userdetails(" +
+        	"username VARCHAR(50) PRIMARY KEY, " +
+        	"workday INTEGER)";
+        db.execSQL(CREATE_USER_DETAILS_TABLE);
+
      // Create "notifications"-table
         String CREATE_NOTIFICATIONS_TABLE =
         	"CREATE TABLE notifications(" +
@@ -69,6 +78,7 @@ public class SQLiteMethods extends SQLiteOpenHelper {
         	"everyMonth INTEGER, " +
         	"spareTime INTEGER)";
         db.execSQL(CREATE_NOTIFICATIONS_TABLE);
+
     }
     
     // *********************************************** //
@@ -78,9 +88,110 @@ public class SQLiteMethods extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS orders");
         db.execSQL("DROP TABLE IF EXISTS blocks");
+        db.execSQL("DROP TABLE IF EXISTS userdetails");
         db.execSQL("DROP TABLE IF EXISTS notifications");
         this.onCreate(db);
     }
+    
+    // *********************************************** //
+    // USERDETAILS
+    // *********************************************** //
+    
+    // *********************************************** //
+    // Define userdetails table
+    // *********************************************** //
+    
+    private static final String USER_DETAILS_TABLE = "userdetails";
+    private static final String USER_DETAILS_TABLE_KEY_USERNAME = "username";
+    private static final String USER_DETAILS_TABLE_KEY_WORKDAY = "workday";
+    private static final String[] USER_DETAILS_TABLE_COLUMNS = {USER_DETAILS_TABLE_KEY_USERNAME,
+    																USER_DETAILS_TABLE_KEY_WORKDAY};
+    
+    /**
+     * INSERT: Create new user
+     * @param Userdetails
+     */
+    public void addUser(UserDetails userDetails){
+        SQLiteDatabase db = this.getWritableDatabase();
+ 
+        ContentValues values = new ContentValues();
+        values.put(USER_DETAILS_TABLE_KEY_USERNAME, userDetails.getUsername());  
+        values.put(USER_DETAILS_TABLE_KEY_WORKDAY, userDetails.getWorkday());        
+ 
+        db.insert(USER_DETAILS_TABLE, null, values);
+        db.close(); 
+    }
+    
+    /**
+     * Get user details from db
+     * @param username
+     */
+    
+    public UserDetails getUserDetails(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(USER_DETAILS_TABLE, USER_DETAILS_TABLE_COLUMNS, 
+        							USER_DETAILS_TABLE_KEY_USERNAME + " = ?", 
+        							new String[] { username }, 
+        							null, 
+        							null, 
+        							null, 
+        							"1");
+        
+        if (cursor != null) {
+        	// If there are any rows
+        	if(!cursor.isAfterLast()) { // Return Order
+        		cursor.moveToFirst();
+        		
+        		UserDetails userDetails = new UserDetails(cursor.getString(0), Long.parseLong(cursor.getString(1)));
+	            
+	            return userDetails;
+        	}
+        	else { // No rows
+        		return null;
+        	}
+        } // No rows
+        else {
+        	return null;
+        }
+    }
+    
+    /**
+     * PUT: Update user details
+     * 
+     * @param order
+     * @return
+     */
+    public int putUser(UserDetails userDetails) {
+        SQLiteDatabase db = this.getWritableDatabase();
+     
+        ContentValues values = new ContentValues();
+        values.put(USER_DETAILS_TABLE_KEY_USERNAME, userDetails.getUsername()); 
+        values.put(USER_DETAILS_TABLE_KEY_WORKDAY, userDetails.getWorkday());       
+     
+        int i = db.update(USER_DETAILS_TABLE, 
+        					values, 
+        					USER_DETAILS_TABLE_KEY_USERNAME + " = ?", 
+        					new String[] { userDetails.getUsername() }); 
+        
+        db.close();     
+        return i;
+    }
+    
+    /**
+     * DELETE: Remove an order
+     * 
+     * @param order
+     */
+    public void deleteUser(UserDetails userDetails) {
+        SQLiteDatabase db = this.getWritableDatabase();
+ 
+        db.delete(USER_DETAILS_TABLE, 
+        			USER_DETAILS_TABLE_KEY_USERNAME + " = ?", 
+        			new String[] { userDetails.getUsername() });
+
+        db.close();
+    }
+        
     
     // *********************************************** //
     // ORDERS

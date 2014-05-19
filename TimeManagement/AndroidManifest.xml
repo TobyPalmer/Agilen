@@ -77,6 +77,16 @@
                 android:value="com.example.timemanagement.MainActivity" />
         </activity>
         
+        <!-- UserDetailActivity -->
+        <activity
+            android:name="com.example.timemanagement.UserDetailActivity"
+            android:label="Användarinställningar"
+            android:parentActivityName="com.example.timemanagement.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.timemanagement.MainActivity" />
+        </activity>
+        
         <!-- ScheduleActivity -->
         <activity
             android:name="com.example.timemanagement.ScheduleActivity"
