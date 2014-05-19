@@ -34,6 +34,7 @@ public class CustomListAdapter2 extends ArrayAdapter<String>{
 	    this.context = context2;
 	    tf = Typeface.createFromAsset(context.getAssets(), font);
 	}
+	
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent){
